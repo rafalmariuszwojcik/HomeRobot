@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Communication\IChanel.cs" />
+    <Compile Include="Communication\Serial.cs" />
     <Compile Include="Drawing\DrawElement.cs" />
     <Compile Include="Drawing\RobotDraw.cs" />
     <Compile Include="Drawing\RouteDraw.cs" />
