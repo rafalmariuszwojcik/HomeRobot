@@ -1,0 +1,12 @@
+
+*.exe
+RobotControl/bin/Debug/RobotControl.exe.config
+RobotControl/bin/Debug/RobotControl.vshost.exe.config
+RobotControl/bin/Debug/RobotControl.vshost.exe.manifest
+RobotControl/obj/Debug/DesignTimeResolveAssemblyReferences.cache
+RobotControl/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+RobotControl/obj/Debug/RobotControl.csproj.FileListAbsolute.txt
+RobotControl/obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+RobotControl/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+RobotControl/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+RobotControl/.vs/RobotControl/v14/.suo
