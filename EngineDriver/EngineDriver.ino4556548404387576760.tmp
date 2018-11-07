@@ -1,0 +1,311 @@
+#include <stdlib.h>
+#include <TimerOne.h>
+extern "C"
+{
+  #include "Engine.h"
+  #include "Robot.h"
+}
+
+const byte CMD_UNKNOWN = 0xFF;
+const byte CMD_MAXPARAMSCOUNT = 10;
+
+struct Command 
+{
+  char *command;
+  void (*command_ptr)(int[], byte, void*);
+  void *object;
+};
+
+Robot robot;
+
+void cmd_EngineForward(int[], byte, void*);
+void cmd_EngineBackward(int[], byte, void*);
+void cmd_EngineStop(int[], byte, void*);
+void cmd_EngineSpeed(int[], byte, void*);
+void cmd_EnginePWM(int[], byte, void*);
+void cmd_EngineSetPID(int[], byte, void*);
+
+void cmd_robotForward(int[], byte, void*);
+void cmd_robotBackward(int[], byte, void*);
+void cmd_robotStop(int[], byte, void*);
+void cmd_robotSpeed(int[], byte, void*);
+void cmd_robotAddLeg(int[], byte, void*);
+void cmd_echo(int[], byte, void*);
+byte getCommandIndex(char command[]);
+
+const Command commands[] = 
+{
+  {(char*)"RF", cmd_EngineForward, &(robot.rightEngine)},
+  {(char*)"RB", cmd_EngineBackward, &(robot.rightEngine)},
+  {(char*)"RS", cmd_EngineStop, &(robot.rightEngine)},
+  {(char*)"RSPD", cmd_EngineSpeed, &(robot.rightEngine)},
+  {(char*)"RPWM", cmd_EnginePWM, &(robot.rightEngine)},
+  {(char*)"RSETPID", cmd_EngineSetPID, &(robot.rightEngine)},
+  {(char*)"LF", cmd_EngineForward, &(robot.leftEngine)},
+  {(char*)"LB", cmd_EngineBackward, &(robot.leftEngine)},
+  {(char*)"LS", cmd_EngineStop, &(robot.leftEngine)},
+  {(char*)"LSPD", cmd_EngineSpeed, &(robot.leftEngine)},
+  {(char*)"LPWM", cmd_EnginePWM, &(robot.leftEngine)},
+  {(char*)"LSETPID", cmd_EngineSetPID, &(robot.leftEngine)},
+  {(char*)"FWD", cmd_robotForward, NULL},
+  {(char*)"BWD", cmd_robotBackward, NULL},
+  {(char*)"STOP", cmd_robotStop, NULL},
+  {(char*)"SPD", cmd_robotSpeed, NULL},
+  {(char*)"ADDLEG", cmd_robotAddLeg, &robot},
+  {(char*)"ECHO", cmd_echo, NULL}
+};
+
+char inputBufer[64];
+char volatile inputBuferIndex = -1;
+uint32_t startTime;
+
+void serialInput();
+
+void setup() {
+  Serial.begin(76800);
+  //Serial.begin(74880);
+  while (!Serial) {}
+  memset(inputBufer, 0, sizeof(inputBufer));
+  
+  Robot_initialize(&robot);
+  
+  // Attach an interrupt to the ISR vector
+  attachInterrupt(0, pin_ISR, RISING);
+  attachInterrupt(1, pin_ISR1, RISING);
+
+  // attach the service routine here 100 Hz.
+  Timer1.initialize(10000);
+  Timer1.attachInterrupt( timerIsr ); 
+}
+
+void loop() 
+{
+  int parameters[CMD_MAXPARAMSCOUNT];
+  serialInput();
+  if (inputBuferIndex >= 0 && inputBufer[inputBuferIndex] == ';')
+  {
+    char token[] = {',', ';', '\0'};
+    char* value;
+    byte index = 0;
+    byte cmd = CMD_UNKNOWN;
+    value = strtok(inputBufer, token);
+    while(value != NULL && index <= CMD_MAXPARAMSCOUNT)
+    {
+      if (index == 0)
+      {
+        cmd = getCommandIndex(value);
+      }
+      else
+      {
+        parameters[index - 1] = atoi(value);
+      }
+
+      value = strtok(NULL, token);
+      index++;
+    }
+
+    if (cmd != CMD_UNKNOWN)
+    {
+      commands[cmd].command_ptr(parameters, index - 1, commands[cmd].object);
+    }
+
+    inputBuferIndex = -1;
+  }
+ 
+  char speedInfo[64];
+
+  if (Robot_getState(&robot, speedInfo))
+  {
+    Serial.print(speedInfo);
+  }
+
+  if (robot.rightEngine.signaled || robot.leftEngine.signaled)
+  {
+    sprintf(
+      speedInfo, 
+      "DIST,%u,%u,%u,%u;", 
+      robot.leftEngine.state, 
+      robot.leftEngine.fullDistance, 
+      robot.rightEngine.state, 
+      robot.rightEngine.fullDistance);
+    Serial.print(speedInfo);
+  }
+  
+  if (robot.rightEngine.signaled)
+  {
+    sprintf(
+      speedInfo, 
+      "RD,%u;RSPD,%u;RAVGSPD,%u;RPWM,%u;EOL;", 
+      robot.rightEngine.fullDistance, 
+      robot.rightEngine.speedCounter.curr_speed, 
+      robot.rightEngine.speedCounter.avg_speed, 
+      robot.rightEngine.pwm);
+    robot.rightEngine.signaled = 0;
+    Serial.print(speedInfo);
+  }
+
+  if (robot.leftEngine.signaled)
+  {
+    sprintf(
+      speedInfo, 
+      "LD,%u;LSPD,%u;LAVGSPD,%u;LPWM,%u;EOL;", 
+      robot.leftEngine.fullDistance, 
+      robot.leftEngine.speedCounter.curr_speed, 
+      robot.leftEngine.speedCounter.avg_speed, 
+      robot.leftEngine.pwm);
+    robot.leftEngine.signaled = 0;
+    Serial.print(speedInfo);
+  }
+}
+
+void serialInput() {
+  if (Serial.available() > 0) {
+    int serial = Serial.read();
+    if (serial != -1)
+    {
+      char data = (char)serial;
+      if ((inputBuferIndex + 2) > (sizeof(inputBufer) - 1))
+      {
+        inputBuferIndex = -1;
+      }
+      
+      inputBufer[++inputBuferIndex] = toupper(data);
+      inputBufer[inputBuferIndex + 1] = '\0';
+    }
+  }  
+}
+
+void pin_ISR() 
+{
+  Robot_control(&robot, RIGHT_ENGINE_PULSE);
+}
+
+void pin_ISR1() 
+{
+  Robot_control(&robot, LEFT_ENGINE_PULSE);
+}
+
+volatile uint16_t sss = 0;
+
+void timerIsr()
+{
+  sss++;
+
+  if (!(sss % 6))
+  {
+    Robot_control(&robot, RIGHT_ENGINE_PULSE);
+  }
+
+ // if (!(sss % 12))
+ // {
+ //   Robot_control(&robot, LEFT_ENGINE_PULSE);
+ // }
+  
+  
+  Robot_control(&robot, CONTROL);
+}
+
+// command functions
+
+void cmd_EngineForward(int[], byte, void* object) 
+{
+  startTime = millis();
+  if (object != NULL) Engine_setState((struct Engine*)object, FORWARD);
+}
+
+void cmd_EngineBackward(int[], byte, void* object) 
+{
+  if (object != NULL) Engine_setState((struct Engine*)object, BACKWARD);
+}
+
+void cmd_EngineStop(int[], byte, void* object) 
+{
+  if (object != NULL) Engine_setState((struct Engine*)object, STOP);
+}
+
+void cmd_EngineSpeed(int params[], byte size, void* object) 
+{
+  if (size > 0 && object != NULL) Engine_speed((struct Engine*)object, params[0]);
+}
+
+void cmd_EnginePWM(int params[], byte size, void* object) 
+{
+  if (size > 0 && object != NULL) Engine_pwm((struct Engine*)object, params[0]);
+}
+
+void cmd_EngineSetPID(int params[], byte size, void* object)
+{
+  uint16_t kp = size > 0 ? params[0] : 0;
+  uint16_t ki = size > 1 ? params[1] : 0;
+  uint16_t kd = size > 2 ? params[2] : 0;
+  if (object != NULL) Engine_setPID((struct Engine*)object, kp, ki, kd);
+}
+
+void cmd_robotForward(int params[], byte size, void*) 
+{
+  cmd_EngineForward(params, size, &(robot.leftEngine));
+  cmd_EngineForward(params, size, &(robot.rightEngine));
+}
+
+void cmd_robotBackward(int params[], byte size, void*) 
+{
+  cmd_EngineBackward(params, size, &(robot.leftEngine));
+  cmd_EngineBackward(params, size, &(robot.rightEngine));
+}
+
+void cmd_robotStop(int params[], byte size, void*) 
+{
+  cmd_EngineStop(params, size, &(robot.leftEngine));
+  cmd_EngineStop(params, size, &(robot.rightEngine));
+}
+
+void cmd_robotSpeed(int params[], byte size, void*) 
+{
+  if (size > 1) 
+  {
+    Engine_setSpeed(&(robot.leftEngine), params[0]);
+    Engine_setSpeed(&(robot.rightEngine), params[1]);
+  }
+}
+
+void cmd_robotAddLeg(int params[], byte size, void* object)
+{
+  int16_t distance = size > 0 ? params[0] : 0;
+  int16_t angle = size > 1 ? params[1] : 0;
+  uint8_t setSpeed = size > 2 ? params[2] : 0;
+  
+  if (object != NULL) 
+  {
+    Robot_addCommand((struct Robot*)object, distance, angle, setSpeed);
+    Serial.println(((struct Robot*)object)->leftDistance);
+    Serial.println(((struct Robot*)object)->rightDistance);
+  }
+}
+
+void cmd_echo(int params[], byte size, void*)
+{
+  Serial.println("ECHO");
+  for (int i = 0; i < size; i++)
+  {
+    Serial.println(params[i]);
+  }
+
+  uint8_t a = 0;
+  uint8_t b = 253;
+  uint8_t c = a - b;
+  Serial.println(c);
+}
+
+byte getCommandIndex(char *command){
+  byte i = 0; 
+  byte maxIndex = (sizeof(commands) / sizeof(Command)) - 1;
+  for (i = 0; i <= maxIndex; i++)
+  {
+    if (strcmp(command, commands[i].command) == 0)
+    {
+      return i;
+    }
+  }
+
+  return (maxIndex);
+};
