@@ -61,6 +61,7 @@
     <Compile Include="Simulation\Movement.cs" />
     <Compile Include="Simulation\MovementCalculation.cs" />
     <Compile Include="Simulation\Robot.cs" />
+    <Compile Include="Simulation\RobotCalculator.cs" />
     <Compile Include="Simulation\RobotGeometry.cs" />
     <Compile Include="Simulation\Route.cs" />
     <Compile Include="Simulation\SimulationPoint.cs" />
@@ -90,6 +91,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\" />
+    <Folder Include="Forms\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
