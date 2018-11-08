@@ -3,76 +3,35 @@ using System.IO.Ports;
 
 namespace RobotControl.Communication
 {
-  public class Serial : IChanel
+  public class Serial : ChannelBase<SerialPort>
   {
-    bool disposed = false;
-
-    private SerialPort port;
-
-    public event EventHandler<IDataReceivedEventArgs> DataReceived;
-
-    public void Close()
-    {
-      if (port != null)
-      {
-        if (port.IsOpen)
-        {
-          port.Close();
-        }
-        
-        port.Dispose();
-        port = null;
-      }
-    }
-
-    public void Open()
-    {
-      Close();
-      try
-      {
-        port = new SerialPort("COM1");
-        port.BaudRate = 76800;
-        port.Open();
-        port.DataReceived += Port_DataReceived;
-      }
-      catch (Exception)
-      {
-        Close();
-        throw;
-      }
-    }
-
     private void Port_DataReceived(object sender, SerialDataReceivedEventArgs e)
     {
       SerialPort sp = (SerialPort)sender;
       var data = sp.ReadExisting();
-      DataReceived?.Invoke(this, new DataReceivedEventArgs(data));
+      OnDataReceived(data);
     }
 
-    public void Send(string data)
+    protected override SerialPort InternalOpen()
     {
-      throw new NotImplementedException();
+      var port = new SerialPort("COM1");
+      port.BaudRate = 76800;
+      port.Open();
+      port.DataReceived += Port_DataReceived;
+      return port;
     }
 
-    public void Dispose()
+    protected override void InternalClose(SerialPort channel)
     {
-      Dispose(true);
-      GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-      if (disposed)
+      if (channel.IsOpen)
       {
-        return;
+        channel.Close();
       }
-        
-      if (disposing)
-      {
-        Close();
-      }
+    }
 
-      disposed = true;
+    public override void InternalSend(SerialPort channel, string data)
+    {
+      channel.Write(data);
     }
   }
 }

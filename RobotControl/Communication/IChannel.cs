@@ -2,7 +2,7 @@
 
 namespace RobotControl.Communication
 {
-  public interface IChanel : IDisposable
+  public interface IChannel : IDisposable
   {
     void Open();
     void Close();
