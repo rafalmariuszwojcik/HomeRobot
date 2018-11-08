@@ -1,10 +1,13 @@
-﻿using System;
-using System.IO.Ports;
+﻿using System.IO.Ports;
 
 namespace RobotControl.Communication
 {
-  public class Serial : ChannelBase<SerialPort>
+  public class Serial : ChannelBase<SerialPort, SerialConfiguration>
   {
+    public Serial(SerialConfiguration configuration) : base(configuration)
+    {
+    }
+
     private void Port_DataReceived(object sender, SerialDataReceivedEventArgs e)
     {
       SerialPort sp = (SerialPort)sender;
@@ -12,12 +15,12 @@ namespace RobotControl.Communication
       OnDataReceived(data);
     }
 
-    protected override SerialPort InternalOpen()
+    protected override SerialPort InternalOpen(SerialConfiguration configuration)
     {
-      var port = new SerialPort("COM1");
-      port.BaudRate = 76800;
-      port.Open();
+      var port = new SerialPort(configuration.Port);
+      port.BaudRate = configuration.BaudRate;
       port.DataReceived += Port_DataReceived;
+      port.Open();
       return port;
     }
 

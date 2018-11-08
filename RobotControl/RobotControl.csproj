@@ -47,8 +47,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Communication\ChannelBase.cs" />
+    <Compile Include="Communication\ConfigurationBase.cs" />
     <Compile Include="Communication\IChannel.cs" />
     <Compile Include="Communication\Serial.cs" />
+    <Compile Include="Communication\SerialConfiguration.cs" />
     <Compile Include="Drawing\DrawElement.cs" />
     <Compile Include="Drawing\RobotDraw.cs" />
     <Compile Include="Drawing\RouteDraw.cs" />

@@ -2,14 +2,22 @@
 
 namespace RobotControl.Communication
 {
-  public abstract class ChannelBase<T> : IChannel
+  public abstract class ChannelBase<T, U> : IChannel<U>
     where T: IDisposable
+    where U: ConfigurationBase
   {
     bool disposed = false;
 
     private T channel;
 
+    private U configuration;
+
     public event EventHandler<IDataReceivedEventArgs> DataReceived;
+
+    public ChannelBase(U configuration)
+    {
+      this.configuration = configuration;
+    }
 
     ~ChannelBase()
     {
@@ -21,7 +29,7 @@ namespace RobotControl.Communication
       Close();
       try
       {
-        channel = InternalOpen();
+        channel = InternalOpen(configuration);
       }
       catch (Exception)
       {
@@ -56,7 +64,7 @@ namespace RobotControl.Communication
       GC.SuppressFinalize(this);
     }
 
-    protected abstract T InternalOpen();
+    protected abstract T InternalOpen(U configuration);
 
     protected abstract void InternalClose(T channel);
 

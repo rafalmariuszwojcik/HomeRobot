@@ -2,7 +2,8 @@
 
 namespace RobotControl.Communication
 {
-  public interface IChannel : IDisposable
+  public interface IChannel<U> : IDisposable
+    where U: ConfigurationBase
   {
     void Open();
     void Close();
@@ -28,5 +29,10 @@ namespace RobotControl.Communication
     {
       get { return data; }
     }
+  }
+
+  public interface IConfiguration
+  {
+    string Name { get; set; }
   }
 }
