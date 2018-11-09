@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace RobotControl.Fake.FakeRobot
 {
@@ -7,6 +8,12 @@ namespace RobotControl.Fake.FakeRobot
     bool disposed = false;
     readonly Engine leftEngine = new Engine();
     readonly Engine rightEngine = new Engine();
+    readonly Task task;
+
+    public FakeRobot()
+    {
+      task = new Task(() => Loop());
+    }
 
     ~FakeRobot()
     {
@@ -32,6 +39,13 @@ namespace RobotControl.Fake.FakeRobot
       }
 
       disposed = true;
+    }
+
+    private void Loop()
+    {
+      while (true)
+      {
+      }
     }
   }
 }
