@@ -17,8 +17,11 @@ namespace RobotControl.Communication
 
     protected override SerialPort InternalOpen(SerialConfiguration configuration)
     {
-      var port = new SerialPort(configuration.Port);
-      port.BaudRate = configuration.BaudRate;
+      var port = new SerialPort(configuration.Port)
+      {
+        BaudRate = configuration.BaudRate
+      };
+
       port.DataReceived += Port_DataReceived;
       port.Open();
       return port;

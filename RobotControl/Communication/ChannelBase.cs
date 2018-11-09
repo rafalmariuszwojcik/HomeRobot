@@ -10,7 +10,7 @@ namespace RobotControl.Communication
 
     private T channel;
 
-    private U configuration;
+    private readonly U configuration;
 
     public event EventHandler<IDataReceivedEventArgs> DataReceived;
 
