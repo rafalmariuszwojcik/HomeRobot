@@ -18,17 +18,12 @@ namespace RobotControl.Communication
 
   public class DataReceivedEventArgs : IDataReceivedEventArgs
   {
-    string data;
-
     public DataReceivedEventArgs(string data)
     {
-      this.data = data;
+      Data = data;
     }
 
-    public string Data
-    {
-      get { return data; }
-    }
+    public string Data { get; }
   }
 
   public interface IConfiguration

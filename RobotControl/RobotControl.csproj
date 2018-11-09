@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Command\CommandBase.cs" />
+    <Compile Include="Command\EngineCommand.cs" />
     <Compile Include="Communication\ChannelBase.cs" />
     <Compile Include="Communication\ConfigurationBase.cs" />
     <Compile Include="Communication\Fake.cs" />

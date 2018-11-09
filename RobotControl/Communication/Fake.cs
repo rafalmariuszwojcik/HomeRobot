@@ -11,12 +11,14 @@ namespace RobotControl.Communication
 
     protected override FakeRobot InternalOpen(FakeConfiguration configuration)
     {
-      return new FakeRobot();
+      var robot = new FakeRobot();
+      robot.Start();
+      return robot;
     }
 
     protected override void InternalClose(FakeRobot channel)
     {
-      throw new NotImplementedException();
+      channel.Stop();
     }
 
     public override void InternalSend(FakeRobot channel, string data)
