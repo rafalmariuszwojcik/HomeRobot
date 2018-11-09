@@ -1,4 +1,5 @@
-﻿using RobotControl.Fake.FakeRobot;
+﻿using RobotControl.Command;
+using RobotControl.Fake.FakeRobot;
 using System;
 
 namespace RobotControl.Communication
@@ -21,7 +22,7 @@ namespace RobotControl.Communication
       channel.Stop();
     }
 
-    public override void InternalSend(FakeRobot channel, string data)
+    public override void InternalSend(FakeRobot channel, ICommand[] commands)
     {
       throw new NotImplementedException();
     }

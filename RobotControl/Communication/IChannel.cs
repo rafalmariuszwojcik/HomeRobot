@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RobotControl.Command;
+using System;
 
 namespace RobotControl.Communication
 {
@@ -7,7 +8,7 @@ namespace RobotControl.Communication
   {
     void Open();
     void Close();
-    void Send(string data);
+    void Send(ICommand[] commands);
     event EventHandler<IDataReceivedEventArgs> DataReceived;
   }
 

@@ -1,4 +1,5 @@
-﻿using System.IO.Ports;
+﻿using RobotControl.Command;
+using System.IO.Ports;
 
 namespace RobotControl.Communication
 {
@@ -35,9 +36,9 @@ namespace RobotControl.Communication
       }
     }
 
-    public override void InternalSend(SerialPort channel, string data)
+    public override void InternalSend(SerialPort channel, ICommand[] commands)
     {
-      channel.Write(data);
+      //channel.Write(data);
     }
   }
 }

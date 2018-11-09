@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RobotControl.Command;
+using System;
 
 namespace RobotControl.Communication
 {
@@ -48,14 +49,14 @@ namespace RobotControl.Communication
       }
     }
 
-    public void Send(string data)
+    public void Send(ICommand[] commands)
     {
       if (channel == null)
       {
         throw new NotImplementedException();
       }
 
-      InternalSend(channel, data);
+      InternalSend(channel, commands);
     }
 
     public void Dispose()
@@ -68,7 +69,7 @@ namespace RobotControl.Communication
 
     protected abstract void InternalClose(T channel);
 
-    public abstract void InternalSend(T channel, string data);
+    public abstract void InternalSend(T channel, ICommand[] commands);
 
     protected void OnDataReceived(string data)
     {

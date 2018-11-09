@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RobotControl.Command
 {
-  public abstract class CommandBase
+  public abstract class CommandBase : ICommand
   {
   }
 }
