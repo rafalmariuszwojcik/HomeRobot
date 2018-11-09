@@ -56,6 +56,7 @@
     <Compile Include="Drawing\DrawElement.cs" />
     <Compile Include="Drawing\RobotDraw.cs" />
     <Compile Include="Drawing\RouteDraw.cs" />
+    <Compile Include="Fake\FakeRobot\Engine.cs" />
     <Compile Include="Fake\FakeRobot\FakeRobot.cs" />
     <Compile Include="IMessageReceiver.cs" />
     <Compile Include="RobotControl.cs">

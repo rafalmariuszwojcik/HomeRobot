@@ -5,6 +5,8 @@ namespace RobotControl.Fake.FakeRobot
   public class FakeRobot : IDisposable
   {
     bool disposed = false;
+    readonly Engine leftEngine = new Engine();
+    readonly Engine rightEngine = new Engine();
 
     ~FakeRobot()
     {
