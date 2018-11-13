@@ -2,7 +2,7 @@
 
 namespace RobotControl.Drawing
 {
-  public abstract class DrawElement
+  public abstract class DrawElement : IDrawElement
   {
     public bool NeedsRedraw { get; protected set; }
     protected PointF position;
