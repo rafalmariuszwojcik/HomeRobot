@@ -20,7 +20,7 @@ namespace RobotControl.Drawing
 
     private static void InitializeDrawingFactory()
     {
-      elements.Add(typeof(Simulation.Robot), new RobotDraw());
+      elements.Add(typeof(Simulation.Robot.Robot), new RobotDraw());
     }
   }
 }

@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using RobotControl.Drawing;
 using RobotControl.Simulation;
+using RobotControl.Simulation.Robot;
 
 namespace RobotControl.Controls
 {

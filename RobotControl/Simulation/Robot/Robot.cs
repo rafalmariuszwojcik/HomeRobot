@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RobotControl.Simulation
+namespace RobotControl.Simulation.Robot
 {
   public class Robot : SimulationElement, IRobot, IMessageReceiver
   {

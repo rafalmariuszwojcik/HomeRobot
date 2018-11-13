@@ -80,15 +80,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Simulation\Angle2D.cs" />
     <Compile Include="Simulation\IAngleAwareItem.cs" />
-    <Compile Include="Simulation\IGeometry.cs" />
+    <Compile Include="Simulation\IGeometryAwareItem.cs" />
     <Compile Include="Simulation\IPositionAwareItem.cs" />
-    <Compile Include="Simulation\IRobot.cs" />
+    <Compile Include="Simulation\Robot\IRobot.cs" />
     <Compile Include="Simulation\ISimulation.cs" />
     <Compile Include="Simulation\ISimulationItem.cs" />
     <Compile Include="Simulation\Movement.cs" />
     <Compile Include="Simulation\MovementCalculation.cs" />
     <Compile Include="Simulation\Point2D.cs" />
-    <Compile Include="Simulation\Robot.cs" />
+    <Compile Include="Simulation\Robot\Robot.cs" />
     <Compile Include="Simulation\RobotCalculator.cs" />
     <Compile Include="Simulation\RobotGeometry.cs" />
     <Compile Include="Simulation\Route.cs" />
@@ -123,7 +123,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Forms\" />
-    <Folder Include="Simulation\Robot\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
