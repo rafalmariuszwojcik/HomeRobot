@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RobotControl.Simulation
 {
-  interface IAngleAwareItem
+  public interface IAngleAwareItem
   {
     Angle2D Angle { get; set; }
   }

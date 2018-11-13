@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RobotControl.Simulation
 {
-  class IGeometry
+  public interface IGeometry
   {
   }
 }

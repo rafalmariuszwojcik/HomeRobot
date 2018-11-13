@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RobotControl.Simulation
 {
-  public interface IRobot : ISimulationItem
+  public interface IRobot : ISimulationItem, IPositionAwareItem, IAngleAwareItem, IGeometry
   {
   }
 }
