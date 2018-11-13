@@ -2,7 +2,7 @@
 
 namespace RobotControl.Simulation
 {
-  public class Robot : SimulationElement, IMessageReceiver
+  public class Robot : SimulationElement, IRobot, IMessageReceiver
   {
     private const double ROBOT_WIDTH = 124.0;
     private const double WHEEL_RADIUS = 33.2;

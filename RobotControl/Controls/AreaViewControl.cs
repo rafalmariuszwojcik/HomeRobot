@@ -15,6 +15,7 @@ namespace RobotControl.Controls
     {
       InitializeComponent();
       DoubleBuffered = true;
+      simulation.Items.Add(new Robot());
     }
 
     protected override void OnPaint(PaintEventArgs e)
@@ -31,7 +32,8 @@ namespace RobotControl.Controls
 
 
       var draw = new RobotDraw(new PointF(0, 0), 19, new Simulation.RobotGeometry(100, 30, 20, 20));
-      draw.Paint(e.Graphics);
+      //draw.Paint(e.Graphics);
+      DrawSimulation(e.Graphics);
     }
 
     private void DrawGrid(Graphics g)
@@ -45,7 +47,7 @@ namespace RobotControl.Controls
         var draw = DrawingFactory.GetDrawingInstance(item);
         if (draw != null)
         {
-          draw.Paint(g);
+          draw.Paint(item, g);
         }
       }
     }

@@ -7,6 +7,10 @@ namespace RobotControl.Drawing
   {
     private readonly RobotGeometry robotGeometry;
 
+    public RobotDraw()
+    {
+    }
+
     public RobotDraw(PointF position, float angle, RobotGeometry robotGeometry) 
       : base(position, angle)
     {

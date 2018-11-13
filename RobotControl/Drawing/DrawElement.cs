@@ -8,13 +8,17 @@ namespace RobotControl.Drawing
     protected PointF position;
     protected float angle;
 
+    public DrawElement()
+    {
+    }
+
     public DrawElement(PointF position, float angle)
     {
       this.position = position;
       this.angle = angle;
     }
 
-    public void Paint(Graphics g)
+    public void Paint(Simulation.ISimulationItem simulationItem, Graphics g)
     {
       var transState = g.Save();
       try

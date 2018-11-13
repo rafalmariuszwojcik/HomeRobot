@@ -9,6 +9,6 @@ namespace RobotControl.Drawing
 {
   public interface IDrawElement
   {
-    void Paint(Graphics g);
+    void Paint(Simulation.ISimulationItem simulationItem, Graphics g);
   }
 }
