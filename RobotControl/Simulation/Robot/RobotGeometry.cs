@@ -4,50 +4,26 @@ namespace RobotControl.Simulation.Robot
 {
   public class RobotGeometry : IRobotGeometry
   {
-    // distance between wheels (two wheels differential robot).
-    private readonly double robotWidth;
-
-    // wheel radius.
-    private readonly double wheelRadius;
-
-    // number of encodes signals per one wheel rotation.
-    private readonly int encoderPoints;
-
-    // wheel width in milimeters.
-    private readonly double wheelWidth;
-
     public RobotGeometry(double robotWidth, double wheelRadius, double wheelWidth, int encoderPoints)
     {
-      this.robotWidth = robotWidth;
-      this.wheelRadius = wheelRadius;
-      this.wheelWidth = wheelWidth;
-      this.encoderPoints = encoderPoints;
+      Width = robotWidth;
+      WheelRadius = wheelRadius;
+      WheelWidth = wheelWidth;
+      EncoderPoints = encoderPoints;
     }
 
     public double Radius
     {
-      get { return robotWidth / 2.0; }
+      get { return Width / 2.0; }
     }
 
-    public double WheelRadius
-    {
-      get { return wheelRadius; }
-    }
+    public double WheelRadius { get; }
 
-    public double WheelWidth
-    {
-      get { return wheelWidth; }
-    }
+    public double WheelWidth { get; }
 
-    public double Width
-    {
-      get { return robotWidth; }
-    }
+    public double Width { get; }
 
-    public int EncoderPoints
-    {
-      get { return encoderPoints; }
-    }
+    public int EncoderPoints { get; }
 
     public MovementCalculation CalculateMovement(double distance, double angle)
     {
@@ -75,7 +51,7 @@ namespace RobotControl.Simulation.Robot
         vector = new Vector(0.0, distance);
       }
       
-      return new MovementCalculation(r, distance, dl, dr, (dl - dr) / robotWidth, vector);
+      return new MovementCalculation(r, distance, dl, dr, (dl - dr) / Width, vector);
     }
   }
 }
