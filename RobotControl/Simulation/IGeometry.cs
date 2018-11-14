@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace RobotControl.Simulation
 {
-  public interface IGeometryAwareItem<T> where T: IGeometry
+  public interface IGeometry
   {
-    T Geometry { get; }
   }
 }

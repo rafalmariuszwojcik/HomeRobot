@@ -39,6 +39,8 @@ namespace RobotControl.Simulation.Robot
     Point2D IPositionAwareItem.Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     public Angle2D Angle { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
+    public IRobotGeometry Geometry => RobotGeometry;
+
     public void AddMovement(double distance, double angle) 
     {
       if (route == null) 

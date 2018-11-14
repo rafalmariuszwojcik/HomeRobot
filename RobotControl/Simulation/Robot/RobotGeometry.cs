@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace RobotControl.Simulation
+namespace RobotControl.Simulation.Robot
 {
-  public class RobotGeometry
+  public class RobotGeometry : IRobotGeometry
   {
     // distance between wheels (two wheels differential robot).
     private readonly double robotWidth;
@@ -24,7 +24,7 @@ namespace RobotControl.Simulation
       this.encoderPoints = encoderPoints;
     }
 
-    public double RobotRadius
+    public double Radius
     {
       get { return robotWidth / 2.0; }
     }
@@ -37,6 +37,16 @@ namespace RobotControl.Simulation
     public double WheelWidth
     {
       get { return wheelWidth; }
+    }
+
+    public double Width
+    {
+      get { return robotWidth; }
+    }
+
+    public int EncoderPoints
+    {
+      get { return encoderPoints; }
     }
 
     public MovementCalculation CalculateMovement(double distance, double angle)
@@ -52,8 +62,8 @@ namespace RobotControl.Simulation
       if (angle != 0.0)
       {
         r = (360.0 * /*Math.Abs*/(distance)) / (2.0 * Math.PI * angle);
-        dl = ((angle * 2.0 * Math.PI * (r + RobotRadius)) / 360.0);// * (distance < 0 ? -1.0 : 1.0);
-        dr = ((angle * 2.0 * Math.PI * (r - RobotRadius)) / 360.0);// * (distance < 0 ? -1.0 : 1.0);
+        dl = ((angle * 2.0 * Math.PI * (r + Radius)) / 360.0);// * (distance < 0 ? -1.0 : 1.0);
+        dr = ((angle * 2.0 * Math.PI * (r - Radius)) / 360.0);// * (distance < 0 ? -1.0 : 1.0);
         var angleInRadians = (angle * Math.PI) / 180;
         vector = new Vector(r - (r * Math.Cos(angleInRadians)), r * Math.Sin(angleInRadians));
       }

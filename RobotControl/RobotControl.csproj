@@ -63,6 +63,7 @@
       <DependentUpon>AreaViewControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Drawing\DrawElement.cs" />
+    <Compile Include="Drawing\DrawElementBase.cs" />
     <Compile Include="Drawing\DrawingFactory.cs" />
     <Compile Include="Drawing\IDrawElement.cs" />
     <Compile Include="Drawing\RobotDraw.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Simulation\Angle2D.cs" />
     <Compile Include="Simulation\IAngleAwareItem.cs" />
+    <Compile Include="Simulation\IGeometry.cs" />
     <Compile Include="Simulation\IGeometryAwareItem.cs" />
     <Compile Include="Simulation\IPositionAwareItem.cs" />
     <Compile Include="Simulation\Robot\IRobot.cs" />
@@ -88,9 +90,10 @@
     <Compile Include="Simulation\Movement.cs" />
     <Compile Include="Simulation\MovementCalculation.cs" />
     <Compile Include="Simulation\Point2D.cs" />
+    <Compile Include="Simulation\Robot\IRobotGeometry.cs" />
     <Compile Include="Simulation\Robot\Robot.cs" />
     <Compile Include="Simulation\RobotCalculator.cs" />
-    <Compile Include="Simulation\RobotGeometry.cs" />
+    <Compile Include="Simulation\Robot\RobotGeometry.cs" />
     <Compile Include="Simulation\Route.cs" />
     <Compile Include="Simulation\Simulation.cs" />
     <Compile Include="Simulation\SimulationPoint.cs" />

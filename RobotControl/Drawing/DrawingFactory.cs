@@ -6,14 +6,14 @@ namespace RobotControl.Drawing
 {
   public static class DrawingFactory
   {
-    private static readonly IDictionary<Type, IDrawElement> elements = new Dictionary<Type, IDrawElement>();
+    private static readonly IDictionary<Type, DrawElementBase> elements = new Dictionary<Type, DrawElementBase>();
 
     static DrawingFactory()
     {
       InitializeDrawingFactory();
     }
 
-    public static IDrawElement GetDrawingInstance(Simulation.ISimulationItem simulationItem)
+    public static DrawElementBase GetDrawingInstance(Simulation.ISimulationItem simulationItem)
     {
       return elements.Keys.Any(x => x.Equals(simulationItem.GetType())) ? elements[simulationItem.GetType()] : null;
     }

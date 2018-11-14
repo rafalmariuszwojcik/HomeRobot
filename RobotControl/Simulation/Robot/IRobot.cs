@@ -1,6 +1,6 @@
 ﻿namespace RobotControl.Simulation.Robot
 {
-  public interface IRobot : ISimulationItem, IPositionAwareItem, IAngleAwareItem, IGeometryAwareItem
+  public interface IRobot : ISimulationItem, IPositionAwareItem, IAngleAwareItem, IGeometryAwareItem<IRobotGeometry>
   {
   }
 }

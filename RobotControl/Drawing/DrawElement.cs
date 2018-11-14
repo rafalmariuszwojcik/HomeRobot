@@ -2,7 +2,7 @@
 
 namespace RobotControl.Drawing
 {
-  public abstract class DrawElement : IDrawElement
+  public abstract class DrawElement<T> : DrawElementBase where T: Simulation.ISimulationItem
   {
     public bool NeedsRedraw { get; protected set; }
     protected PointF position;
@@ -25,7 +25,7 @@ namespace RobotControl.Drawing
       {
         g.TranslateTransform(position.X, position.Y);
         g.RotateTransform(angle);
-        InternalPaint(g);
+        InternalPaint((T)simulationItem, g);
       }
       finally
       {
@@ -34,6 +34,6 @@ namespace RobotControl.Drawing
       }
     }
 
-    protected abstract void InternalPaint(Graphics g);
+    protected abstract void InternalPaint(T simulationItem, Graphics g);
   }
 }

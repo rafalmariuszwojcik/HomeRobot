@@ -1,11 +1,12 @@
 ﻿using RobotControl.Simulation;
+using RobotControl.Simulation.Robot;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
 namespace RobotControl.Drawing
 {
-  public class RouteDraw : DrawElement
+  public class RouteDraw : DrawElement<Simulation.Robot.IRobot>
   {
     private readonly Route route;
     private readonly RobotGeometry robotGeometry;
@@ -17,7 +18,7 @@ namespace RobotControl.Drawing
       this.robotGeometry = robotGeometry;
     }
 
-    protected override void InternalPaint(Graphics g)
+    protected override void InternalPaint(IRobot simulationItem, Graphics g)
     {
       DrawRoute(g);
     }
