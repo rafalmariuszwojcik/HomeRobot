@@ -11,14 +11,19 @@ namespace RobotControl.Drawing
     private readonly Route route;
     private readonly RobotGeometry robotGeometry;
 
-    public RouteDraw(Route route, RobotGeometry robotGeometry)
-      : base(new PointF(route != null ? (float)route.Start.X : 0.0F, route != null ? (float)route.Start.Y : 0.0F), route != null ? (float)route.Start.Angle : 0.0F)
+    public RouteDraw(IRobot simulationItem) : base(simulationItem)
     {
-      this.route = route;
-      this.robotGeometry = robotGeometry;
     }
 
-    protected override void InternalPaint(IRobot simulationItem, Graphics g)
+    //public RouteDraw(Route route, RobotGeometry robotGeometry)
+    //  : base()
+    //: base(new PointF(route != null ? (float)route.Start.X : 0.0F, route != null ? (float)route.Start.Y : 0.0F), route != null ? (float)route.Start.Angle : 0.0F)
+    //{
+    //  this.route = route;
+    //  this.robotGeometry = robotGeometry;
+    //}
+
+    protected override void DrawItem(IRobot simulationItem, Graphics g)
     {
       DrawRoute(g);
     }

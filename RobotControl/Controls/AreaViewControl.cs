@@ -32,7 +32,7 @@ namespace RobotControl.Controls
       e.Graphics.TranslateTransform((float)(pageWidthInMilimeters / 2 / scale), (float)(pageHeightInMilimeters / 2 / scale));
 
 
-      var draw = new RobotDraw(new PointF(0, 0), 19, new Simulation.Robot.RobotGeometry(100, 30, 20, 20));
+      //var draw = new RobotDraw(new PointF(0, 0), 19, new Simulation.Robot.RobotGeometry(100, 30, 20, 20));
       //draw.Paint(e.Graphics);
       DrawSimulation(e.Graphics);
     }

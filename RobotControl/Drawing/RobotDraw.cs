@@ -5,19 +5,11 @@ namespace RobotControl.Drawing
 {
   public class RobotDraw : DrawElement<IRobot>
   {
-    //private readonly RobotGeometry robotGeometry;
-
-    public RobotDraw()
+    public RobotDraw(IRobot simulationItem) : base(simulationItem)
     {
     }
 
-    public RobotDraw(PointF position, float angle, RobotGeometry robotGeometry) 
-      : base(position, angle)
-    {
-      //this.robotGeometry = robotGeometry;
-    }
-
-    protected override void InternalPaint(IRobot simulationItem, Graphics g)
+    protected override void DrawItem(IRobot simulationItem, Graphics g)
     {
       DrawRobot(simulationItem, g);
     }
