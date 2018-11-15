@@ -37,7 +37,9 @@
       this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
       this.printDocument1 = new System.Drawing.Printing.PrintDocument();
       this.areaViewControl1 = new RobotControl.Controls.AreaViewControl();
+      this.trackBar1 = new System.Windows.Forms.TrackBar();
       this.toolStrip1.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
       this.SuspendLayout();
       // 
       // button1
@@ -84,17 +86,29 @@
       // 
       resources.ApplyResources(this.areaViewControl1, "areaViewControl1");
       this.areaViewControl1.Name = "areaViewControl1";
+      this.areaViewControl1.Zoom = 100;
+      // 
+      // trackBar1
+      // 
+      resources.ApplyResources(this.trackBar1, "trackBar1");
+      this.trackBar1.Maximum = 100;
+      this.trackBar1.Minimum = 1;
+      this.trackBar1.Name = "trackBar1";
+      this.trackBar1.Value = 1;
+      this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
       // 
       // formRobotControl
       // 
       resources.ApplyResources(this, "$this");
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+      this.Controls.Add(this.trackBar1);
       this.Controls.Add(this.areaViewControl1);
       this.Controls.Add(this.toolStrip1);
       this.Controls.Add(this.button1);
       this.Name = "formRobotControl";
       this.toolStrip1.ResumeLayout(false);
       this.toolStrip1.PerformLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -110,6 +124,7 @@
     private System.Windows.Forms.ToolStripButton toolStripButton3;
     private System.Drawing.Printing.PrintDocument printDocument1;
     private Controls.AreaViewControl areaViewControl1;
+    private System.Windows.Forms.TrackBar trackBar1;
   }
 }
 

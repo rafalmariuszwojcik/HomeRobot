@@ -36,5 +36,10 @@ namespace RobotControl
 
 
     }
+
+    private void trackBar1_ValueChanged(object sender, System.EventArgs e)
+    {
+      this.areaViewControl1.Zoom = trackBar1.Value;
+    }
   }
 }

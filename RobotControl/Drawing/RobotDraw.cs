@@ -18,6 +18,7 @@ namespace RobotControl.Drawing
     {
       var penR1 = new Pen(Color.FromArgb(255, 160, 160, 160));
       penR1.Width = 4;
+      penR1.DashCap = System.Drawing.Drawing2D.DashCap.Round;
       g.DrawLine(penR1, 0, 0, (float)robot.Geometry.Radius, 0);
 
       var penR2 = new Pen(Color.FromArgb(255, 180, 180, 180));
@@ -58,6 +59,8 @@ namespace RobotControl.Drawing
 
       var penR5 = new Pen(Color.FromArgb(255, 255, 0, 0));
       penR5.Width = 4;
+      penR5.StartCap = System.Drawing.Drawing2D.LineCap.Square;
+      penR5.EndCap = System.Drawing.Drawing2D.LineCap.Round;
       g.DrawLine(penR5, 0, 20, 0, -20);
       g.DrawLine(penR5, 0, -20, -10, -10);
       g.DrawLine(penR5, 0, -20, 10, -10);
