@@ -19,7 +19,7 @@ namespace RobotControl.Simulation
 
     public Length ConvertTo(MeasurementUnit unit)
     {
-      return null;
+      return new Length();
     }
   }
 }
