@@ -8,5 +8,7 @@ namespace RobotControl.Simulation
 {
   public interface ISimulationArea
   {
+    Length W { get; }
+    Length L { get; }
   }
 }
