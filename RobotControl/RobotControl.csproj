@@ -84,6 +84,7 @@
     <Compile Include="Simulation\IGeometry.cs" />
     <Compile Include="Simulation\IGeometryAwareItem.cs" />
     <Compile Include="Simulation\IPositionAwareItem.cs" />
+    <Compile Include="Simulation\ISimulationArea.cs" />
     <Compile Include="Simulation\Robot\IRobot.cs" />
     <Compile Include="Simulation\ISimulation.cs" />
     <Compile Include="Simulation\ISimulationItem.cs" />

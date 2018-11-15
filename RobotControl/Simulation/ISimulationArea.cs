@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace RobotControl.Simulation
 {
-  public interface ISimulation
+  public interface ISimulationArea
   {
-    IList<ISimulationItem> Items { get; }
-    ISimulationArea SimulationArea { get; }
   }
 }
