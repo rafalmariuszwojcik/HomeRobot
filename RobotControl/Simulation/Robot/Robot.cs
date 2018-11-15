@@ -31,10 +31,10 @@ namespace RobotControl.Simulation.Robot
       get { return route; }
     }
 
-    
 
-    Point2D IPositionAwareItem.Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public Angle2D Angle { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    Point2D IPositionAwareItem.Position => new Point2D { X = position.X, Y = position.Y };
+    Angle2D IAngleAwareItem.Angle => new Angle2D { Value = position.Angle };
 
     public IRobotGeometry Geometry => robotGeometry;
 

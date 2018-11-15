@@ -14,17 +14,23 @@ namespace RobotControl.Drawing
       InitializeDrawingFactory();
     }
 
-    public static DrawElementBase GetDrawingInstance(Simulation.ISimulationItem simulationItem)
+    public static IDrawElement GetDrawingInstance(ISimulationItem simulationItem)
     {
+      foreach (var key in elements.Keys)
+      {
+        if (simulationItem.GetType().GetInterfaces().Contains(key))
+        {
+          var action = elements[key];
+          return action(simulationItem);
+        }
+      }
+
       return null;
-      //return elements.Keys.Any(x => x.Equals(simulationItem.GetType())) ? elements[simulationItem.GetType()] : null;
     }
 
     private static void InitializeDrawingFactory()
     {
-      //elements.Add()
-
-      //elements.Add(Simulation.Robot.IRobot, new Func<ISimulationItem, IDrawElement>(x => null));
+      elements.Add(typeof(Simulation.Robot.IRobot), new Func<ISimulationItem, IDrawElement>(x => new RobotDraw((Simulation.Robot.IRobot)x)));
     }
   }
 }

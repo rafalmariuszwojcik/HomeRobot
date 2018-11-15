@@ -8,6 +8,6 @@ namespace RobotControl.Simulation
 {
   public interface IAngleAwareItem
   {
-    Angle2D Angle { get; set; }
+    Angle2D Angle { get; }
   }
 }

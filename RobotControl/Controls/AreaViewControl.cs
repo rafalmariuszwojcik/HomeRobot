@@ -48,7 +48,7 @@ namespace RobotControl.Controls
         var draw = DrawingFactory.GetDrawingInstance(item);
         if (draw != null)
         {
-          //draw.Paint(item, g);
+          draw.Paint(g);
         }
       }
     }
