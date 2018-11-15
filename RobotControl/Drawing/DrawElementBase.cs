@@ -35,6 +35,6 @@ namespace RobotControl.Drawing
       }
     }
 
-    protected abstract void InternalPaint(Simulation.ISimulationItem simulationItem, Graphics g);
+    protected abstract void InternalPaint(ISimulationItem simulationItem, Graphics g);
   }
 }
