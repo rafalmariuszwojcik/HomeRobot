@@ -34,7 +34,7 @@ namespace RobotControl.Drawing
         (float)robot.Geometry.Radius * 2,
         (float)robot.Geometry.Radius * 2);
 
-      var brushR3 = new SolidBrush(Color.FromArgb(64, 200, 200, 200));
+      var brushR3 = new SolidBrush(Color.FromArgb(128, 200, 200, 200));
       g.FillEllipse(
         brushR3,
         -(float)robot.Geometry.Radius,

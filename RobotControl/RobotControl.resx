@@ -117,6 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="button1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 343</value>
@@ -225,7 +229,7 @@
     <value>0, 0</value>
   </data>
   <data name="toolStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>800, 25</value>
+    <value>1191, 25</value>
   </data>
   <data name="toolStrip1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -248,26 +252,8 @@
   <metadata name="printDocument1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>122, 17</value>
   </metadata>
-  <data name="areaViewControl1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>435, 122</value>
-  </data>
-  <data name="areaViewControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>276, 262</value>
-  </data>
-  <data name="areaViewControl1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;areaViewControl1.Name" xml:space="preserve">
-    <value>areaViewControl1</value>
-  </data>
-  <data name="&gt;&gt;areaViewControl1.Type" xml:space="preserve">
-    <value>RobotControl.Controls.AreaViewControl, RobotControl, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;areaViewControl1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;areaViewControl1.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="trackBar1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="trackBar1.Location" type="System.Drawing.Point, System.Drawing">
     <value>198, 12</value>
@@ -290,6 +276,27 @@
   <data name="&gt;&gt;trackBar1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="areaViewControl1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>198, 63</value>
+  </data>
+  <data name="areaViewControl1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>713, 423</value>
+  </data>
+  <data name="areaViewControl1.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;areaViewControl1.Name" xml:space="preserve">
+    <value>areaViewControl1</value>
+  </data>
+  <data name="&gt;&gt;areaViewControl1.Type" xml:space="preserve">
+    <value>RobotControl.Controls.AreaViewControl, RobotControl, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;areaViewControl1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;areaViewControl1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -297,7 +304,10 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>800, 445</value>
+    <value>1191, 573</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>RobotControl</value>

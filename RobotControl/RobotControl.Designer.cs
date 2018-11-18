@@ -36,8 +36,8 @@
       this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
       this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
       this.printDocument1 = new System.Drawing.Printing.PrintDocument();
-      this.areaViewControl1 = new RobotControl.Controls.AreaViewControl();
       this.trackBar1 = new System.Windows.Forms.TrackBar();
+      this.areaViewControl1 = new RobotControl.Controls.AreaViewControl();
       this.toolStrip1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
       this.SuspendLayout();
@@ -82,12 +82,6 @@
       resources.ApplyResources(this.toolStripButton3, "toolStripButton3");
       this.toolStripButton3.Name = "toolStripButton3";
       // 
-      // areaViewControl1
-      // 
-      resources.ApplyResources(this.areaViewControl1, "areaViewControl1");
-      this.areaViewControl1.Name = "areaViewControl1";
-      this.areaViewControl1.Zoom = 100;
-      // 
       // trackBar1
       // 
       resources.ApplyResources(this.trackBar1, "trackBar1");
@@ -96,6 +90,12 @@
       this.trackBar1.Name = "trackBar1";
       this.trackBar1.Value = 1;
       this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
+      // 
+      // areaViewControl1
+      // 
+      resources.ApplyResources(this.areaViewControl1, "areaViewControl1");
+      this.areaViewControl1.Name = "areaViewControl1";
+      this.areaViewControl1.Zoom = 100;
       // 
       // formRobotControl
       // 

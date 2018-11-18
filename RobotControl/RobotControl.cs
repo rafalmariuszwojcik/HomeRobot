@@ -15,7 +15,7 @@ namespace RobotControl
     {
       InitializeComponent();
       OptionsPropertyGrid = new PropertyGrid();
-      OptionsPropertyGrid.Size = new Size(300, 250);
+      OptionsPropertyGrid.Size = new Size(75, 250);
 
       this.Controls.Add(OptionsPropertyGrid);
     }
