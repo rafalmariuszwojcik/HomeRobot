@@ -11,11 +11,20 @@ namespace RobotControl.Controls
   {
     private int zoom = 100;
     private Origin origin = new Origin(new Length(0, MeasurementUnit.Milimeter), new Length(0, MeasurementUnit.Milimeter));
+    private Point? previousMousePosition;
     private ISimulation simulation = new Simulation.Simulation();
     
     public AreaViewControl()
     {
       InitializeComponent();
+      this.VScroll = true;
+      this.VerticalScroll.Minimum = 10;
+      this.VerticalScroll.Minimum = 100;
+      this.VerticalScroll.Visible = true;
+
+
+
+
       DoubleBuffered = true;
       simulation.Items.Add(new Robot(100, 100, 90));
     }
@@ -82,7 +91,7 @@ namespace RobotControl.Controls
       var pen = new Pen(Color.FromArgb(255, 160, 160, 160));
       pen.DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot;
       
-      while (y < ySize)
+      while (y <= ySize)
       {
         g.DrawLine(pen, new PointF(0, y), new PointF(xSize, y));
         var drawFont = new System.Drawing.Font("Arial", 32);
@@ -91,7 +100,7 @@ namespace RobotControl.Controls
         y += 100F;
       }
 
-      while (x < xSize)
+      while (x <= xSize)
       {
         g.DrawLine(pen, new PointF(x, 0), new PointF(x, ySize));
         x += 100F;
@@ -112,11 +121,19 @@ namespace RobotControl.Controls
 
     private void View_MouseMove(object sender, MouseEventArgs e)
     {
-      if (e.Button == MouseButtons.Left)
+      var position = MousePosition;
+      if (e.Button == MouseButtons.Left && previousMousePosition.HasValue)
       {
-        //e.
+        var dx = position.X - previousMousePosition.Value.X;
+        var dy = position.Y - previousMousePosition.Value.Y;
+        var x = origin.X.Value + dx;
+        var y = origin.Y.Value + dy;
+        x = x > 0 ? 0 : x;
+        y = y > 0 ? 0 : y;
+        Origin = new Origin(new Length(x, MeasurementUnit.Milimeter), new Length(y, MeasurementUnit.Milimeter));
       }
 
+      previousMousePosition = position;
     }
   }
 }
