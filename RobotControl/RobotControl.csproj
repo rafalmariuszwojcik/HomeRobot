@@ -87,6 +87,7 @@
     <Compile Include="Simulation\ISimulationArea.cs" />
     <Compile Include="Simulation\Length.cs" />
     <Compile Include="Simulation\MeasurementUnit.cs" />
+    <Compile Include="Simulation\Origin.cs" />
     <Compile Include="Simulation\Robot\IRobot.cs" />
     <Compile Include="Simulation\ISimulation.cs" />
     <Compile Include="Simulation\ISimulationItem.cs" />
@@ -103,6 +104,9 @@
     <Compile Include="Simulation\SimulationPoint.cs" />
     <Compile Include="Simulation\SimulatorElement.cs" />
     <Compile Include="Simulation\Vector.cs" />
+    <EmbeddedResource Include="Controls\AreaViewControl.resx">
+      <DependentUpon>AreaViewControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RobotControl.resx">
       <DependentUpon>RobotControl.cs</DependentUpon>
     </EmbeddedResource>

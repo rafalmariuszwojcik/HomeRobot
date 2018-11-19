@@ -10,16 +10,24 @@ namespace RobotControl.Controls
   public partial class AreaViewControl : UserControl
   {
     private int zoom = 100;
+    private Origin origin = new Origin(new Length(0, MeasurementUnit.Milimeter), new Length(0, MeasurementUnit.Milimeter));
     private ISimulation simulation = new Simulation.Simulation();
-    //private IList<SimulationElement> elements = new List<SimulationElement>();
-
+    
     public AreaViewControl()
     {
       InitializeComponent();
       DoubleBuffered = true;
       simulation.Items.Add(new Robot(100, 100, 90));
-      
-      
+    }
+
+    public Origin Origin
+    {
+      get { return origin; }
+      set
+      {
+        origin = value;
+        Refresh();
+      }
     }
 
     public int Zoom
@@ -46,7 +54,8 @@ namespace RobotControl.Controls
       var pageWidthInMilimeters = (Width / (e.Graphics.DpiX / 2.54)) * 10;
       var pageHeightInMilimeters = (Height / (e.Graphics.DpiX / 2.54)) * 10;
       // e.Graphics.TranslateTransform((float)(pageWidthInMilimeters / 2 / scale), (float)(pageHeightInMilimeters / 2 / scale));
-      e.Graphics.TranslateTransform((float)(-50), (float)(-50));
+      //e.Graphics.TranslateTransform((float)origin.X.Value, (float)origin.Y.Value);
+      SetOrigin(e.Graphics);
 
       //e.Graphics.TranslateTransform(1,1, System.Drawing.Drawing2D.MatrixOrder.Append)
 
@@ -55,6 +64,11 @@ namespace RobotControl.Controls
       //draw.Paint(e.Graphics);
       DrawGrid(e.Graphics);
       DrawSimulation(e.Graphics);
+    }
+
+    private void SetOrigin(Graphics g)
+    {
+      g.TranslateTransform((float)origin.X.Value, (float)origin.Y.Value);
     }
 
     private void DrawGrid(Graphics g)
@@ -94,6 +108,15 @@ namespace RobotControl.Controls
           draw.Paint(g);
         }
       }
+    }
+
+    private void View_MouseMove(object sender, MouseEventArgs e)
+    {
+      if (e.Button == MouseButtons.Left)
+      {
+        //e.
+      }
+
     }
   }
 }
