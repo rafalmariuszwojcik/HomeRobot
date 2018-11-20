@@ -26,8 +26,18 @@
     public double Value { get; }
     public MeasurementUnit Unit { get; }
 
+    public static Length operator + (Length left, Length right)
+    {
+      return new Length(left.Value + right.ConvertTo(left.Unit).Value, left.Unit);
+    }
+
     public Length ConvertTo(MeasurementUnit unit)
     {
+      if (Unit == unit)
+      {
+        return this;
+      }
+
       return new Length(Value * convert[(int)Unit, (int)unit], unit);
     }
   }
