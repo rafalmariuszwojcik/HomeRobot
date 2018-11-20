@@ -54,19 +54,16 @@ namespace RobotControl.Controls
       }
     }
 
-    /*
-    private float Scale
+    private float DrawScale
     {
       get { return Zoom / 100F; }
     }
-    */
 
     protected override void OnPaint(PaintEventArgs e)
     {
       base.OnPaint(e);
-      var scale = zoom / 100F;
       e.Graphics.PageUnit = GraphicsUnit.Millimeter;
-      e.Graphics.ScaleTransform(scale, scale);
+      e.Graphics.ScaleTransform(DrawScale, DrawScale);
       e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
       var pageWidthInMilimeters = (Width / (e.Graphics.DpiX / 2.54)) * 10;
       var pageHeightInMilimeters = (Height / (e.Graphics.DpiX / 2.54)) * 10;
@@ -137,9 +134,8 @@ namespace RobotControl.Controls
 
         using (var g = CreateGraphics())
         {
-          var scale = zoom / 100F;
-          xInMilimeter = new Length(dx / g.DpiX / scale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
-          yInMilimeter = new Length(dy / g.DpiY / scale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
+          xInMilimeter = new Length(dx / g.DpiX / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
+          yInMilimeter = new Length(dy / g.DpiY / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
         }
 
         Origin = new Origin(origin.X + xInMilimeter, origin.Y + yInMilimeter);
@@ -155,25 +151,24 @@ namespace RobotControl.Controls
 
       using (var g = CreateGraphics())
       {
-        var scale = zoom / 100F;
-        var widthMilimeter = new Length(ClientSize.Width / g.DpiX / scale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
-        var heightMilimeter = new Length(ClientSize.Height / g.DpiY / scale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
+        var widthMilimeter = new Length(ClientSize.Width / g.DpiX / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
+        var heightMilimeter = new Length(ClientSize.Height / g.DpiY / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
 
         var area = simulation.SimulationArea;
-        var minXSize = widthMilimeter.Value - area.W.ConvertTo(MeasurementUnit.Milimeter).Value;
-        var minYSize = heightMilimeter.Value - area.L.ConvertTo(MeasurementUnit.Milimeter).Value;
+        var minXSize = widthMilimeter - area.W;
+        var minYSize = heightMilimeter - area.L;
 
-        x = (x > 0 || minXSize > 0) ? 0 : x;
-        y = (y > 0 || minYSize > 0) ? 0 : y;
+        x = (x > 0 || minXSize.Value > 0) ? 0 : x;
+        y = (y > 0 || minYSize.Value > 0) ? 0 : y;
 
-        if (minXSize < 0.0)
+        if (minXSize.Value < 0.0)
         {
-          x = x < minXSize ? minXSize : x;
+          x = x < minXSize.Value ? minXSize.Value : x;
         }
 
-        if (minYSize < 0.0)
+        if (minYSize.Value < 0.0)
         {
-          y = y < minYSize ? minYSize : y;
+          y = y < minYSize.Value ? minYSize.Value : y;
         }
       }
 

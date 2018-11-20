@@ -26,9 +26,14 @@
     public double Value { get; }
     public MeasurementUnit Unit { get; }
 
-    public static Length operator + (Length left, Length right)
+    public static Length operator +(Length left, Length right)
     {
       return new Length(left.Value + right.ConvertTo(left.Unit).Value, left.Unit);
+    }
+
+    public static Length operator -(Length left, Length right)
+    {
+      return new Length(left.Value - right.ConvertTo(left.Unit).Value, left.Unit);
     }
 
     public Length ConvertTo(MeasurementUnit unit)
