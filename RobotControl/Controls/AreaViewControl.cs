@@ -25,7 +25,7 @@ namespace RobotControl.Controls
 
 
       DoubleBuffered = true;
-      simulation.Items.Add(new Robot(100, 100, 90));
+      simulation.Items.Add(new Robot(400, 400, 75));
     }
 
     public Origin Origin
