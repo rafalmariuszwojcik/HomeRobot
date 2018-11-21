@@ -38,32 +38,32 @@
 
     public static bool operator <(Length left, Length right)
     {
-      return left.Value < right.ConvertTo(left.Unit).Value;
+      return Comparison(left, right) < 0;
     }
 
     public static bool operator >(Length left, Length right)
     {
-      return left.Value > right.ConvertTo(left.Unit).Value;
+      return Comparison(left, right) > 0;
     }
 
     public static bool operator <=(Length left, Length right)
     {
-      return left.Value <= right.ConvertTo(left.Unit).Value;
+      return Comparison(left, right) <= 0;
     }
 
     public static bool operator >=(Length left, Length right)
     {
-      return left.Value >= right.ConvertTo(left.Unit).Value;
+      return Comparison(left, right) >= 0;
     }
 
     public static bool operator ==(Length left, Length right)
     {
-      return left.Value == right.ConvertTo(left.Unit).Value;
+      return Comparison(left, right) == 0;
     }
 
     public static bool operator !=(Length left, Length right)
     {
-      return left.Value != right.ConvertTo(left.Unit).Value;
+      return Comparison(left, right) != 0;
     }
 
     public Length ConvertTo(MeasurementUnit unit)
@@ -76,49 +76,42 @@
       return new Length(Value * convert[(int)Unit, (int)unit], unit);
     }
 
-    /*
-     
-    
-
-   
-
-    public override bool Equals(object obj){
-
-        if (!(obj is Employee)) return false;
-
-        return this == (Employee)obj;
-
-    }
-
-    public static bool operator <=(Employee emp1, Employee emp2){
-
-        return Comparison(emp1, emp2) <= 0;
-
-    }
-
-    public static bool operator >=(Employee emp1, Employee emp2){
-
-        return Comparison(emp1, emp2) >= 0;
-
-    }
-
-    public static int Comparison(Employee emp1, Employee emp2){
-
-        if (emp1.JobGrade < emp2.JobGrade)
-
-            return -1;
-
-        else if (emp1.JobGrade == emp2.JobGrade)
-
-            return 0;
-
-        else if (emp1.JobGrade > emp2.JobGrade)
-
-            return 1;
-
+    private static int Comparison(Length left, Length right)
+    {
+      right = right.ConvertTo(left.Unit);
+      if (left.Value < right.Value)
+      {
+        return -1;
+      }
+      else if (left.Value == right.Value)
+      {
         return 0;
+      }
+      else if (left.Value > right.Value)
+      {
+        return 1;
+      }
 
+      return 0;
     }
-     */
+
+    public override bool Equals(object obj)
+    {
+      if (!(obj is Length))
+      {
+        return false;
+      }
+
+      var length = (Length)obj;
+      return Value == length.Value && Unit == length.Unit;
+    }
+
+    public override int GetHashCode()
+    {
+      var hashCode = -177567199;
+      hashCode = hashCode * -1521134295 + Value.GetHashCode();
+      hashCode = hashCode * -1521134295 + Unit.GetHashCode();
+      return hashCode;
+    }
   }
 }

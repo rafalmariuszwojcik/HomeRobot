@@ -16,10 +16,12 @@ namespace RobotControl.Controls
     public AreaViewControl()
     {
       InitializeComponent();
+      this.AutoScroll = true;
       this.VScroll = true;
       this.VerticalScroll.Minimum = 10;
       this.VerticalScroll.Minimum = 100;
       this.VerticalScroll.Visible = true;
+
 
 
 
@@ -160,10 +162,10 @@ namespace RobotControl.Controls
         var heightMilimeter = new Length(ClientSize.Height / g.DpiY / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
         var maxX = -(rect.Right - widthMilimeter).Value;
         var maxY = -(rect.Bottom - heightMilimeter).Value;
-        x = (x <= maxX || rect.Width.Value <= widthMilimeter.Value) ? maxX : x;
-        y = (y <= maxY || rect.Height.Value <= heightMilimeter.Value) ? maxY : y;
-        x = (x >= -rect.Left.Value || rect.Width.Value <= widthMilimeter.Value) ? -rect.Left.Value : x;
-        y = (y >= -rect.Top.Value || rect.Height.Value <= heightMilimeter.Value) ? -rect.Top.Value : y;
+        x = (x <= maxX || rect.Width <= widthMilimeter) ? maxX : x;
+        y = (y <= maxY || rect.Height <= heightMilimeter) ? maxY : y;
+        x = (x >= -rect.Left.Value || rect.Width <= widthMilimeter) ? -rect.Left.Value : x;
+        y = (y >= -rect.Top.Value || rect.Height <= heightMilimeter) ? -rect.Top.Value : y;
       }
 
       return new Point2D(x, y, MeasurementUnit.Milimeter);
