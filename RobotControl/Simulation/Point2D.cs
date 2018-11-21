@@ -1,14 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RobotControl.Simulation
+﻿namespace RobotControl.Simulation
 {
-  public class Point2D
+  public struct Point2D
   {
-    public double X { get; set; }
-    public double Y { get; set; }
+    private Length x;
+    private Length y;
+
+    public Point2D(double x, double y, MeasurementUnit unit = MeasurementUnit.Milimeter)
+    {
+      this.x = new Length(x, unit);
+      this.y = new Length(y, unit);
+    }
+
+    public double X
+    {
+      get { return x.Value; }
+    }
+
+    public double Y
+    {
+      get { return y.Value; }
+    }
+
+    public MeasurementUnit Unit
+    {
+      get { return x.Unit; }
+    }
   }
 }

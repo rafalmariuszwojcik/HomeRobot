@@ -33,7 +33,7 @@ namespace RobotControl.Simulation.Robot
 
 
 
-    Point2D IPositionAwareItem.Position => new Point2D { X = position.X, Y = position.Y };
+    Point2D IPositionAwareItem.Position => new Point2D(position.X, position.Y);
     Angle2D IAngleAwareItem.Angle => new Angle2D { Value = position.Angle };
 
     public IRobotGeometry Geometry => robotGeometry;

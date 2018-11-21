@@ -88,6 +88,7 @@
     <Compile Include="Simulation\Length.cs" />
     <Compile Include="Simulation\MeasurementUnit.cs" />
     <Compile Include="Simulation\Origin.cs" />
+    <Compile Include="Simulation\Rect2D.cs" />
     <Compile Include="Simulation\Robot\IRobot.cs" />
     <Compile Include="Simulation\ISimulation.cs" />
     <Compile Include="Simulation\ISimulationItem.cs" />
