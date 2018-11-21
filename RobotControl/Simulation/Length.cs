@@ -45,5 +45,70 @@
 
       return new Length(Value * convert[(int)Unit, (int)unit], unit);
     }
+
+    /*
+     
+    public static bool operator <(Employee emp1, Employee emp2){
+
+        return Comparison(emp1, emp2) < 0;
+
+    }
+
+    public static bool operator >(Employee emp1, Employee emp2){
+
+        return Comparison(emp1, emp2) > 0;
+
+    }
+
+    public static bool operator ==(Employee emp1, Employee emp2){
+
+        return Comparison(emp1, emp2) == 0;
+
+    }
+
+    public static bool operator !=(Employee emp1, Employee emp2){
+
+        return Comparison(emp1, emp2) != 0;
+
+    }
+
+    public override bool Equals(object obj){
+
+        if (!(obj is Employee)) return false;
+
+        return this == (Employee)obj;
+
+    }
+
+    public static bool operator <=(Employee emp1, Employee emp2){
+
+        return Comparison(emp1, emp2) <= 0;
+
+    }
+
+    public static bool operator >=(Employee emp1, Employee emp2){
+
+        return Comparison(emp1, emp2) >= 0;
+
+    }
+
+    public static int Comparison(Employee emp1, Employee emp2){
+
+        if (emp1.JobGrade < emp2.JobGrade)
+
+            return -1;
+
+        else if (emp1.JobGrade == emp2.JobGrade)
+
+            return 0;
+
+        else if (emp1.JobGrade > emp2.JobGrade)
+
+            return 1;
+
+        return 0;
+
+    }
+     */
   }
 }

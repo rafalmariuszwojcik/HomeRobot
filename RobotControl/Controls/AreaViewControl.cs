@@ -25,7 +25,7 @@ namespace RobotControl.Controls
 
 
       DoubleBuffered = true;
-      simulation.Items.Add(new Robot(400, 400, 75));
+      simulation.Items.Add(new Robot(0, 0, 75));
     }
 
     public Origin Origin
@@ -87,25 +87,28 @@ namespace RobotControl.Controls
 
     private void DrawGrid(Graphics g)
     {
-      var area = simulation.SimulationArea;
-      var xSize = (float)area.W.ConvertTo(MeasurementUnit.Milimeter).Value;
-      var ySize = (float)area.L.ConvertTo(MeasurementUnit.Milimeter).Value;
-      var x = 0F;
-      var y = 0F;
-
+      var rect = simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Milimeter);
+      var x = (float)rect.Left.Value;
+      var y = (float)rect.Top.Value;
+      var r = (float)rect.Right.Value;
+      var b = (float)rect.Bottom.Value;
+      
       var pen = new Pen(Color.FromArgb(255, 160, 160, 160)) { DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot };
-      while (y <= ySize)
+      var drawFont = new Font("Arial", 32);
+      var drawBrush = new SolidBrush(Color.Gray);
+
+      while (y <= b)
       {
-        g.DrawLine(pen, new PointF(0, y), new PointF(xSize, y));
-        var drawFont = new Font("Arial", 32);
-        var drawBrush = new SolidBrush(Color.Black);
-        g.DrawString(y.ToString(), drawFont, drawBrush, new PointF(0, y));
+        g.DrawLine(pen, new PointF(x, y), new PointF(r, y));
+        g.DrawString(y.ToString(), drawFont, drawBrush, new PointF(-(float)origin.X.ConvertTo(MeasurementUnit.Milimeter).Value, y));
         y += 100F;
       }
-
-      while (x <= xSize)
+            
+      y = (float)rect.Top.Value;
+      while (x <= r)
       {
-        g.DrawLine(pen, new PointF(x, 0), new PointF(x, ySize));
+        g.DrawLine(pen, new PointF(x, y), new PointF(x, b));
+        g.DrawString(x.ToString(), drawFont, drawBrush, new PointF(x, -(float)origin.Y.ConvertTo(MeasurementUnit.Milimeter).Value));
         x += 100F;
       }
     }
@@ -146,6 +149,7 @@ namespace RobotControl.Controls
 
     private Origin CalculateOrigin(Origin origin)
     {
+      var rect = simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Milimeter);
       var x = origin.X.ConvertTo(MeasurementUnit.Milimeter).Value;
       var y = origin.Y.ConvertTo(MeasurementUnit.Milimeter).Value;
 
@@ -153,23 +157,12 @@ namespace RobotControl.Controls
       {
         var widthMilimeter = new Length(ClientSize.Width / g.DpiX / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
         var heightMilimeter = new Length(ClientSize.Height / g.DpiY / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
-
-        var area = simulation.SimulationArea;
-        var minXSize = widthMilimeter - area.W;
-        var minYSize = heightMilimeter - area.L;
-
-        x = (x > 0 || minXSize.Value > 0) ? 0 : x;
-        y = (y > 0 || minYSize.Value > 0) ? 0 : y;
-
-        if (minXSize.Value < 0.0)
-        {
-          x = x < minXSize.Value ? minXSize.Value : x;
-        }
-
-        if (minYSize.Value < 0.0)
-        {
-          y = y < minYSize.Value ? minYSize.Value : y;
-        }
+        var maxX = -(rect.Right - widthMilimeter).Value;
+        var maxY = -(rect.Bottom - heightMilimeter).Value;
+        x = (x <= maxX || rect.Width.Value <= widthMilimeter.Value) ? maxX : x;
+        y = (y <= maxY || rect.Height.Value <= heightMilimeter.Value) ? maxY : y;
+        x = (x >= -rect.Left.Value || rect.Width.Value <= widthMilimeter.Value) ? -rect.Left.Value : x;
+        y = (y >= -rect.Top.Value || rect.Height.Value <= heightMilimeter.Value) ? -rect.Top.Value : y;
       }
 
       return new Origin(new Length(x, MeasurementUnit.Milimeter), new Length(y, MeasurementUnit.Milimeter));

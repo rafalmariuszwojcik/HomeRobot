@@ -25,5 +25,12 @@
     {
       get { return x.Unit; }
     }
+
+    public Point2D ConvertTo(MeasurementUnit unit)
+    {
+      x = x.ConvertTo(unit);
+      y = y.ConvertTo(unit);
+      return this;
+    }
   }
 }
