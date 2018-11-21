@@ -36,6 +36,36 @@
       return new Length(left.Value - right.ConvertTo(left.Unit).Value, left.Unit);
     }
 
+    public static bool operator <(Length left, Length right)
+    {
+      return left.Value < right.ConvertTo(left.Unit).Value;
+    }
+
+    public static bool operator >(Length left, Length right)
+    {
+      return left.Value > right.ConvertTo(left.Unit).Value;
+    }
+
+    public static bool operator <=(Length left, Length right)
+    {
+      return left.Value <= right.ConvertTo(left.Unit).Value;
+    }
+
+    public static bool operator >=(Length left, Length right)
+    {
+      return left.Value >= right.ConvertTo(left.Unit).Value;
+    }
+
+    public static bool operator ==(Length left, Length right)
+    {
+      return left.Value == right.ConvertTo(left.Unit).Value;
+    }
+
+    public static bool operator !=(Length left, Length right)
+    {
+      return left.Value != right.ConvertTo(left.Unit).Value;
+    }
+
     public Length ConvertTo(MeasurementUnit unit)
     {
       if (Unit == unit)
@@ -48,29 +78,9 @@
 
     /*
      
-    public static bool operator <(Employee emp1, Employee emp2){
+    
 
-        return Comparison(emp1, emp2) < 0;
-
-    }
-
-    public static bool operator >(Employee emp1, Employee emp2){
-
-        return Comparison(emp1, emp2) > 0;
-
-    }
-
-    public static bool operator ==(Employee emp1, Employee emp2){
-
-        return Comparison(emp1, emp2) == 0;
-
-    }
-
-    public static bool operator !=(Employee emp1, Employee emp2){
-
-        return Comparison(emp1, emp2) != 0;
-
-    }
+   
 
     public override bool Equals(object obj){
 
