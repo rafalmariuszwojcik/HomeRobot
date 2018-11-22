@@ -1,4 +1,6 @@
-﻿namespace RobotControl.Simulation
+﻿using System;
+
+namespace RobotControl.Simulation
 {
   public struct Length
   {
@@ -79,13 +81,13 @@
     private static int Comparison(Length left, Length right)
     {
       right = right.ConvertTo(left.Unit);
-      if (left.Value < right.Value)
-      {
-        return -1;
-      }
-      else if (left.Value == right.Value)
+      if (Math.Abs(left.Value - right.Value) < 0.001)
       {
         return 0;
+      }
+      else if (left.Value < right.Value)
+      {
+        return -1;
       }
       else if (left.Value > right.Value)
       {

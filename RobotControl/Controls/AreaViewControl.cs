@@ -8,8 +8,8 @@ namespace RobotControl.Controls
 {
   public partial class AreaViewControl : UserControl
   {
-    private int zoom = 100;
-    private Point2D origin = new Point2D(0, 0, MeasurementUnit.Milimeter);
+    private int viewZoom = 100;
+    private Point2D originPoint = new Point2D(0, 0, MeasurementUnit.Milimeter);
     private Point? previousMousePosition;
     private ISimulation simulation = new Simulation.Simulation();
     
@@ -32,25 +32,25 @@ namespace RobotControl.Controls
 
     public Point2D Origin
     {
-      get { return origin; }
+      get { return originPoint; }
 
       set
       {
-        origin = CalculateOrigin(value);
+        originPoint = CalculateOrigin(value);
         Refresh();
       }
     }
 
     public int Zoom
     {
-      get { return zoom; }
+      get { return viewZoom; }
 
       set
       {
-        if (zoom != value)
+        if (viewZoom != value)
         {
-          zoom = value;
-          origin = CalculateOrigin(origin);
+          viewZoom = value;
+          originPoint = CalculateOrigin(originPoint);
           Refresh();
         }
       }
@@ -84,7 +84,7 @@ namespace RobotControl.Controls
 
     private void SetOrigin(Graphics g)
     {
-      g.TranslateTransform((float)origin.X, (float)origin.Y);
+      g.TranslateTransform((float)Origin.X, (float)Origin.Y);
     }
 
     private void DrawGrid(Graphics g)
@@ -102,7 +102,7 @@ namespace RobotControl.Controls
       while (y <= b)
       {
         g.DrawLine(pen, new PointF(x, y), new PointF(r, y));
-        g.DrawString(y.ToString(), drawFont, drawBrush, new PointF(-(float)origin.ConvertTo(MeasurementUnit.Milimeter).X, y));
+        g.DrawString(y.ToString(), drawFont, drawBrush, new PointF(-(float)Origin.ConvertTo(MeasurementUnit.Milimeter).X, y));
         y += 100F;
       }
             
@@ -110,7 +110,7 @@ namespace RobotControl.Controls
       while (x <= r)
       {
         g.DrawLine(pen, new PointF(x, y), new PointF(x, b));
-        g.DrawString(x.ToString(), drawFont, drawBrush, new PointF(x, -(float)origin.ConvertTo(MeasurementUnit.Milimeter).Y));
+        g.DrawString(x.ToString(), drawFont, drawBrush, new PointF(x, -(float)Origin.ConvertTo(MeasurementUnit.Milimeter).Y));
         x += 100F;
       }
     }
@@ -143,7 +143,7 @@ namespace RobotControl.Controls
           yInMilimeter = new Length(dy / g.DpiY / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
         }
 
-        Origin = new Point2D(origin.X + xInMilimeter.Value, origin.Y + yInMilimeter.Value);
+        Origin = new Point2D(Origin.X + xInMilimeter.Value, Origin.Y + yInMilimeter.Value);
       }
 
       previousMousePosition = position;
