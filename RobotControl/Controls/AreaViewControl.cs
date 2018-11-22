@@ -18,7 +18,7 @@ namespace RobotControl.Controls
     {
       InitializeComponent();
       AutoScroll = true;
-      AutoScrollMinSize = new Size(10000, 10000);
+      AutoScrollMinSize = CalcAreaSize();
       DoubleBuffered = true;
       simulation.Items.Add(new Robot(0, 0, 75));
     }
@@ -44,6 +44,7 @@ namespace RobotControl.Controls
         {
           viewZoom = value;
           originPoint = CalculateOrigin(originPoint);
+          BeginInvoke(new Action(() => AutoScrollMinSize = CalcAreaSize()));
           BeginInvoke(new Action(() => Refresh()));
         }
       }
@@ -63,6 +64,15 @@ namespace RobotControl.Controls
       e.Graphics.TranslateTransform((float)Origin.X, (float)Origin.Y);
       DrawGrid(e.Graphics);
       DrawSimulation(e.Graphics);
+    }
+
+    protected override void OnScroll(ScrollEventArgs se)
+    {
+      base.OnScroll(se);
+      if (se.ScrollOrientation == ScrollOrientation.HorizontalScroll)
+      {
+        Origin = new Point2D(se.NewValue - (3779 / 2), Origin.Y);
+      }
     }
 
     private void DrawGrid(Graphics g)
@@ -147,6 +157,15 @@ namespace RobotControl.Controls
       }
 
       return new Point2D(x, y, MeasurementUnit.Milimeter);
+    }
+
+    private Size CalcAreaSize()
+    {
+      using (var g = CreateGraphics())
+      {
+        var rect = simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Inch);
+        return new Size((int)(rect.Width.Value * g.DpiX * DrawScale), (int)(rect.Height.Value * g.DpiY * DrawScale));
+      }
     }
   }
 }
