@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using RobotControl.Drawing;
 using RobotControl.Simulation;
@@ -16,11 +17,13 @@ namespace RobotControl.Controls
     public AreaViewControl()
     {
       InitializeComponent();
-      this.AutoScroll = true;
-      this.VScroll = true;
-      this.VerticalScroll.Minimum = 10;
-      this.VerticalScroll.Minimum = 100;
-      this.VerticalScroll.Visible = true;
+      this.AutoScroll = false;
+      this.AutoScrollMinSize = new Size(10000, 10000);
+      //this.SetScrollState()
+      //this.VScroll = true;
+      //this.VerticalScroll.Minimum = 10;
+      //this.VerticalScroll.Minimum = 100;
+      //this.VerticalScroll.Visible = true;
 
 
 
@@ -37,7 +40,7 @@ namespace RobotControl.Controls
       set
       {
         originPoint = CalculateOrigin(value);
-        Refresh();
+        BeginInvoke(new Action(() => Refresh()));
       }
     }
 
@@ -51,7 +54,7 @@ namespace RobotControl.Controls
         {
           viewZoom = value;
           originPoint = CalculateOrigin(originPoint);
-          Refresh();
+          BeginInvoke(new Action(() => Refresh()));
         }
       }
     }
@@ -148,6 +151,23 @@ namespace RobotControl.Controls
 
       previousMousePosition = position;
     }
+
+    /*
+    protected override void AdjustFormScrollbars(bool displayScrollbars)
+    {
+      base.AdjustFormScrollbars(displayScrollbars);
+    }
+    */
+
+    protected override void OnScroll(ScrollEventArgs se)
+    {
+
+     
+        
+     //   base.OnScroll(se);
+    }
+
+    
 
     private Point2D CalculateOrigin(Point2D origin)
     {
