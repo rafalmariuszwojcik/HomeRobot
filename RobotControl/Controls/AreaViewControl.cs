@@ -17,18 +17,8 @@ namespace RobotControl.Controls
     public AreaViewControl()
     {
       InitializeComponent();
-      this.AutoScroll = false;
-      this.AutoScrollMinSize = new Size(10000, 10000);
-      //this.SetScrollState()
-      //this.VScroll = true;
-      //this.VerticalScroll.Minimum = 10;
-      //this.VerticalScroll.Minimum = 100;
-      //this.VerticalScroll.Visible = true;
-
-
-
-
-
+      AutoScroll = true;
+      AutoScrollMinSize = new Size(10000, 10000);
       DoubleBuffered = true;
       simulation.Items.Add(new Robot(0, 0, 75));
     }
@@ -70,24 +60,9 @@ namespace RobotControl.Controls
       e.Graphics.PageUnit = GraphicsUnit.Millimeter;
       e.Graphics.ScaleTransform(DrawScale, DrawScale);
       e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-      var pageWidthInMilimeters = (Width / (e.Graphics.DpiX / 2.54)) * 10;
-      var pageHeightInMilimeters = (Height / (e.Graphics.DpiX / 2.54)) * 10;
-      // e.Graphics.TranslateTransform((float)(pageWidthInMilimeters / 2 / scale), (float)(pageHeightInMilimeters / 2 / scale));
-      //e.Graphics.TranslateTransform((float)origin.X.Value, (float)origin.Y.Value);
-      SetOrigin(e.Graphics);
-
-      //e.Graphics.TranslateTransform(1,1, System.Drawing.Drawing2D.MatrixOrder.Append)
-
-
-      //var draw = new RobotDraw(new PointF(0, 0), 19, new Simulation.Robot.RobotGeometry(100, 30, 20, 20));
-      //draw.Paint(e.Graphics);
+      e.Graphics.TranslateTransform((float)Origin.X, (float)Origin.Y);
       DrawGrid(e.Graphics);
       DrawSimulation(e.Graphics);
-    }
-
-    private void SetOrigin(Graphics g)
-    {
-      g.TranslateTransform((float)Origin.X, (float)Origin.Y);
     }
 
     private void DrawGrid(Graphics g)
@@ -151,23 +126,6 @@ namespace RobotControl.Controls
 
       previousMousePosition = position;
     }
-
-    /*
-    protected override void AdjustFormScrollbars(bool displayScrollbars)
-    {
-      base.AdjustFormScrollbars(displayScrollbars);
-    }
-    */
-
-    protected override void OnScroll(ScrollEventArgs se)
-    {
-
-     
-        
-     //   base.OnScroll(se);
-    }
-
-    
 
     private Point2D CalculateOrigin(Point2D origin)
     {
