@@ -7,7 +7,7 @@ using RobotControl.Simulation.Robot;
 
 namespace RobotControl.Controls
 {
-  public partial class AreaViewControl : UserControl
+  public partial class AreaViewControl : Control
   {
     private int viewZoom = 100;
     private Point2D originPoint = new Point2D(0, 0, MeasurementUnit.Milimeter);
@@ -17,8 +17,8 @@ namespace RobotControl.Controls
     public AreaViewControl()
     {
       InitializeComponent();
-      AutoScroll = true;
-      AutoScrollMinSize = CalcAreaSize();
+      //AutoScroll = true;
+      //AutoScrollMinSize = CalcAreaSize();
       DoubleBuffered = true;
       simulation.Items.Add(new Robot(0, 0, 75));
     }
@@ -44,7 +44,7 @@ namespace RobotControl.Controls
         {
           viewZoom = value;
           originPoint = CalculateOrigin(originPoint);
-          BeginInvoke(new Action(() => AutoScrollMinSize = CalcAreaSize()));
+          //BeginInvoke(new Action(() => AutoScrollMinSize = CalcAreaSize()));
           BeginInvoke(new Action(() => Refresh()));
         }
       }
@@ -65,7 +65,7 @@ namespace RobotControl.Controls
       DrawGrid(e.Graphics);
       DrawSimulation(e.Graphics);
     }
-
+    /*
     protected override void OnScroll(ScrollEventArgs se)
     {
       base.OnScroll(se);
@@ -74,7 +74,7 @@ namespace RobotControl.Controls
         Origin = new Point2D(se.NewValue - (3779 / 2), Origin.Y);
       }
     }
-
+    */
     private void DrawGrid(Graphics g)
     {
       var rect = simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Milimeter);
