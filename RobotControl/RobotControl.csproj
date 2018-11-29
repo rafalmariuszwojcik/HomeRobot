@@ -62,6 +62,9 @@
     <Compile Include="Controls\AreaViewControl.Designer.cs">
       <DependentUpon>AreaViewControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ScrollControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Drawing\DrawElement.cs" />
     <Compile Include="Drawing\DrawElementBase.cs" />
     <Compile Include="Drawing\DrawingFactory.cs" />

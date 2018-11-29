@@ -7,34 +7,15 @@ using RobotControl.Simulation.Robot;
 
 namespace RobotControl.Controls
 {
-  public partial class AreaViewControl : Control
+  public partial class AreaViewControl : ScrollControl
   {
-    private ScrollBar hScrollBar;
-    private ScrollBar vScrollBar;
+    
     private int viewZoom = 100;
     private Point2D originPoint = new Point2D(0, 0, MeasurementUnit.Milimeter);
     private Point? previousMousePosition;
     private ISimulation simulation = new Simulation.Simulation();
 
-    private class UpdatingVScrollBar : VScrollBar
-    {
-      protected override void OnValueChanged(EventArgs e)
-      {
-        base.OnValueChanged(e);
-        // setting the scroll position programmatically shall raise Scroll
-        this.OnScroll(new ScrollEventArgs(ScrollEventType.EndScroll, this.Value));
-      }
-    }
-
-    private class UpdatingHScrollBar : HScrollBar
-    {
-      protected override void OnValueChanged(EventArgs e)
-      {
-        base.OnValueChanged(e);
-        // setting the scroll position programmatically shall raise Scroll
-        this.OnScroll(new ScrollEventArgs(ScrollEventType.EndScroll, this.Value));
-      }
-    }
+    
 
     public AreaViewControl()
     {
@@ -42,21 +23,7 @@ namespace RobotControl.Controls
 
 
 
-      this.hScrollBar = new UpdatingHScrollBar();
-      this.hScrollBar.Top = this.Height - this.hScrollBar.Height;
-      this.hScrollBar.Left = 0;
-      this.hScrollBar.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-
-      this.vScrollBar = new UpdatingVScrollBar();
-      this.vScrollBar.Top = 0;
-      this.vScrollBar.Left = this.Width - this.vScrollBar.Width;
-      this.vScrollBar.Anchor = AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
-
-      this.hScrollBar.Width = this.Width - this.vScrollBar.Width;
-      this.vScrollBar.Height = this.Height - this.hScrollBar.Height;
-
-      this.Controls.Add(this.hScrollBar);
-      this.Controls.Add(this.vScrollBar);
+      
 
 
 
