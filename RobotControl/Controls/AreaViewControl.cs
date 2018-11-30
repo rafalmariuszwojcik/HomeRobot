@@ -7,30 +7,18 @@ using RobotControl.Simulation.Robot;
 
 namespace RobotControl.Controls
 {
-  public partial class AreaViewControl : ScrollControl
+  public partial class AreaViewControl : ViewControl
   {
-    
     private int viewZoom = 100;
     private Point2D originPoint = new Point2D(0, 0, MeasurementUnit.Milimeter);
     private Point? previousMousePosition;
     private ISimulation simulation = new Simulation.Simulation();
 
-    
-
     public AreaViewControl()
     {
       InitializeComponent();
-
-
-
-      
-
-
-
-      //AutoScroll = true;
-      //AutoScrollMinSize = CalcAreaSize();
-      DoubleBuffered = true;
       simulation.Items.Add(new Robot(0, 0, 75));
+      AutoScrollMinSize = CalcAreaSize();
     }
 
     public Point2D Origin
@@ -54,7 +42,7 @@ namespace RobotControl.Controls
         {
           viewZoom = value;
           originPoint = CalculateOrigin(originPoint);
-          //BeginInvoke(new Action(() => AutoScrollMinSize = CalcAreaSize()));
+          AutoScrollMinSize = CalcAreaSize();
           BeginInvoke(new Action(() => Refresh()));
         }
       }
@@ -75,16 +63,7 @@ namespace RobotControl.Controls
       DrawGrid(e.Graphics);
       DrawSimulation(e.Graphics);
     }
-    /*
-    protected override void OnScroll(ScrollEventArgs se)
-    {
-      base.OnScroll(se);
-      if (se.ScrollOrientation == ScrollOrientation.HorizontalScroll)
-      {
-        Origin = new Point2D(se.NewValue - (3779 / 2), Origin.Y);
-      }
-    }
-    */
+    
     private void DrawGrid(Graphics g)
     {
       var rect = simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Milimeter);
@@ -174,7 +153,7 @@ namespace RobotControl.Controls
       using (var g = CreateGraphics())
       {
         var rect = simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Inch);
-        return new Size((int)(rect.Width.Value * g.DpiX * DrawScale), (int)(rect.Height.Value * g.DpiY * DrawScale));
+        return new Size((int)Math.Ceiling(rect.Width.Value * g.DpiX * DrawScale), (int)Math.Ceiling(rect.Height.Value * g.DpiY * DrawScale));
       }
     }
   }
