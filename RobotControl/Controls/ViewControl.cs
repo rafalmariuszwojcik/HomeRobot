@@ -13,9 +13,6 @@ namespace RobotControl.Controls
     {
       DoubleBuffered = true;
       AutoScroll = false;
-      HorizontalScroll.Minimum = 0;
-      HorizontalScroll.Maximum = 100;
-      HorizontalScroll.Visible = true;
     }
 
     public override bool AutoScroll
@@ -59,32 +56,9 @@ namespace RobotControl.Controls
       */
     }
 
-    private void AdjustHorizontalScroll()
+    private static void AdjustScroll(ScrollProperties scroll, int max, int size)
     {
-      if (IsHandleCreated && ClientSize.Width > 0 && autoScrollMinSize.Width > 0)
-      {
-        HorizontalScroll.Minimum = 0;
-        HorizontalScroll.Maximum = autoScrollMinSize.Width;
-        HorizontalScroll.LargeChange = ClientSize.Width;
-        HorizontalScroll.SmallChange = ClientSize.Width / 10;
-        HorizontalScroll.Visible = true;
-        HorizontalScroll.Enabled = true;
-      }
-      else
-      {
-        HorizontalScroll.Visible = false;
-        HorizontalScroll.Enabled = false;
-      }
-    }
-
-    private void AdjustVerticalScroll()
-    {
-      AdjustScroll(VerticalScroll, IsHandleCreated && ClientSize.Height > 0 && autoScrollMinSize.Height > 0, autoScrollMinSize.Height, ClientSize.Height);
-    }
-
-    private void AdjustScroll(ScrollProperties scroll, bool visible, int max, int size)
-    {
-      //var v = IsHandleCreated && 
+      var visible = max > size;
       if (visible)
       {
         scroll.Minimum = 0;
@@ -94,6 +68,17 @@ namespace RobotControl.Controls
       }
 
       scroll.Visible = scroll.Enabled = visible;
+    }
+
+    private void AdjustHorizontalScroll()
+    {
+      AdjustScroll(HorizontalScroll, autoScrollMinSize.Width, ClientSize.Width);
+    }
+
+    private void AdjustVerticalScroll()
+    {
+      
+      AdjustScroll(VerticalScroll, autoScrollMinSize.Height, ClientSize.Height);
     }
   }
 }
