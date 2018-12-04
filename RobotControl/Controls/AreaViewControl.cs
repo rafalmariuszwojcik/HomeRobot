@@ -28,6 +28,9 @@ namespace RobotControl.Controls
       set
       {
         originPoint = CalculateOrigin(value);
+        var point = CalcStartPoint();
+        var origin = CalcOriginPoint();
+        //AutoScrollPosition = 
         BeginInvoke(new Action(() => Refresh()));
       }
     }
@@ -154,6 +157,24 @@ namespace RobotControl.Controls
       {
         var rect = simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Inch);
         return new Size((int)Math.Ceiling(rect.Width.Value * g.DpiX * DrawScale), (int)Math.Ceiling(rect.Height.Value * g.DpiY * DrawScale));
+      }
+    }
+
+    private Point CalcStartPoint()
+    {
+      using (var g = CreateGraphics())
+      {
+        var rect = simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Inch);
+        return new Point((int)Math.Ceiling(rect.Left.Value * g.DpiX * DrawScale), (int)Math.Ceiling(rect.Top.Value * g.DpiY * DrawScale));
+      }
+    }
+
+    private Point CalcOriginPoint()
+    {
+      using (var g = CreateGraphics())
+      {
+        var origin = originPoint.ConvertTo(MeasurementUnit.Inch);
+        return new Point((int)Math.Ceiling(origin.X * g.DpiX * DrawScale), (int)Math.Ceiling(origin.Y * g.DpiY * DrawScale));
       }
     }
   }

@@ -28,9 +28,7 @@
 
     public Point2D ConvertTo(MeasurementUnit unit)
     {
-      x = x.ConvertTo(unit);
-      y = y.ConvertTo(unit);
-      return this;
+      return new Point2D(x.ConvertTo(unit).Value, y.ConvertTo(unit).Value, unit);
     }
   }
 }

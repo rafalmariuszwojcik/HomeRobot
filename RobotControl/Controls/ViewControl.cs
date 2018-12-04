@@ -33,6 +33,13 @@ namespace RobotControl.Controls
       }
     }
 
+    [Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+    public new Point AutoScrollPosition
+    {
+      get { return new Point(); }
+      set { }
+    }
+
     //
     // http://msdn.microsoft.com/en-us/library/system.windows.forms.scrollbar.maximum.aspx
     //
