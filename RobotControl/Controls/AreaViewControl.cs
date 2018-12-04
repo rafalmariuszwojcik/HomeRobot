@@ -64,6 +64,7 @@ namespace RobotControl.Controls
       e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
       e.Graphics.TranslateTransform((float)Origin.X, (float)Origin.Y);
       DrawGrid(e.Graphics);
+      DrawOrigin(e.Graphics);
       DrawSimulation(e.Graphics);
     }
     
@@ -93,6 +94,13 @@ namespace RobotControl.Controls
         g.DrawString(x.ToString(), drawFont, drawBrush, new PointF(x, -(float)Origin.ConvertTo(MeasurementUnit.Milimeter).Y));
         x += 100F;
       }
+    }
+
+    private void DrawOrigin(Graphics g)
+    {
+      var drawFont = new Font("Arial", 32);
+      var drawBrush = new SolidBrush(Color.Green);
+      g.DrawString($"{Origin.ConvertTo(MeasurementUnit.Milimeter).X}; {Origin.ConvertTo(MeasurementUnit.Milimeter).Y}", drawFont, drawBrush, new PointF(-(float)Origin.ConvertTo(MeasurementUnit.Milimeter).X + 20, -(float)Origin.ConvertTo(MeasurementUnit.Milimeter).Y + 20));
     }
 
     private void DrawSimulation(Graphics g)
