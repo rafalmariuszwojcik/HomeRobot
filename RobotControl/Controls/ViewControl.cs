@@ -37,7 +37,7 @@ namespace RobotControl.Controls
     public new Point AutoScrollPosition
     {
       get { return new Point(); }
-      set { }
+      set { HorizontalScroll.Value = value.X; VerticalScroll.Value = value.Y; }
     }
 
     //

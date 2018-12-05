@@ -28,9 +28,7 @@ namespace RobotControl.Controls
       set
       {
         originPoint = CalculateOrigin(value);
-        var point = CalcStartPoint();
-        var origin = CalcOriginPoint();
-        //AutoScrollPosition = 
+        AutoScrollPosition = CalcScrollPosition();
         BeginInvoke(new Action(() => Refresh()));
       }
     }
@@ -100,7 +98,7 @@ namespace RobotControl.Controls
     {
       var drawFont = new Font("Arial", 32);
       var drawBrush = new SolidBrush(Color.Green);
-      g.DrawString($"{Origin.ConvertTo(MeasurementUnit.Milimeter).X}; {Origin.ConvertTo(MeasurementUnit.Milimeter).Y}", drawFont, drawBrush, new PointF(-(float)Origin.ConvertTo(MeasurementUnit.Milimeter).X + 20, -(float)Origin.ConvertTo(MeasurementUnit.Milimeter).Y + 20));
+      g.DrawString($"{Origin.ConvertTo(MeasurementUnit.Milimeter).X}; {Origin.ConvertTo(MeasurementUnit.Milimeter).Y}", drawFont, drawBrush, new PointF(0, 0));
     }
 
     private void DrawSimulation(Graphics g)
@@ -184,6 +182,15 @@ namespace RobotControl.Controls
         var origin = originPoint.ConvertTo(MeasurementUnit.Inch);
         return new Point((int)Math.Ceiling(origin.X * g.DpiX * DrawScale), (int)Math.Ceiling(origin.Y * g.DpiY * DrawScale));
       }
+    }
+
+    private Point CalcScrollPosition()
+    {
+      var start = CalcStartPoint();
+      var origin = CalcOriginPoint();
+      var x = -start.X - origin.X;
+      var y = -start.Y - origin.Y;
+      return new Point(x, y);
     }
   }
 }
