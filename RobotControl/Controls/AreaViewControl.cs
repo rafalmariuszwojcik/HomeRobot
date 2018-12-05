@@ -44,6 +44,7 @@ namespace RobotControl.Controls
           viewZoom = value;
           originPoint = CalculateOrigin(originPoint);
           AutoScrollMinSize = CalcAreaSize();
+          AutoScrollPosition = CalcScrollPosition();
           BeginInvoke(new Action(() => Refresh()));
         }
       }

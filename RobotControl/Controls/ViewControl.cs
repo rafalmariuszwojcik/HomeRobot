@@ -8,6 +8,7 @@ namespace RobotControl.Controls
   public class ViewControl : ScrollableControl
   {
     private Size autoScrollMinSize;
+    private Point autoScrollPosition;
 
     public ViewControl()
     {
@@ -36,8 +37,18 @@ namespace RobotControl.Controls
     [Browsable(false), EditorBrowsable(EditorBrowsableState.Never), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public new Point AutoScrollPosition
     {
-      get { return new Point(); }
-      set { HorizontalScroll.Value = value.X; VerticalScroll.Value = value.Y; }
+      get { return autoScrollPosition; }
+
+      set
+      {
+        autoScrollPosition.X = value.X >= 0 ? (value.X <= autoScrollMinSize.Width ? value.X : autoScrollMinSize.Width) : 0;
+        autoScrollPosition.Y = value.Y >= 0 ? (value.Y <= autoScrollMinSize.Height ? value.Y : autoScrollMinSize.Height) : 0;
+        BeginInvoke(new Action(() => 
+        {
+          HorizontalScroll.Value = autoScrollPosition.X;
+          VerticalScroll.Value = autoScrollPosition.Y;
+        }));
+      }
     }
 
     //
