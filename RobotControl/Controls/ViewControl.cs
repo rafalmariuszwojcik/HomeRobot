@@ -43,11 +43,7 @@ namespace RobotControl.Controls
       {
         autoScrollPosition.X = value.X >= 0 ? (value.X <= autoScrollMinSize.Width ? value.X : autoScrollMinSize.Width) : 0;
         autoScrollPosition.Y = value.Y >= 0 ? (value.Y <= autoScrollMinSize.Height ? value.Y : autoScrollMinSize.Height) : 0;
-        BeginInvoke(new Action(() => 
-        {
-          HorizontalScroll.Value = autoScrollPosition.X;
-          VerticalScroll.Value = autoScrollPosition.Y;
-        }));
+        BeginInvoke(new Action(() => UpdateScrollPosition()));
       }
     }
 
@@ -66,21 +62,25 @@ namespace RobotControl.Controls
     protected override void OnScroll(ScrollEventArgs se)
     {
       base.OnScroll(se);
-      /*
       if (se.ScrollOrientation == ScrollOrientation.HorizontalScroll)
       {
-        Origin = new Point2D(se.NewValue - (3779 / 2), Origin.Y);
+        autoScrollPosition.X = se.NewValue;
       }
-      */
+      else if (se.ScrollOrientation == ScrollOrientation.VerticalScroll)
+      {
+        autoScrollPosition.Y = se.NewValue;
+      }
+
+      BeginInvoke(new Action(() => UpdateScrollPosition()));
     }
 
-    private static void AdjustScroll(ScrollProperties scroll, int max, int size)
+    private static void AdjustScroll(ScrollProperties scroll, int max, int size, int additionalScrollSize)
     {
       var visible = max > size;
       if (visible)
       {
         scroll.Minimum = 0;
-        scroll.Maximum = max;
+        scroll.Maximum = max - additionalScrollSize;
         scroll.LargeChange = size;
         scroll.SmallChange = size / 10;
       }
@@ -90,13 +90,19 @@ namespace RobotControl.Controls
 
     private void AdjustHorizontalScroll()
     {
-      AdjustScroll(HorizontalScroll, autoScrollMinSize.Width, ClientSize.Width);
+      AdjustScroll(HorizontalScroll, autoScrollMinSize.Width, ClientSize.Width, autoScrollMinSize.Height > ClientSize.Height ? SystemInformation.VerticalScrollBarWidth : 0);
     }
 
     private void AdjustVerticalScroll()
     {
       
-      AdjustScroll(VerticalScroll, autoScrollMinSize.Height, ClientSize.Height);
+      AdjustScroll(VerticalScroll, autoScrollMinSize.Height, ClientSize.Height, autoScrollMinSize.Width > ClientSize.Width ? SystemInformation.HorizontalScrollBarHeight : 0);
+    }
+
+    private void UpdateScrollPosition()
+    {
+      HorizontalScroll.Value = autoScrollPosition.X;
+      VerticalScroll.Value = autoScrollPosition.Y;
     }
   }
 }
