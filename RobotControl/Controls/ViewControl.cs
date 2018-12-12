@@ -9,6 +9,8 @@ namespace RobotControl.Controls
   {
     private Size autoScrollMinSize;
     private Point autoScrollPosition;
+    float? dpiX;
+    float? dpiY;
 
     public ViewControl()
     {
@@ -30,7 +32,11 @@ namespace RobotControl.Controls
       set
       {
         autoScrollMinSize = value;
-        BeginInvoke(new Action(() => AdjustFormScrollbars(true)));
+        BeginInvoke(new Action(() =>
+        {
+          AdjustFormScrollbars(true);
+          UpdateScrollPosition();
+        }));
       }
     }
 
@@ -44,6 +50,24 @@ namespace RobotControl.Controls
         autoScrollPosition.X = value.X >= 0 ? (value.X <= autoScrollMinSize.Width ? value.X : autoScrollMinSize.Width) : 0;
         autoScrollPosition.Y = value.Y >= 0 ? (value.Y <= autoScrollMinSize.Height ? value.Y : autoScrollMinSize.Height) : 0;
         BeginInvoke(new Action(() => UpdateScrollPosition()));
+      }
+    }
+
+    protected float DpiX
+    {
+      get
+      {
+        GetDpi();
+        return dpiX.Value;
+      }
+    }
+
+    protected float DpiY
+    {
+      get
+      {
+        GetDpi();
+        return dpiY.Value;
       }
     }
 
@@ -88,6 +112,18 @@ namespace RobotControl.Controls
     {
       HorizontalScroll.Value = autoScrollPosition.X;
       VerticalScroll.Value = autoScrollPosition.Y;
+    }
+
+    private void GetDpi()
+    {
+      if (!dpiX.HasValue || !dpiY.HasValue)
+      {
+        using (var g = CreateGraphics())
+        {
+          dpiX = g.DpiX;
+          dpiY = g.DpiY;
+        }
+      }
     }
   }    
 }

@@ -28,6 +28,7 @@
     /// </summary>
     private void InitializeComponent()
     {
+      this.components = new System.ComponentModel.Container();
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(formRobotControl));
       this.button1 = new System.Windows.Forms.Button();
       this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -37,9 +38,15 @@
       this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
       this.printDocument1 = new System.Drawing.Printing.PrintDocument();
       this.trackBar1 = new System.Windows.Forms.TrackBar();
+      this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+      this.testsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+      this.ssssToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.areaViewControl1 = new RobotControl.Controls.AreaViewControl();
+      this.dockPanel1 = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+      this.visualStudioToolStripExtender1 = new WeifenLuo.WinFormsUI.Docking.VisualStudioToolStripExtender(this.components);
       this.toolStrip1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+      this.menuStrip1.SuspendLayout();
       this.SuspendLayout();
       // 
       // button1
@@ -91,24 +98,59 @@
       this.trackBar1.Value = 1;
       this.trackBar1.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
       // 
+      // menuStrip1
+      // 
+      this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.testsToolStripMenuItem});
+      resources.ApplyResources(this.menuStrip1, "menuStrip1");
+      this.menuStrip1.Name = "menuStrip1";
+      // 
+      // testsToolStripMenuItem
+      // 
+      this.testsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ssssToolStripMenuItem});
+      this.testsToolStripMenuItem.Name = "testsToolStripMenuItem";
+      resources.ApplyResources(this.testsToolStripMenuItem, "testsToolStripMenuItem");
+      this.testsToolStripMenuItem.Click += new System.EventHandler(this.testsToolStripMenuItem_Click);
+      // 
+      // ssssToolStripMenuItem
+      // 
+      this.ssssToolStripMenuItem.Name = "ssssToolStripMenuItem";
+      resources.ApplyResources(this.ssssToolStripMenuItem, "ssssToolStripMenuItem");
+      // 
       // areaViewControl1
       // 
       resources.ApplyResources(this.areaViewControl1, "areaViewControl1");
       this.areaViewControl1.Name = "areaViewControl1";
       this.areaViewControl1.Zoom = 100;
       // 
+      // dockPanel1
+      // 
+      this.dockPanel1.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingWindow;
+      resources.ApplyResources(this.dockPanel1, "dockPanel1");
+      this.dockPanel1.Name = "dockPanel1";
+      // 
+      // visualStudioToolStripExtender1
+      // 
+      this.visualStudioToolStripExtender1.DefaultRenderer = null;
+      // 
       // formRobotControl
       // 
       resources.ApplyResources(this, "$this");
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+      this.Controls.Add(this.dockPanel1);
       this.Controls.Add(this.trackBar1);
       this.Controls.Add(this.areaViewControl1);
       this.Controls.Add(this.toolStrip1);
+      this.Controls.Add(this.menuStrip1);
       this.Controls.Add(this.button1);
+      this.MainMenuStrip = this.menuStrip1;
       this.Name = "formRobotControl";
       this.toolStrip1.ResumeLayout(false);
       this.toolStrip1.PerformLayout();
       ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+      this.menuStrip1.ResumeLayout(false);
+      this.menuStrip1.PerformLayout();
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -125,6 +167,11 @@
     private System.Drawing.Printing.PrintDocument printDocument1;
     private Controls.AreaViewControl areaViewControl1;
     private System.Windows.Forms.TrackBar trackBar1;
+    private System.Windows.Forms.MenuStrip menuStrip1;
+    private System.Windows.Forms.ToolStripMenuItem testsToolStripMenuItem;
+    private System.Windows.Forms.ToolStripMenuItem ssssToolStripMenuItem;
+    private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel1;
+    private WeifenLuo.WinFormsUI.Docking.VisualStudioToolStripExtender visualStudioToolStripExtender1;
   }
 }
 

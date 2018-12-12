@@ -74,12 +74,9 @@ namespace RobotControl.Controls
       var startPoint = CalcStartPoint();
       var x = -(HorizontalScroll.Value + startPoint.X);
       var y = -(VerticalScroll.Value + startPoint.Y);
-      using (var g = CreateGraphics())
-      {
-        var xInMilimeter = new Length(x / g.DpiX / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
-        var yInMilimeter = new Length(y / g.DpiY / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
-        Origin = new Point2D(xInMilimeter.Value, yInMilimeter.Value);
-      }
+      var xInMilimeter = new Length(x / DpiX / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
+      var yInMilimeter = new Length(y / DpiY / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
+      Origin = new Point2D(xInMilimeter.Value, yInMilimeter.Value);
     }
 
     private void DrawGrid(Graphics g)
@@ -138,13 +135,8 @@ namespace RobotControl.Controls
         var dy = position.Y - previousMousePosition.Value.Y;
         Length xInMilimeter;
         Length yInMilimeter;
-
-        using (var g = CreateGraphics())
-        {
-          xInMilimeter = new Length(dx / g.DpiX / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
-          yInMilimeter = new Length(dy / g.DpiY / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
-        }
-
+        xInMilimeter = new Length(dx / DpiX / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
+        yInMilimeter = new Length(dy / DpiY / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
         Origin = new Point2D(Origin.X + xInMilimeter.Value, Origin.Y + yInMilimeter.Value);
       }
 
@@ -157,47 +149,33 @@ namespace RobotControl.Controls
       origin = origin.ConvertTo(MeasurementUnit.Milimeter);
       var x = origin.X;
       var y = origin.Y;
-
-      using (var g = CreateGraphics())
-      {
-        var widthMilimeter = new Length(ClientSize.Width / g.DpiX / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
-        var heightMilimeter = new Length(ClientSize.Height / g.DpiY / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
-        var maxX = -(rect.Right - widthMilimeter).Value;
-        var maxY = -(rect.Bottom - heightMilimeter).Value;
-        x = (x <= maxX || rect.Width <= widthMilimeter) ? maxX : x;
-        y = (y <= maxY || rect.Height <= heightMilimeter) ? maxY : y;
-        x = (x >= -rect.Left.Value || rect.Width <= widthMilimeter) ? -rect.Left.Value : x;
-        y = (y >= -rect.Top.Value || rect.Height <= heightMilimeter) ? -rect.Top.Value : y;
-      }
-
+      var widthMilimeter = new Length(ClientSize.Width / DpiX / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
+      var heightMilimeter = new Length(ClientSize.Height / DpiY / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
+      var maxX = -(rect.Right - widthMilimeter).Value;
+      var maxY = -(rect.Bottom - heightMilimeter).Value;
+      x = (x <= maxX || rect.Width <= widthMilimeter) ? maxX : x;
+      y = (y <= maxY || rect.Height <= heightMilimeter) ? maxY : y;
+      x = (x >= -rect.Left.Value || rect.Width <= widthMilimeter) ? -rect.Left.Value : x;
+      y = (y >= -rect.Top.Value || rect.Height <= heightMilimeter) ? -rect.Top.Value : y;
       return new Point2D(x, y, MeasurementUnit.Milimeter);
     }
 
     private Size CalcAreaSize()
     {
-      using (var g = CreateGraphics())
-      {
-        var rect = simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Inch);
-        return new Size((int)Math.Ceiling(rect.Width.Value * g.DpiX * DrawScale), (int)Math.Ceiling(rect.Height.Value * g.DpiY * DrawScale));
-      }
+      var rect = simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Inch);
+      return new Size((int)Math.Ceiling(rect.Width.Value * DpiX * DrawScale), (int)Math.Ceiling(rect.Height.Value * DpiY * DrawScale));
     }
 
     private Point CalcStartPoint()
     {
-      using (var g = CreateGraphics())
-      {
-        var rect = simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Inch);
-        return new Point((int)Math.Ceiling(rect.Left.Value * g.DpiX * DrawScale), (int)Math.Ceiling(rect.Top.Value * g.DpiY * DrawScale));
-      }
+      var rect = simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Inch);
+      return new Point((int)Math.Ceiling(rect.Left.Value * DpiX * DrawScale), (int)Math.Ceiling(rect.Top.Value * DpiY * DrawScale));
     }
 
     private Point CalcOriginPoint()
     {
-      using (var g = CreateGraphics())
-      {
-        var origin = originPoint.ConvertTo(MeasurementUnit.Inch);
-        return new Point((int)Math.Ceiling(origin.X * g.DpiX * DrawScale), (int)Math.Ceiling(origin.Y * g.DpiY * DrawScale));
-      }
+      var origin = originPoint.ConvertTo(MeasurementUnit.Inch);
+      return new Point((int)Math.Ceiling(origin.X * DpiX * DrawScale), (int)Math.Ceiling(origin.Y * DpiY * DrawScale));
     }
 
     private Point CalcScrollPosition()
