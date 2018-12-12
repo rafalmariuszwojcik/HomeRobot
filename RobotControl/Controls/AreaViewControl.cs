@@ -71,15 +71,15 @@ namespace RobotControl.Controls
     {
       base.OnScroll(se);
       var startPoint = CalcStartPoint();
-      //startPoint.X -= HorizontalScroll.Value;
-      //startPoint.Y -= VerticalScroll.Value;
+      var x = -(HorizontalScroll.Value + startPoint.X);
+      var y = -(VerticalScroll.Value + startPoint.Y);
       using (var g = CreateGraphics())
       {
-        var xInMilimeter = new Length(startPoint.X / g.DpiX / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
-        var yInMilimeter = new Length(startPoint.Y / g.DpiY / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
+        var xInMilimeter = new Length(x / g.DpiX / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
+        var yInMilimeter = new Length(y / g.DpiY / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
         Origin = new Point2D(xInMilimeter.Value, yInMilimeter.Value);
       }
-     }
+    }
 
     private void DrawGrid(Graphics g)
     {
