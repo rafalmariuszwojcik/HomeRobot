@@ -66,7 +66,21 @@ namespace RobotControl.Controls
       DrawOrigin(e.Graphics);
       DrawSimulation(e.Graphics);
     }
-    
+
+    protected override void OnScroll(ScrollEventArgs se)
+    {
+      base.OnScroll(se);
+      var startPoint = CalcStartPoint();
+      //startPoint.X -= HorizontalScroll.Value;
+      //startPoint.Y -= VerticalScroll.Value;
+      using (var g = CreateGraphics())
+      {
+        var xInMilimeter = new Length(startPoint.X / g.DpiX / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
+        var yInMilimeter = new Length(startPoint.Y / g.DpiY / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
+        Origin = new Point2D(xInMilimeter.Value, yInMilimeter.Value);
+      }
+     }
+
     private void DrawGrid(Graphics g)
     {
       var rect = simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Milimeter);

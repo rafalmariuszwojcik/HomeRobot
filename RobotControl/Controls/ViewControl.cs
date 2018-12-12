@@ -63,6 +63,7 @@ namespace RobotControl.Controls
     {
       base.OnScroll(se);
 
+      /*
       if (se.Type == ScrollEventType.EndScroll)
       {
         var x = 1;
@@ -70,9 +71,6 @@ namespace RobotControl.Controls
       }
 
       SetDisplayRectLocation(0, se.NewValue);
-
-      return;
-
       if (se.ScrollOrientation == ScrollOrientation.HorizontalScroll)
       {
         autoScrollPosition.X = se.NewValue;
@@ -83,6 +81,7 @@ namespace RobotControl.Controls
       }
 
       BeginInvoke(new Action(() => UpdateScrollPosition()));
+      */
     }
 
     private static void AdjustScroll(ScrollProperties scroll, int max, int size, int additionalScrollSize)
