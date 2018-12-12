@@ -59,31 +59,6 @@ namespace RobotControl.Controls
       }
     }
 
-    protected override void OnScroll(ScrollEventArgs se)
-    {
-      base.OnScroll(se);
-
-      /*
-      if (se.Type == ScrollEventType.EndScroll)
-      {
-        var x = 1;
-        var y = x;
-      }
-
-      SetDisplayRectLocation(0, se.NewValue);
-      if (se.ScrollOrientation == ScrollOrientation.HorizontalScroll)
-      {
-        autoScrollPosition.X = se.NewValue;
-      }
-      else if (se.ScrollOrientation == ScrollOrientation.VerticalScroll)
-      {
-        autoScrollPosition.Y = se.NewValue;
-      }
-
-      BeginInvoke(new Action(() => UpdateScrollPosition()));
-      */
-    }
-
     private static void AdjustScroll(ScrollProperties scroll, int max, int size, int additionalScrollSize)
     {
       var visible = max > size;
