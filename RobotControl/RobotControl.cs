@@ -1,4 +1,5 @@
 ﻿using RobotControl.Communication;
+using RobotControl.Forms;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -18,6 +19,7 @@ namespace RobotControl
       OptionsPropertyGrid.Size = new Size(175, 250);
 
       this.Controls.Add(OptionsPropertyGrid);
+      new SimulationView().Show();
     }
 
     private void button1_Click(object sender, System.EventArgs e)

@@ -42,7 +42,6 @@
       this.testsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.ssssToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
       this.areaViewControl1 = new RobotControl.Controls.AreaViewControl();
-      this.dockPanel1 = new WeifenLuo.WinFormsUI.Docking.DockPanel();
       this.visualStudioToolStripExtender1 = new WeifenLuo.WinFormsUI.Docking.VisualStudioToolStripExtender(this.components);
       this.toolStrip1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -124,12 +123,6 @@
       this.areaViewControl1.Name = "areaViewControl1";
       this.areaViewControl1.Zoom = 100;
       // 
-      // dockPanel1
-      // 
-      this.dockPanel1.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingWindow;
-      resources.ApplyResources(this.dockPanel1, "dockPanel1");
-      this.dockPanel1.Name = "dockPanel1";
-      // 
       // visualStudioToolStripExtender1
       // 
       this.visualStudioToolStripExtender1.DefaultRenderer = null;
@@ -138,7 +131,6 @@
       // 
       resources.ApplyResources(this, "$this");
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.Controls.Add(this.dockPanel1);
       this.Controls.Add(this.trackBar1);
       this.Controls.Add(this.areaViewControl1);
       this.Controls.Add(this.toolStrip1);
@@ -170,7 +162,6 @@
     private System.Windows.Forms.MenuStrip menuStrip1;
     private System.Windows.Forms.ToolStripMenuItem testsToolStripMenuItem;
     private System.Windows.Forms.ToolStripMenuItem ssssToolStripMenuItem;
-    private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel1;
     private WeifenLuo.WinFormsUI.Docking.VisualStudioToolStripExtender visualStudioToolStripExtender1;
   }
 }
