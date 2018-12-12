@@ -19,6 +19,7 @@ namespace RobotControl.Controls
       InitializeComponent();
       simulation.Items.Add(new Robot(0, 0, 75));
       AutoScrollMinSize = CalcAreaSize();
+      AutoScrollPosition = CalcScrollPosition();
     }
 
     public Point2D Origin
