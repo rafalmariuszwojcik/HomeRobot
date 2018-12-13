@@ -2,6 +2,7 @@
 using RobotControl.Forms;
 using System.Drawing;
 using System.Windows.Forms;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace RobotControl
 {
@@ -19,7 +20,16 @@ namespace RobotControl
       OptionsPropertyGrid.Size = new Size(175, 250);
 
       this.Controls.Add(OptionsPropertyGrid);
-      new SimulationView().Show();
+      StatusBar statusBar1 = new StatusBar();
+      this.Controls.Add(statusBar1);
+
+      //dockPanel1
+      var dockContent = new SimulationView();
+      var dockContent2 = new SimulationView();
+
+      dockContent.Show(this.dockPanel1, DockState.Document);
+      dockContent2.Show(this.dockPanel1, DockState.Document);
+
     }
 
     private void button1_Click(object sender, System.EventArgs e)
@@ -32,7 +42,7 @@ namespace RobotControl
       */
       //OptionsPropertyGrid.SelectedObject = new SerialConfiguration { Port = "COM3", BaudRate = 9600 };
 
-      OptionsPropertyGrid.SelectedObject = areaViewControl1;
+     // OptionsPropertyGrid.SelectedObject = areaViewControl1;
 
       //OptionsPropertyGrid.PropertySort = PropertySort.NoSort;
       //OptionsPropertyGrid.ToolbarVisible = false;
@@ -44,12 +54,18 @@ namespace RobotControl
 
     private void trackBar1_ValueChanged(object sender, System.EventArgs e)
     {
-      this.areaViewControl1.Zoom = trackBar1.Value;
+      //this.areaViewControl1.Zoom = trackBar1.Value;
     }
 
     private void testsToolStripMenuItem_Click(object sender, System.EventArgs e)
     {
 
+    }
+
+    private void toolStripButton1_Click(object sender, System.EventArgs e)
+    {
+      var dockContent = new SimulationView();
+      dockContent.Show(this.dockPanel1, DockState.Float);
     }
   }
 }
