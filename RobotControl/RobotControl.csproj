@@ -75,6 +75,7 @@
     <Compile Include="Controls\ViewControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Core\Singleton.cs" />
     <Compile Include="Drawing\DrawElement.cs" />
     <Compile Include="Drawing\DrawElementBase.cs" />
     <Compile Include="Drawing\DrawingFactory.cs" />
@@ -83,6 +84,12 @@
     <Compile Include="Drawing\RouteDraw.cs" />
     <Compile Include="Fake\FakeRobot\Engine.cs" />
     <Compile Include="Fake\FakeRobot\FakeRobot.cs" />
+    <Compile Include="Forms\BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BaseView.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\SimulationView.cs">
       <SubType>Form</SubType>
     </Compile>

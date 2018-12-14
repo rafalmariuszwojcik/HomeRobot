@@ -2,7 +2,7 @@
 
 namespace RobotControl.Forms
 {
-  public partial class SimulationView : DockContent
+  public partial class SimulationView : BaseView
   {
     public SimulationView()
     {

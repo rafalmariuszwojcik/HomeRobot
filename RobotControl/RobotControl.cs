@@ -6,7 +6,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace RobotControl
 {
-  public partial class formRobotControl : Form
+  public partial class formRobotControl : BaseForm
   {
     private PropertyGrid OptionsPropertyGrid;
    // private DockPanel s;

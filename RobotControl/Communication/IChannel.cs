@@ -3,13 +3,16 @@ using System;
 
 namespace RobotControl.Communication
 {
-  public interface IChannel<U> : IDisposable
-    where U: ConfigurationBase
+  public interface IChannel : IDisposable
   {
     void Open();
     void Close();
     void Send(ICommand[] commands);
     event EventHandler<IDataReceivedEventArgs> DataReceived;
+  }
+
+  public interface IChannel<U> : IChannel where U: ConfigurationBase
+  {
   }
 
   public interface IDataReceivedEventArgs

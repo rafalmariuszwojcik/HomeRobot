@@ -1,39 +1,12 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using RobotControl.Core;
 
 namespace RobotControl.Communication
 {
-  public class CommunicationManager : ICommunicationManager
+  public class CommunicationManager : Singleton<CommunicationManager>, ICommunicationManager
   {
-    private static readonly object syncRoot = new object();
-    private static volatile CommunicationManager instance;
-
-    public CommunicationManager()
-    {
-      //SingletonTearDown.Instance.TearDown += TearDownInstance;
-    }
-
-    public static ICommunicationManager Instance
-    {
-      get
-      {
-        if (instance == null)
-        {
-          lock (syncRoot)
-          {
-            if (instance == null)
-            {
-              instance = new CommunicationManager();
-            }
-          }
-        }
-
-        return instance;
-      }
-    }
-
-    private static void TearDownInstance(object sender, EventArgs e)
-    {
-      instance = null;
-    }
+    private readonly IList<IChannel> items = new List<IChannel>();
+    public IEnumerable<IChannel> Items => items;
+        
   }
 }
