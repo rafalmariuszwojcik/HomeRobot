@@ -49,14 +49,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Command\CommandBase.cs" />
-    <Compile Include="Command\EngineCommand.cs" />
+    <Compile Include="Command\EngineAvgSpeedCommand.cs" />
+    <Compile Include="Command\EnginePwmCommand.cs" />
+    <Compile Include="Command\EngineSpeedCommand.cs" />
     <Compile Include="Command\ICommand.cs" />
+    <Compile Include="Command\IEngineCommand.cs" />
     <Compile Include="Communication\ChannelBase.cs" />
+    <Compile Include="Communication\CommunicationManager.cs" />
     <Compile Include="Communication\ConfigurationBase.cs" />
     <Compile Include="Communication\Fake.cs" />
     <Compile Include="Communication\FakeConfiguration.cs" />
     <Compile Include="Communication\IChannel.cs" />
+    <Compile Include="Communication\ICommunicationManager.cs" />
     <Compile Include="Communication\Serial.cs" />
     <Compile Include="Communication\SerialConfiguration.cs" />
     <Compile Include="Controls\AreaViewControl.cs">

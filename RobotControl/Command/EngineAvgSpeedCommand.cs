@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace RobotControl.Command
 {
-  public abstract class CommandBase : ICommand
+  public struct EngineAvgSpeedCommand : IEngineCommand
   {
+    public int Index { get; set; }
+    public int AvgSpeed { get; set; }
   }
 }
