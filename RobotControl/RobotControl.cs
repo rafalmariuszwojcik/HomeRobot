@@ -1,5 +1,6 @@
 ﻿using RobotControl.Communication;
 using RobotControl.Forms;
+using RobotControl.Views;
 using System.Drawing;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
@@ -64,7 +65,7 @@ namespace RobotControl
 
     private void toolStripButton1_Click(object sender, System.EventArgs e)
     {
-      var dockContent = new SimulationView();
+      var dockContent = new CommunicationManagerView();
       dockContent.Show(this.dockPanel1, DockState.Float);
     }
   }

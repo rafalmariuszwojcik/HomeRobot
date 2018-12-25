@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace RobotControl
@@ -13,6 +15,10 @@ namespace RobotControl
     {
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
+      #if DEBUG
+      // Add this; Change the Locales(En-US): Done.
+      Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+      #endif
       Application.Run(new formRobotControl());
     }
   }

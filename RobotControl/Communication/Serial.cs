@@ -9,6 +9,10 @@ namespace RobotControl.Communication
     {
     }
 
+    public Serial() : base(new SerialConfiguration())
+    {
+    }
+
     private void Port_DataReceived(object sender, SerialDataReceivedEventArgs e)
     {
       SerialPort sp = (SerialPort)sender;

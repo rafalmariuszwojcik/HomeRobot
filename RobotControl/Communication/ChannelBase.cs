@@ -13,6 +13,8 @@ namespace RobotControl.Communication
 
     private readonly U configuration;
 
+    public string Name { get => GetType().Name; }
+
     public event EventHandler<IDataReceivedEventArgs> DataReceived;
 
     public ChannelBase(U configuration)
