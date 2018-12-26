@@ -15,6 +15,27 @@ namespace RobotControl.Communication
 
     public string Name { get => GetType().Name; }
 
+    public IConfiguration Configuration => configuration;
+
+    public bool Active
+    {
+      get { return channel != null; }
+      set
+      {
+        if (Active != value)
+        {
+          if (value)
+          {
+            Open();
+          }
+          else
+          {
+            Close();
+          }
+        }
+      }
+    }
+
     public event EventHandler<IDataReceivedEventArgs> DataReceived;
 
     public ChannelBase(U configuration)

@@ -1,9 +1,10 @@
-﻿namespace RobotControl.Communication
+﻿using System.Xml.Serialization;
+
+namespace RobotControl.Communication
 {
   public class SerialConfiguration : ConfigurationBase
   {
     public string Port { get; set; }
-
     public int BaudRate { get; set; }
   }
 }

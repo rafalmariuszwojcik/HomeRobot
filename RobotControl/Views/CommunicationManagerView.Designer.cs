@@ -35,8 +35,12 @@
       // 
       // dataGridView1
       // 
+      this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
+      this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+      this.dataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
       this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
       resources.ApplyResources(this.dataGridView1, "dataGridView1");
+      this.dataGridView1.GridColor = System.Drawing.SystemColors.Window;
       this.dataGridView1.Name = "dataGridView1";
       // 
       // CommunicationManagerView

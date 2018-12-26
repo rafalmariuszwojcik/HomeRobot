@@ -9,7 +9,9 @@ namespace RobotControl.Communication
     void Close();
     void Send(ICommand[] commands);
     event EventHandler<IDataReceivedEventArgs> DataReceived;
+    bool Active { get; set; }
     string Name { get; }
+    IConfiguration Configuration { get; }
   }
 
   public interface IChannel<U> : IChannel where U: ConfigurationBase
