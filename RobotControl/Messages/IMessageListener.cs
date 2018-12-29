@@ -8,6 +8,6 @@ namespace RobotControl.Messages
 {
   public interface IMessageListener
   {
-    void MessageReceived(string message);
+    void MessageReceived(object sender, string message);
   }
 }

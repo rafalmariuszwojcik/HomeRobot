@@ -117,7 +117,7 @@ void loop()
 
   if (Robot_getState(&robot, speedInfo))
   {
-    Serial.print(speedInfo);
+    Serial.println(speedInfo);
   }
 
   /*
@@ -144,7 +144,7 @@ void loop()
       robot.rightEngine.speedCounter.avg_speed, 
       robot.rightEngine.pwm);
     robot.rightEngine.signaled = 0;
-    Serial.print(speedInfo);
+    Serial.println(speedInfo);
   }
 
   if (robot.leftEngine.signaled)
@@ -157,7 +157,7 @@ void loop()
       robot.leftEngine.speedCounter.avg_speed, 
       robot.leftEngine.pwm);
     robot.leftEngine.signaled = 0;
-    Serial.print(speedInfo);
+    Serial.println(speedInfo);
   }
 }
 

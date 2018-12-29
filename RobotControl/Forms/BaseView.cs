@@ -22,11 +22,11 @@ namespace RobotControl.Forms
       base.Dispose(disposing);
     }
 
-    protected virtual void MessageReceived(string message)
+    protected virtual void MessageReceived(object sender, string message)
     {
     }
 
-    void IMessageListener.MessageReceived(string message)
+    void IMessageListener.MessageReceived(object sender, string message)
     {
       message = !string.IsNullOrWhiteSpace(message) ? message.Trim() : null;
       if (string.IsNullOrWhiteSpace(message))
@@ -36,11 +36,11 @@ namespace RobotControl.Forms
 
       if (InvokeRequired)
       {
-        Invoke(new Action<string>(MessageReceived), new[] { message });
+        Invoke(new Action<object, string>(MessageReceived), new[] { sender, message });
       }
       else
       {
-        MessageReceived(message);
+        MessageReceived(sender, message);
       }
     }
   }

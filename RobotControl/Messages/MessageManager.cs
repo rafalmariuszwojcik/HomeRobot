@@ -23,11 +23,11 @@ namespace RobotControl.Messages
       }
     }
 
-    public void MessageReceived(string message)
+    public void MessageReceived(object sender, string message)
     {
       foreach (var listener in listeners)
       {
-        listener.MessageReceived(message);
+        listener.MessageReceived(sender, message);
       }
     }
   }

@@ -9,10 +9,9 @@ namespace RobotControl.Views
       InitializeComponent();
     }
 
-    protected override void MessageReceived(string message)
+    protected override void MessageReceived(object sender, string message)
     {
       uxOutputText.AppendText(message);
-      uxOutputText.AppendText(Environment.NewLine);
     }
   }
 }

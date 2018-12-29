@@ -4,6 +4,6 @@
   {
     void RegisterListener(IMessageListener listener);
     void UnregisterListener(IMessageListener listener);
-    void MessageReceived(string message);
+    void MessageReceived(object sender, string message);
   }
 }
