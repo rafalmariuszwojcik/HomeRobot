@@ -90,13 +90,13 @@
     <Compile Include="Forms\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\BaseView.cs">
+    <Compile Include="Views\BaseView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SimulationView.cs">
+    <Compile Include="Views\SimulationView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SimulationView.Designer.cs">
+    <Compile Include="Views\SimulationView.Designer.cs">
       <DependentUpon>SimulationView.cs</DependentUpon>
     </Compile>
     <Compile Include="IMessageReceiver.cs" />
@@ -151,7 +151,7 @@
     <EmbeddedResource Include="Controls\AreaViewControl.resx">
       <DependentUpon>AreaViewControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SimulationView.resx">
+    <EmbeddedResource Include="Views\SimulationView.resx">
       <DependentUpon>SimulationView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RobotControl.resx">

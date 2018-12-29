@@ -2,7 +2,7 @@
 using System;
 using WeifenLuo.WinFormsUI.Docking;
 
-namespace RobotControl.Forms
+namespace RobotControl.Views
 {
   public class BaseView : DockContent, IMessageListener
   {

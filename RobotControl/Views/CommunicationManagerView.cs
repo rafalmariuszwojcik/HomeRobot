@@ -2,7 +2,7 @@
 
 namespace RobotControl.Views
 {
-  public partial class CommunicationManagerView : Forms.BaseView
+  public partial class CommunicationManagerView : BaseView
   {
     public CommunicationManagerView()
     {

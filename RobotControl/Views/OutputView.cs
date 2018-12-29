@@ -2,7 +2,7 @@
 
 namespace RobotControl.Views
 {
-  public partial class OutputView : RobotControl.Forms.BaseView
+  public partial class OutputView : BaseView
   {
     public OutputView()
     {
