@@ -67,7 +67,7 @@
     <Compile Include="Configuration\AppSettingsConfigurationRepository.cs" />
     <Compile Include="Configuration\IConfigurationRepository.cs" />
     <Compile Include="Controls\AreaViewControl.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\AreaViewControl.Designer.cs">
       <DependentUpon>AreaViewControl.cs</DependentUpon>
@@ -100,6 +100,9 @@
       <DependentUpon>SimulationView.cs</DependentUpon>
     </Compile>
     <Compile Include="IMessageReceiver.cs" />
+    <Compile Include="Messages\IMessageListener.cs" />
+    <Compile Include="Messages\IMessageManager.cs" />
+    <Compile Include="Messages\MessageManager.cs" />
     <Compile Include="RobotControl.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -139,6 +142,12 @@
     <Compile Include="Views\CommunicationManagerView.Designer.cs">
       <DependentUpon>CommunicationManagerView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\OutputView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\OutputView.Designer.cs">
+      <DependentUpon>OutputView.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Controls\AreaViewControl.resx">
       <DependentUpon>AreaViewControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -159,6 +168,9 @@
     </Compile>
     <EmbeddedResource Include="Views\CommunicationManagerView.resx">
       <DependentUpon>CommunicationManagerView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\OutputView.resx">
+      <DependentUpon>OutputView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

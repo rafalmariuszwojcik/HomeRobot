@@ -1,5 +1,6 @@
 ﻿using RobotControl.Communication;
 using RobotControl.Forms;
+using RobotControl.Messages;
 using RobotControl.Views;
 using System.Drawing;
 using System.Windows.Forms;
@@ -67,6 +68,13 @@ namespace RobotControl
     {
       var dockContent = new CommunicationManagerView();
       dockContent.Show(this.dockPanel1, DockState.Float);
+      var dockOutput = new OutputView();
+      dockOutput.Show(this.dockPanel1, DockState.Float);
+    }
+
+    private void toolStripButton2_Click(object sender, System.EventArgs e)
+    {
+      MessageManager.Instance.MessageReceived("Bolek i Lolek.");
     }
   }
 }
