@@ -62,7 +62,8 @@ uint32_t startTime;
 void serialInput();
 
 void setup() {
-  Serial.begin(76800);
+  Serial.begin(115200);
+  //Serial.begin(76800);
   //Serial.begin(74880);
   while (!Serial) {}
   memset(inputBufer, 0, sizeof(inputBufer));
