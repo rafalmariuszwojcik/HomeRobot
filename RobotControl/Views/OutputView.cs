@@ -4,7 +4,7 @@ namespace RobotControl.Views
 {
   public partial class OutputView : BaseView
   {
-    public OutputView()
+    public OutputView() : base(true, false)
     {
       InitializeComponent();
     }

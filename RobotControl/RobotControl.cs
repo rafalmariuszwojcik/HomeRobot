@@ -68,13 +68,18 @@ namespace RobotControl
     {
       var dockContent = new CommunicationManagerView();
       dockContent.Show(this.dockPanel1, DockState.Float);
-      var dockOutput = new OutputView();
-      dockOutput.Show(this.dockPanel1, DockState.Float);
+      
     }
 
     private void toolStripButton2_Click(object sender, System.EventArgs e)
     {
       MessageManager.Instance.MessageReceived(this, "Bolek i Lolek.");
+    }
+
+    private void toolStripButton3_Click(object sender, System.EventArgs e)
+    {
+      var dockOutput = new OutputView();
+      dockOutput.Show(this.dockPanel1, DockState.Float);
     }
   }
 }

@@ -2,7 +2,7 @@
 
 namespace RobotControl.Core
 {
-  public class Singleton<T> where T: class
+  public abstract class Singleton<T> where T: Singleton<T>
   {
     private static readonly object syncRoot = new object();
     private static volatile T instance;
@@ -31,8 +31,17 @@ namespace RobotControl.Core
       }
     }
 
+    protected virtual void TearDown()
+    {
+    }
+
     private static void TearDownInstance(object sender, EventArgs e)
     {
+      if (instance != null)
+      {
+        instance.TearDown();
+      }
+
       instance = null;
     }
   }

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace RobotControl.Command
 {
-  public interface IEngineCommand : ICommand
+  public interface ICommandListener
   {
-    int Index { get; set; }
+    void CommandReceived(object sender, ICommand command);
   }
 }

@@ -1,33 +1,43 @@
 ﻿using RobotControl.Core;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace RobotControl.Messages
 {
   public class MessageManager : Singleton<MessageManager>, IMessageManager
   {
+    private readonly object lockObject = new object();
     private readonly IList<IMessageListener> listeners = new List<IMessageListener>();
 
     public void RegisterListener(IMessageListener listener)
     {
-      if (listener != null && !listeners.Contains(listener))
+      lock (lockObject)
       {
-        listeners.Add(listener);
+        if (listener != null && !listeners.Contains(listener))
+        {
+          listeners.Add(listener);
+        }
       }
     }
 
     public void UnregisterListener(IMessageListener listener)
     {
-      if (listeners.Contains(listener))
+      lock (lockObject)
       {
-        listeners.Remove(listener);
+        if (listeners.Contains(listener))
+        {
+          listeners.Remove(listener);
+        }
       }
     }
 
     public void MessageReceived(object sender, string message)
     {
-      foreach (var listener in listeners)
+      lock (lockObject)
       {
-        listener.MessageReceived(sender, message);
+        Parallel.ForEach(listeners, (listener) => {
+          listener.MessageReceived(sender, message);
+        });
       }
     }
   }

@@ -50,10 +50,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Command\CommandManager.cs" />
     <Compile Include="Command\EngineAvgSpeedCommand.cs" />
     <Compile Include="Command\EnginePwmCommand.cs" />
     <Compile Include="Command\EngineSpeedCommand.cs" />
     <Compile Include="Command\ICommand.cs" />
+    <Compile Include="Command\ICommandListener.cs" />
+    <Compile Include="Command\ICommandManager.cs" />
     <Compile Include="Command\IEngineCommand.cs" />
     <Compile Include="Communication\ChannelBase.cs" />
     <Compile Include="Communication\CommunicationManager.cs" />
@@ -71,6 +74,15 @@
     </Compile>
     <Compile Include="Controls\AreaViewControl.Designer.cs">
       <DependentUpon>AreaViewControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BaseControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EngineInfoControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\EngineInfoControl.Designer.cs">
+      <DependentUpon>EngineInfoControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\ManualScrollableControl.cs">
       <SubType>Component</SubType>
