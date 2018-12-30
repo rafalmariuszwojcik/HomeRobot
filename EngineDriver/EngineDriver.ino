@@ -145,6 +145,9 @@ void loop()
       robot.rightEngine.pwm);
     robot.rightEngine.signaled = 0;
     Serial.println(speedInfo);
+
+    sprintf(speedInfo, "E00,1,%u;", robot.rightEngine.speedCounter.curr_speed);
+    Serial.println(speedInfo);
   }
 
   if (robot.leftEngine.signaled)
@@ -157,6 +160,9 @@ void loop()
       robot.leftEngine.speedCounter.avg_speed, 
       robot.leftEngine.pwm);
     robot.leftEngine.signaled = 0;
+    Serial.println(speedInfo);
+
+    sprintf(speedInfo, "E00,0,%u;", robot.leftEngine.speedCounter.curr_speed);
     Serial.println(speedInfo);
   }
 }

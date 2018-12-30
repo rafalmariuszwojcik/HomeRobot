@@ -6,6 +6,5 @@ namespace RobotControl.Command
   {
     void RegisterListener(ICommandListener listener);
     void UnregisterListener(ICommandListener listener);
-    void CommandReceived(object sender, ICommand command);
   }
 }

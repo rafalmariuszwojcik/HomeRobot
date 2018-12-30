@@ -50,6 +50,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Command\CommandFactory.cs" />
     <Compile Include="Command\CommandManager.cs" />
     <Compile Include="Command\EngineAvgSpeedCommand.cs" />
     <Compile Include="Command\EnginePwmCommand.cs" />
