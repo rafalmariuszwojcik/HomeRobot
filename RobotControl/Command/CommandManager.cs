@@ -26,35 +26,7 @@ namespace RobotControl.Command
       tokenSource = new CancellationTokenSource();
       token = tokenSource.Token;
       signal = new ManualResetEvent(true);
-      commandWorker = Task.Run(() =>
-      {
-        ICommand command = null;
-        token.ThrowIfCancellationRequested();
-        while (true)
-        {
-          signal.WaitOne();
-          do
-          {
-            lock (lockCommands)
-            {
-              command = commands.Any() ? commands.Dequeue() : null;
-            }
-
-            if (command != null)
-            {
-              CommandReceived(null, command);
-            }
-
-            if (token.IsCancellationRequested)
-            {
-              token.ThrowIfCancellationRequested();
-            }
-          }
-          while (command == null);
-          signal.Reset();
-        }
-      }, token);
-
+      commandWorker = Task.Run(() => ProcessCommands(), token);
       MessageManager.Instance.RegisterListener(this);
     }
 
@@ -148,6 +120,35 @@ namespace RobotControl.Command
             }
           }
         }
+      }
+    }
+
+    private void ProcessCommands()
+    {
+      ICommand command = null;
+      token.ThrowIfCancellationRequested();
+      while (true)
+      {
+        signal.WaitOne();
+        do
+        {
+          lock (lockCommands)
+          {
+            command = commands.Any() ? commands.Dequeue() : null;
+          }
+
+          if (command != null)
+          {
+            CommandReceived(null, command);
+          }
+
+          if (token.IsCancellationRequested)
+          {
+            token.ThrowIfCancellationRequested();
+          }
+        }
+        while (command == null);
+        signal.Reset();
       }
     }
 
