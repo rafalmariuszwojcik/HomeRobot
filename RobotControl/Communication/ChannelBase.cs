@@ -75,9 +75,7 @@ namespace RobotControl.Communication
     }
 
     protected abstract T InternalOpen(U configuration);
-
     protected abstract void InternalClose(T channel);
-
     public abstract void InternalSend(T channel, ICommand[] commands);
 
     protected void OnDataReceived(string data)
