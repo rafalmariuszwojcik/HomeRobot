@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RobotControl.Core
 {
-  public class DataProcessor<T> : DisposableBase
+  public class DataProcessingQueue<T> : DisposableBase
     where T: class
   {
     private readonly object lockData = new object();
@@ -17,7 +17,7 @@ namespace RobotControl.Core
     private readonly Queue<T> data = new Queue<T>();
     private readonly Action<T> action;
 
-    public DataProcessor(Action<T> action)
+    public DataProcessingQueue(Action<T> action)
     {
       tokenSource = new CancellationTokenSource();
       token = tokenSource.Token;
@@ -59,7 +59,7 @@ namespace RobotControl.Core
             item = data.Any() ? data.Dequeue() : null;
           }
 
-          if (item != null)
+          if (item != null && action != null)
           {
             action(item);
           }

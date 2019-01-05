@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace RobotControl.Command
@@ -12,41 +11,20 @@ namespace RobotControl.Command
   public class CommandManager : Singleton<CommandManager>, ICommandManager, IMessageListener
   {
     private readonly object lockListeners = new object();
-    private readonly object lockCommands = new object();
     private readonly IList<ICommandListener> listeners = new List<ICommandListener>();
-    private readonly Queue<ICommand> commands = new Queue<ICommand>();
     private readonly StringBuilder incomingData = new StringBuilder();
-    private readonly CancellationTokenSource tokenSource;
-    private readonly CancellationToken token;
-    private readonly Task commandWorker;
-    private readonly ManualResetEvent signal;
-    
+    private readonly DataProcessingQueue<ICommand> commandQueue;
+
     public CommandManager()
     {
-      tokenSource = new CancellationTokenSource();
-      token = tokenSource.Token;
-      signal = new ManualResetEvent(true);
-      commandWorker = Task.Run(() => ProcessCommands(), token);
+      commandQueue = new DataProcessingQueue<ICommand>(x => CommandReceived(null, x));
       MessageManager.Instance.RegisterListener(this);
     }
 
     protected override void TearDown()
     {
       MessageManager.Instance.UnregisterListener(this);
-
-      if (tokenSource != null)
-      {
-        tokenSource.Cancel();
-        signal.Set();
-        if (commandWorker != null)
-        {
-          commandWorker.Wait();
-        }
-        
-        tokenSource.Dispose();
-        signal.Dispose();
-      }
-
+      commandQueue?.Dispose();
       base.TearDown();
     }
 
@@ -112,43 +90,10 @@ namespace RobotControl.Command
             var command = CommandFactory.CreateCommand(commandId, commandParameters);
             if (command != null)
             {
-              lock (lockCommands)
-              {
-                commands.Enqueue(command);
-                signal.Set();
-              }
+              commandQueue.Enqueue(command);
             }
           }
         }
-      }
-    }
-
-    private void ProcessCommands()
-    {
-      ICommand command = null;
-      token.ThrowIfCancellationRequested();
-      while (true)
-      {
-        signal.WaitOne();
-        do
-        {
-          lock (lockCommands)
-          {
-            command = commands.Any() ? commands.Dequeue() : null;
-          }
-
-          if (command != null)
-          {
-            CommandReceived(null, command);
-          }
-
-          if (token.IsCancellationRequested)
-          {
-            token.ThrowIfCancellationRequested();
-          }
-        }
-        while (command != null);
-        signal.Reset();
       }
     }
 
