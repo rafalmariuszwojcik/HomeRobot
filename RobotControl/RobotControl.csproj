@@ -91,6 +91,8 @@
     <Compile Include="Controls\ViewControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Core\DataProcessor.cs" />
+    <Compile Include="Core\DisposableBase.cs" />
     <Compile Include="Core\Singleton.cs" />
     <Compile Include="Drawing\DrawElement.cs" />
     <Compile Include="Drawing\DrawElementBase.cs" />
