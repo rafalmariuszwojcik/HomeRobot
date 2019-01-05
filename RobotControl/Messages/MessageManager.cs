@@ -8,6 +8,12 @@ namespace RobotControl.Messages
   {
     private readonly object lockObject = new object();
     private readonly IList<IMessageListener> listeners = new List<IMessageListener>();
+    private readonly DataProcessingQueue<string> messageQueue;
+
+    public MessageManager()
+    {
+      messageQueue = new DataProcessingQueue<string>(x => PostMessage(null, x));
+    }
 
     public void RegisterListener(IMessageListener listener)
     {
@@ -32,6 +38,17 @@ namespace RobotControl.Messages
     }
 
     public void MessageReceived(object sender, string message)
+    {
+      messageQueue.Enqueue(message);
+    }
+
+    protected override void TearDown()
+    {
+      messageQueue?.Dispose();
+      base.TearDown();
+    }
+
+    private void PostMessage(object sender, string message)
     {
       lock (lockObject)
       {
