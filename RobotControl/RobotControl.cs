@@ -26,11 +26,11 @@ namespace RobotControl
       this.Controls.Add(statusBar1);
 
       //dockPanel1
-      var dockContent = new SimulationView();
-      var dockContent2 = new SimulationView();
+      ///var dockContent = new SimulationView();
+      //var dockContent2 = new SimulationView();
 
-      dockContent.Show(this.dockPanel1, DockState.Document);
-      dockContent2.Show(this.dockPanel1, DockState.Document);
+      //dockContent.Show(this.dockPanel1, DockState.Document);
+      //dockContent2.Show(this.dockPanel1, DockState.Document);
 
     }
 
@@ -81,5 +81,82 @@ namespace RobotControl
       var dockOutput = new OutputView();
       dockOutput.Show(this.dockPanel1, DockState.Float);
     }
+
+    private void toolStripButton5_Click(object sender, System.EventArgs e)
+    {
+      var dockOutput = new EngineInfoView();
+      dockOutput.Show(this.dockPanel1, DockState.Float);
+    }
+
+    private void formRobotControl_FormClosing(object sender, FormClosingEventArgs e)
+    {
+      dockPanel1.SaveAsXml(@"c:\temp\layout.xml");
+    }
+
+    private void formRobotControl_Load(object sender, System.EventArgs e)
+    {
+      var m_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
+      dockPanel1.LoadFromXml(@"c:\temp\layout.xml", m_deserializeDockContent);
+    }
+
+    private IDockContent GetContentFromPersistString(string persistString)
+    {
+      if (persistString == typeof(SimulationView).ToString())
+      {
+        return new SimulationView();
+      }
+      else if (persistString == typeof(EngineInfoView).ToString())
+      {
+        return new EngineInfoView();
+      }
+      else if (persistString == typeof(OutputView).ToString())
+      {
+        return new OutputView();
+      }
+      else if (persistString == typeof(CommunicationManagerView).ToString())
+      {
+        return new CommunicationManagerView();
+      }
+      else
+      {
+        return null;
+      }
+      
+      /*
+      if (persistString == typeof(DummySolutionExplorer).ToString())
+        return m_solutionExplorer;
+      else if (persistString == typeof(DummyPropertyWindow).ToString())
+        return m_propertyWindow;
+      else if (persistString == typeof(DummyToolbox).ToString())
+        return m_toolbox;
+      else if (persistString == typeof(DummyOutputWindow).ToString())
+        return m_outputWindow;
+      else if (persistString == typeof(DummyTaskList).ToString())
+        return m_taskList;
+      else
+      {
+        // DummyDoc overrides GetPersistString to add extra information into persistString.
+        // Any DockContent may override this value to add any needed information for deserialization.
+
+        string[] parsedStrings = persistString.Split(new char[] { ',' });
+        if (parsedStrings.Length != 3)
+          return null;
+
+        if (parsedStrings[0] != typeof(DummyDoc).ToString())
+          return null;
+
+        DummyDoc dummyDoc = new DummyDoc();
+        if (parsedStrings[1] != string.Empty)
+          dummyDoc.FileName = parsedStrings[1];
+        if (parsedStrings[2] != string.Empty)
+          dummyDoc.Text = parsedStrings[2];
+
+        return dummyDoc;
+        
+      return null;
+      }*/
+      return null;
+    }
+
   }
 }

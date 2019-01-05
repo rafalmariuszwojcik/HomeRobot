@@ -35,6 +35,8 @@
       this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
       this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
       this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+      this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
+      this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
       this.printDocument1 = new System.Drawing.Printing.PrintDocument();
       this.menuStrip1 = new System.Windows.Forms.MenuStrip();
       this.testsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,7 +54,9 @@
             this.toolStripButton1,
             this.toolStripButton2,
             this.toolStripSeparator1,
-            this.toolStripButton3});
+            this.toolStripButton3,
+            this.toolStripButton4,
+            this.toolStripButton5});
       resources.ApplyResources(this.toolStrip1, "toolStrip1");
       this.toolStrip1.Name = "toolStrip1";
       // 
@@ -81,6 +85,19 @@
       resources.ApplyResources(this.toolStripButton3, "toolStripButton3");
       this.toolStripButton3.Name = "toolStripButton3";
       this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
+      // 
+      // toolStripButton4
+      // 
+      this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      resources.ApplyResources(this.toolStripButton4, "toolStripButton4");
+      this.toolStripButton4.Name = "toolStripButton4";
+      // 
+      // toolStripButton5
+      // 
+      this.toolStripButton5.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      resources.ApplyResources(this.toolStripButton5, "toolStripButton5");
+      this.toolStripButton5.Name = "toolStripButton5";
+      this.toolStripButton5.Click += new System.EventHandler(this.toolStripButton5_Click);
       // 
       // menuStrip1
       // 
@@ -121,6 +138,8 @@
       this.Controls.Add(this.menuStrip1);
       this.MainMenuStrip = this.menuStrip1;
       this.Name = "formRobotControl";
+      this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.formRobotControl_FormClosing);
+      this.Load += new System.EventHandler(this.formRobotControl_Load);
       this.toolStrip1.ResumeLayout(false);
       this.toolStrip1.PerformLayout();
       this.menuStrip1.ResumeLayout(false);
@@ -143,6 +162,8 @@
     private WeifenLuo.WinFormsUI.Docking.VisualStudioToolStripExtender visualStudioToolStripExtender1;
     private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel1;
     private WeifenLuo.WinFormsUI.Docking.VS2005Theme vS2005Theme1;
+    private System.Windows.Forms.ToolStripButton toolStripButton4;
+    private System.Windows.Forms.ToolStripButton toolStripButton5;
   }
 }
 

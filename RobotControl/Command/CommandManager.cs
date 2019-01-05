@@ -147,7 +147,7 @@ namespace RobotControl.Command
             token.ThrowIfCancellationRequested();
           }
         }
-        while (command == null);
+        while (command != null);
         signal.Reset();
       }
     }

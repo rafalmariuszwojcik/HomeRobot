@@ -1,14 +1,16 @@
-﻿using RobotControl.Messages;
+﻿using RobotControl.Command;
+using RobotControl.Messages;
 using System;
 using System.Windows.Forms;
 
 namespace RobotControl.Controls
 {
-  public class BaseControl : UserControl, IMessageListener
+  public class BaseControl : UserControl, IMessageListener, ICommandListener
   {
     public BaseControl()
     {
       MessageManager.Instance.RegisterListener(this);
+      CommandManager.Instance.RegisterListener(this);
     }
 
     protected override void Dispose(bool disposing)
@@ -16,6 +18,7 @@ namespace RobotControl.Controls
       if (disposing)
       {
         MessageManager.Instance.UnregisterListener(this);
+        CommandManager.Instance.UnregisterListener(this);
       }
 
       base.Dispose(disposing);
@@ -40,6 +43,27 @@ namespace RobotControl.Controls
       else
       {
         MessageReceived(sender, message);
+      }
+    }
+
+    protected virtual void CommandReceived(object sender, ICommand message)
+    {
+    }
+
+    void ICommandListener.CommandReceived(object sender, ICommand command)
+    {
+      if (command == null)
+      {
+        return;
+      }
+
+      if (InvokeRequired)
+      {
+        BeginInvoke(new Action<object, ICommand>(CommandReceived), new[] { sender, command });
+      }
+      else
+      {
+        CommandReceived(sender, command);
       }
     }
   }
