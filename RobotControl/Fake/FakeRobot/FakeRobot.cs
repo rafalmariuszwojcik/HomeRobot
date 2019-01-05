@@ -1,13 +1,12 @@
-﻿using System;
+﻿using RobotControl.Core;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace RobotControl.Fake.FakeRobot
 {
-  public class FakeRobot : IDisposable
+  public class FakeRobot : DisposableBase
   {
-    private bool disposed = false;
     private readonly Engine leftEngine = new Engine();
     private readonly Engine rightEngine = new Engine();
     private readonly Task task;
@@ -18,11 +17,6 @@ namespace RobotControl.Fake.FakeRobot
     public FakeRobot()
     {
       task = new Task(() => Loop(cts.Token));
-    }
-
-    ~FakeRobot()
-    {
-      Dispose(false);
     }
 
     public void Start()
@@ -39,19 +33,8 @@ namespace RobotControl.Fake.FakeRobot
       }
     }
 
-    public void Dispose()
+    protected override void Dispose(bool disposing)
     {
-      Dispose(true);
-      GC.SuppressFinalize(this);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-      if (disposed)
-      {
-        return;
-      }
-
       if (disposing)
       {
         if (cts != null)
@@ -60,8 +43,6 @@ namespace RobotControl.Fake.FakeRobot
           cts = null;
         }
       }
-
-      disposed = true;
     }
 
     private void Loop(CancellationToken token)

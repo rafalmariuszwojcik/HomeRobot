@@ -1,21 +1,17 @@
 ﻿using RobotControl.Command;
+using RobotControl.Core;
 using RobotControl.Messages;
 using System;
 
 namespace RobotControl.Communication
 {
-  public abstract class ChannelBase<T, U> : IChannel<U>
+  public abstract class ChannelBase<T, U> : DisposableBase, IChannel<U>
     where T: IDisposable
     where U: ConfigurationBase
   {
-    bool disposed = false;
-
     private T channel;
-
     private readonly U configuration;
-
     public string Name { get => GetType().Name; }
-
     public IConfiguration Configuration => configuration;
 
     public bool Active
@@ -42,11 +38,6 @@ namespace RobotControl.Communication
     public ChannelBase(U configuration)
     {
       this.configuration = configuration;
-    }
-
-    ~ChannelBase()
-    {
-      Dispose(false);
     }
 
     public void Open()
@@ -83,12 +74,6 @@ namespace RobotControl.Communication
       InternalSend(channel, commands);
     }
 
-    public void Dispose()
-    {
-      Dispose(true);
-      GC.SuppressFinalize(this);
-    }
-
     protected abstract T InternalOpen(U configuration);
 
     protected abstract void InternalClose(T channel);
@@ -101,19 +86,12 @@ namespace RobotControl.Communication
       MessageManager.Instance.MessageReceived(this, data);
     }
 
-    protected virtual void Dispose(bool disposing)
+    protected override void Dispose(bool disposing)
     {
-      if (disposed)
-      {
-        return;
-      }
-
       if (disposing)
       {
         Close();
       }
-
-      disposed = true;
     }
   }
 }
