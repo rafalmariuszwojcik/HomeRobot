@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RobotControl.Messages
 {
-  public interface IMessageListener : IListener
+  public interface IMessageListener
   {
     void MessageReceived(object sender, string message);
   }

@@ -55,7 +55,7 @@ namespace RobotControl.Core
       lock (lockObject)
       {
         Parallel.ForEach(listeners, (listener) => {
-          //listener.MessageReceived(sender, message);
+          listener.MessageReceived(channel, data);
         });
       }
     }
