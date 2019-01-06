@@ -5,11 +5,17 @@ using System.Threading.Tasks;
 namespace RobotControl.Core
 {
   public abstract class ManagerBase<T, M> : Singleton<ManagerBase<T, M>>
-    where T: IListener 
+    where T: IListener<M> 
     where M: class
   {
     private readonly object lockObject = new object();
     private readonly IList<T> listeners = new List<T>();
+    private readonly DataProcessingQueue<M> messageQueue;
+
+    public ManagerBase()
+    {
+      messageQueue = new DataProcessingQueue<M>(x => PostMessage(null, x));
+    }
 
     public void RegisterListener(T listener)
     {
@@ -33,9 +39,18 @@ namespace RobotControl.Core
       }
     }
 
-    public abstract void MessageReceived(IChannel channel, M data);
+    public void MessageReceived(IChannel channel, M data)
+    {
+      messageQueue.Enqueue(data);
+    }
 
-    protected void PostMessage(IChannel channel, M data)
+    protected override void TearDown()
+    {
+      messageQueue?.Dispose();
+      base.TearDown();
+    }
+
+    private void PostMessage(IChannel channel, M data)
     {
       lock (lockObject)
       {

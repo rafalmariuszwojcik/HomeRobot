@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RobotControl.Communication;
 
 namespace RobotControl.Core
 {
-  public interface IListener
+  public interface IListener<T>
+    where T : class
   {
+    void MessageReceived(IChannel channel, T data);
   }
 }
