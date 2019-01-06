@@ -94,6 +94,7 @@
     <Compile Include="Core\DataProcessingQueue.cs" />
     <Compile Include="Core\DisposableBase.cs" />
     <Compile Include="Core\Singleton.cs" />
+    <Compile Include="Core\SingletonTearDown.cs" />
     <Compile Include="Drawing\DrawElement.cs" />
     <Compile Include="Drawing\DrawElementBase.cs" />
     <Compile Include="Drawing\DrawingFactory.cs" />

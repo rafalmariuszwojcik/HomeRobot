@@ -30,19 +30,30 @@ namespace RobotControl.Core
     {
       lock (lockData)
       {
-        data.Enqueue(item);
-        signal.Set();
+        if (item != null)
+        {
+          data.Enqueue(item);
+          signal.Set();
+        }
       }
     }
 
     protected override void Dispose(bool disposing)
     {
       tokenSource?.Cancel();
-      signal?.Set();
+      Signal();
       worker?.Wait();
       worker?.Dispose();
       signal?.Dispose();
       tokenSource?.Dispose();
+    }
+
+    private void Signal()
+    {
+      lock (lockData)
+      {
+        signal?.Set();
+      }
     }
 
     private void ProcessData()
@@ -57,6 +68,10 @@ namespace RobotControl.Core
           lock (lockData)
           {
             item = data.Any() ? data.Dequeue() : null;
+            if (item == null)
+            {
+              signal.Reset();
+            }
           }
 
           if (item != null && action != null)
@@ -70,14 +85,6 @@ namespace RobotControl.Core
           }
         }
         while (item != null);
-
-        lock (lockData)
-        {
-          if (!data.Any())
-          {
-            signal.Reset();
-          }
-        }
       }
     }
   }

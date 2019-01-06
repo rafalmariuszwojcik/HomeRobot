@@ -28,6 +28,7 @@ namespace RobotControl.Views
       if (disposing)
       {
         MessageManager.Instance.UnregisterListener(this);
+        CommandManager.Instance.UnregisterListener(this);
       }
 
       base.Dispose(disposing);
