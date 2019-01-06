@@ -59,7 +59,11 @@ namespace RobotControl.Core
     private void ProcessData()
     {
       T item = null;
-      token.ThrowIfCancellationRequested();
+      if (token.IsCancellationRequested)
+      {
+        return;
+      }
+
       while (true)
       {
         signal.WaitOne();
@@ -81,7 +85,7 @@ namespace RobotControl.Core
 
           if (token.IsCancellationRequested)
           {
-            token.ThrowIfCancellationRequested();
+            return;
           }
         }
         while (item != null);

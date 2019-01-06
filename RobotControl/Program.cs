@@ -1,5 +1,4 @@
-﻿using RobotControl.Command;
-using RobotControl.Core;
+﻿using RobotControl.Core;
 using System;
 using System.Globalization;
 using System.Threading;
@@ -21,8 +20,8 @@ namespace RobotControl
       // Add this; Change the Locales(En-US): Done.
       Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
       #endif
+      Application.ApplicationExit += (sender, e) => SingletonTearDown.Instance.DoEvent();
       Application.Run(new formRobotControl());
-      SingletonTearDown.Instance.DoEvent();
     }
   }
 }

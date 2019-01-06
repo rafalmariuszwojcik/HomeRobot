@@ -9,7 +9,10 @@ namespace RobotControl.Core
 
     public Singleton()
     {
-      SingletonTearDown.Instance.TearDownEvent += TearDownInstance;
+      if (GetType() != typeof(SingletonTearDown))
+      {
+        SingletonTearDown.Instance.TearDownEvent += TearDownInstance;
+      }
     }
 
     public static T Instance

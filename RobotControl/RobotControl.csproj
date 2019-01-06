@@ -93,6 +93,8 @@
     </Compile>
     <Compile Include="Core\DataProcessingQueue.cs" />
     <Compile Include="Core\DisposableBase.cs" />
+    <Compile Include="Core\IListener.cs" />
+    <Compile Include="Core\ManagerBase.cs" />
     <Compile Include="Core\Singleton.cs" />
     <Compile Include="Core\SingletonTearDown.cs" />
     <Compile Include="Drawing\DrawElement.cs" />

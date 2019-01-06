@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace RobotControl.Core
 {
@@ -9,10 +10,6 @@ namespace RobotControl.Core
   {
     private bool tearDownInProgress;
     private readonly LinkedList<EventHandler<EventArgs>> tearDownEvents = new LinkedList<EventHandler<EventArgs>>();
-
-    public SingletonTearDown()
-    {
-    }
 
     public event EventHandler<EventArgs> TearDownEvent
     {
@@ -45,22 +42,20 @@ namespace RobotControl.Core
             {
               handler(this, EventArgs.Empty);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-              ;
+              #if DEBUG
+              throw;
+              #endif
             }
           }
         });
 
-/*
         while (!task.IsCompleted)
         {
-          // We call DoEvents here, so that pending invokes on the main thread can be executed.
-          // E.g. some objects want to access a service (e.g. to unregister from notification events)
-          // and getting a service is only possible through the main thread.
           Application.DoEvents();
         }
-        */
+
         tearDownEvents.Clear();
       }
       finally
