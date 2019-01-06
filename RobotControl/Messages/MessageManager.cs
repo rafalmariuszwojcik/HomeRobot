@@ -1,4 +1,5 @@
-﻿using RobotControl.Core;
+﻿using RobotControl.Communication;
+using RobotControl.Core;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -36,12 +37,12 @@ namespace RobotControl.Messages
         }
       }
     }
-
+    
     public void MessageReceived(object sender, string message)
     {
       messageQueue.Enqueue(message);
     }
-
+    
     protected override void TearDown()
     {
       messageQueue?.Dispose();

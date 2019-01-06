@@ -1,5 +1,6 @@
 ﻿using RobotControl.Communication;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace RobotControl.Core
 {
@@ -33,5 +34,15 @@ namespace RobotControl.Core
     }
 
     public abstract void MessageReceived(IChannel channel, M data);
+
+    protected void PostMessage(IChannel channel, M data)
+    {
+      lock (lockObject)
+      {
+        Parallel.ForEach(listeners, (listener) => {
+          //listener.MessageReceived(sender, message);
+        });
+      }
+    }
   }
 }
