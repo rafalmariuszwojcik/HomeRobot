@@ -172,6 +172,7 @@
     <Compile Include="Views\OutputView.Designer.cs">
       <DependentUpon>OutputView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Windows\ListenerControl.cs" />
     <EmbeddedResource Include="Controls\AreaViewControl.resx">
       <DependentUpon>AreaViewControl.cs</DependentUpon>
     </EmbeddedResource>
