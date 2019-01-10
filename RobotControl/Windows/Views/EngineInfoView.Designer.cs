@@ -28,7 +28,7 @@
     /// </summary>
     private void InitializeComponent()
     {
-      this.engineInfoControl1 = new RobotControl.Controls.EngineInfoControl();
+      this.engineInfoControl1 = new RobotControl.Windows.Controls.EngineInfoControl();
       this.SuspendLayout();
       // 
       // engineInfoControl1

@@ -1,4 +1,4 @@
-﻿namespace RobotControl.Controls
+﻿namespace RobotControl.Windows.Controls
 {
   partial class AreaViewControl
   {

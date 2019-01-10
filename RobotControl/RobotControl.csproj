@@ -70,25 +70,25 @@
     <Compile Include="Communication\SerialConfiguration.cs" />
     <Compile Include="Configuration\AppSettingsConfigurationRepository.cs" />
     <Compile Include="Configuration\IConfigurationRepository.cs" />
-    <Compile Include="Controls\AreaViewControl.cs">
+    <Compile Include="Windows\Controls\AreaViewControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\AreaViewControl.Designer.cs">
+    <Compile Include="Windows\Controls\AreaViewControl.Designer.cs">
       <DependentUpon>AreaViewControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\BaseControl.cs">
+    <Compile Include="Windows\Controls\BaseControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\EngineInfoControl.cs">
+    <Compile Include="Windows\Controls\EngineInfoControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\EngineInfoControl.Designer.cs">
+    <Compile Include="Windows\Controls\EngineInfoControl.Designer.cs">
       <DependentUpon>EngineInfoControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ManualScrollableControl.cs">
+    <Compile Include="Windows\Controls\ManualScrollableControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\ViewControl.cs">
+    <Compile Include="Windows\Controls\ViewControl.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Core\DataProcessingQueue.cs" />
@@ -173,7 +173,7 @@
       <DependentUpon>OutputView.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\ListenerControl.cs" />
-    <EmbeddedResource Include="Controls\AreaViewControl.resx">
+    <EmbeddedResource Include="Windows\Controls\AreaViewControl.resx">
       <DependentUpon>AreaViewControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Views\EngineInfoView.resx">

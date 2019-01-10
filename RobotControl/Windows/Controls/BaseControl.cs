@@ -2,7 +2,7 @@
 using RobotControl.Windows;
 using System.Windows.Forms;
 
-namespace RobotControl.Controls
+namespace RobotControl.Windows.Controls
 {
   public abstract class BaseControl : UserControl
   {

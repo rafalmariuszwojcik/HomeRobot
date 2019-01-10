@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace RobotControl.Controls
+namespace RobotControl.Windows.Controls
 {
   public class ViewControl : ManualScrollableControl
   {

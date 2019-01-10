@@ -5,7 +5,7 @@ using RobotControl.Drawing;
 using RobotControl.Simulation;
 using RobotControl.Simulation.Robot;
 
-namespace RobotControl.Controls
+namespace RobotControl.Windows.Controls
 {
   public partial class AreaViewControl : ViewControl
   {

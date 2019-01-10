@@ -7,9 +7,9 @@ using System.Text;
 using System.Windows.Forms;
 using RobotControl.Command;
 
-namespace RobotControl.Controls
+namespace RobotControl.Windows.Controls
 {
-  public partial class EngineInfoControl : RobotControl.Controls.BaseControl
+  public partial class EngineInfoControl : RobotControl.Windows.Controls.BaseControl
   {
     private EngineInfo engineInfo = new EngineInfo();
     private readonly PropertyGrid propertyGrid = new PropertyGrid();

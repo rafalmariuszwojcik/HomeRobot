@@ -29,7 +29,7 @@
     private void InitializeComponent()
     {
       System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimulationView));
-      this.areaViewControl1 = new RobotControl.Controls.AreaViewControl();
+      this.areaViewControl1 = new RobotControl.Windows.Controls.AreaViewControl();
       this.trackBar1 = new System.Windows.Forms.TrackBar();
       this.areaViewControl1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();

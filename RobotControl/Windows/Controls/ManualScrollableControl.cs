@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace RobotControl.Controls
+namespace RobotControl.Windows.Controls
 {
   public class ManualScrollableControl : ScrollableControl
   {
