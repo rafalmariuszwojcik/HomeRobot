@@ -158,5 +158,10 @@ namespace RobotControl
       return null;
     }
 
+    private void toolStripButton4_Click(object sender, System.EventArgs e)
+    {
+      var dockOutput = new SimulationView();
+      dockOutput.Show(this.dockPanel1, DockState.Document);
+    }
   }
 }

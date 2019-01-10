@@ -424,6 +424,6 @@
     <value>formRobotControl</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>RobotControl.Forms.BaseForm, RobotControl, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>RobotControl.Windows.Forms.BaseForm, RobotControl, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>
