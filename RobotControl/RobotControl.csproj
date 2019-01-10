@@ -105,7 +105,7 @@
     <Compile Include="Drawing\RouteDraw.cs" />
     <Compile Include="Fake\FakeRobot\Engine.cs" />
     <Compile Include="Fake\FakeRobot\FakeRobot.cs" />
-    <Compile Include="Forms\BaseForm.cs">
+    <Compile Include="Windows\Forms\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Windows\Views\BaseView.cs">

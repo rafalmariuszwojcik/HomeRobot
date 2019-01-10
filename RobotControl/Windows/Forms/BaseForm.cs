@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace RobotControl.Forms
+namespace RobotControl.Windows.Forms
 {
   public class BaseForm : Form
   {
