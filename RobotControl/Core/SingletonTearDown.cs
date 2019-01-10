@@ -20,6 +20,7 @@ namespace RobotControl.Core
           throw new InvalidOperationException("Registration of a singleton instance during SingletonTearDown.DoEvent(). Maybe some singletons depend on each other!");
         }
 
+        //tearDownEvents.AddLast(value);
         tearDownEvents.AddFirst(value);
       }
 

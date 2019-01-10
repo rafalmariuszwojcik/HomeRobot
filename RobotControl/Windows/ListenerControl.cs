@@ -7,39 +7,29 @@ using System.Windows.Forms;
 
 namespace RobotControl.Windows
 {
-  public class ListenerControl : DisposableBase, IListener<string>, IListener<ICommand>
+  public class ListenerControl : DisposableBase, IMessageListener, ICommandListener 
   {
     private readonly Control control;
 
     public ListenerControl(Control control)
     {
       this.control = control;
-      //MessageManager.RegisterListener(this);
-      //CommandManager.RegisterListener(this);
+      MessageManager.Instance.RegisterListener(this);
+      CommandManager.Instance.RegisterListener(this);
     }
-
-    public void MessageReceived(IChannel channel, string data)
-    {
-      ProcessMessage(channel, data, (c, d) => InvokeOnMessageReceived(c, d));
-    }
-
-    public void MessageReceived(IChannel channel, ICommand data)
-    {
-      ProcessMessage(channel, data, (c, d) => InvokeOnCommandReceived(c, d));
-    }
-
-    public event EventHandler<MessageEventArgs> OnMessageReceived;
-    public event EventHandler<CommandEventArgs> OnCommandReceived;
 
     protected override void Dispose(bool disposing)
     {
       if (disposing)
       {
-        //CommandManager.UnregisterListener(this);
-        //MessageManager.UnregisterListener(this);
+        CommandManager.Instance.UnregisterListener(this);
+        MessageManager.Instance.UnregisterListener(this);
       }
     }
 
+    public event EventHandler<MessageEventArgs> OnMessageReceived;
+    public event EventHandler<CommandEventArgs> OnCommandReceived;
+      
     private void ProcessMessage<T>(IChannel channel, T data, Action<IChannel, T> action) where T: class
     {
       if (data == null)
@@ -65,6 +55,16 @@ namespace RobotControl.Windows
     private void InvokeOnCommandReceived(IChannel channel, ICommand command)
     {
       OnCommandReceived?.Invoke(this, new CommandEventArgs(channel, command));
+    }
+
+    void IListener<string>.MessageReceived(IChannel channel, string data)
+    {
+      ProcessMessage(channel, data, (c, d) => InvokeOnMessageReceived(c, d));
+    }
+
+    void IListener<ICommand>.MessageReceived(IChannel channel, ICommand data)
+    {
+      ProcessMessage(channel, data, (c, d) => InvokeOnCommandReceived(c, d));
     }
   }
 

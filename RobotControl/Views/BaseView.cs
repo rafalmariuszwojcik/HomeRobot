@@ -1,34 +1,26 @@
 ﻿using RobotControl.Command;
-using RobotControl.Messages;
-using System;
+using RobotControl.Windows;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace RobotControl.Views
 {
-  public class BaseView : DockContent, IMessageListener, ICommandListener
+  public class BaseView : DockContent
   {
-    private readonly bool listenMessages = true;
-    private readonly bool listenCommands = true;
-
+    private readonly ListenerControl listener;
+    
     public BaseView()
     {
+      listener = new ListenerControl(this);
+      listener.OnMessageReceived += (s, e) => MessageReceived(s, e.Message);
+      listener.OnCommandReceived += (s, e) => CommandReceived(s, e.Command);
       Text = GetType().Name;
-      MessageManager.Instance.RegisterListener(this);
-      CommandManager.Instance.RegisterListener(this);
-    }
-
-    public BaseView(bool listenMessages, bool listenCommands) : this()
-    {
-      this.listenMessages = listenMessages;
-      this.listenCommands = listenCommands;
     }
 
     protected override void Dispose(bool disposing)
     {
       if (disposing)
       {
-        CommandManager.Instance.UnregisterListener(this);
-        MessageManager.Instance.UnregisterListener(this);
+        listener?.Dispose();
       }
 
       base.Dispose(disposing);
@@ -40,46 +32,6 @@ namespace RobotControl.Views
 
     protected virtual void CommandReceived(object sender, ICommand command)
     {
-    }
-
-    void ICommandListener.CommandReceived(object sender, ICommand command)
-    {
-      if (!listenCommands || command == null)
-      {
-        return;
-      }
-
-      if (InvokeRequired)
-      {
-        BeginInvoke(new Action<object, ICommand>(CommandReceived), new[] { sender, command });
-      }
-      else
-      {
-        CommandReceived(sender, command);
-      }
-    }
-
-    void IMessageListener.MessageReceived(object sender, string message)
-    {
-      if (!listenMessages)
-      {
-        return;
-      }
-
-      message = !string.IsNullOrWhiteSpace(message) ? message.Trim() : null;
-      if (string.IsNullOrWhiteSpace(message))
-      {
-        return;
-      }
-
-      if (InvokeRequired)
-      {
-        BeginInvoke(new Action<object, string>(MessageReceived), new[] { sender, message });
-      }
-      else
-      {
-        MessageReceived(sender, message);
-      }
     }
   }
 }

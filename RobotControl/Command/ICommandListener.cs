@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RobotControl.Core;
 
 namespace RobotControl.Command
 {
-  public interface ICommandListener
+  public interface ICommandListener : IListener<ICommand>
   {
-    void CommandReceived(object sender, ICommand command);
   }
 }

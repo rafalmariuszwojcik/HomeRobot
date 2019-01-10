@@ -49,12 +49,12 @@ namespace RobotControl.Messages
       base.TearDown();
     }
 
-    private void PostMessage(object sender, string message)
+    private void PostMessage(IChannel channel, string message)
     {
       lock (lockObject)
       {
         Parallel.ForEach(listeners, (listener) => {
-          listener.MessageReceived(sender, message);
+          listener.MessageReceived(channel, message);
         });
       }
     }

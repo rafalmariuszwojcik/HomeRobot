@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace RobotControl.Views
+﻿namespace RobotControl.Views
 {
   public partial class OutputView : BaseView
   {
-    public OutputView() : base(true, false)
+    public OutputView()
     {
       InitializeComponent();
     }

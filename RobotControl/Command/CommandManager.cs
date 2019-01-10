@@ -1,4 +1,5 @@
-﻿using RobotControl.Core;
+﻿using RobotControl.Communication;
+using RobotControl.Core;
 using RobotControl.Messages;
 using System;
 using System.Collections.Generic;
@@ -55,12 +56,12 @@ namespace RobotControl.Command
       lock (lockListeners)
       {
         Parallel.ForEach(listeners, (listener) => {
-          listener.CommandReceived(sender, command);
+          listener.MessageReceived((IChannel)sender, command);
         });
       }
     }
 
-    private void MessageReceived(object sender, string message)
+    private void MessageReceived(IChannel channel, string message)
     {
       if (string.IsNullOrWhiteSpace(message))
       {
@@ -97,9 +98,16 @@ namespace RobotControl.Command
       }
     }
 
+    void IListener<string>.MessageReceived(IChannel channel, string data)
+    {
+      MessageReceived(channel, data);
+    }
+
+    /*
     void IMessageListener.MessageReceived(object sender, string message)
     {
       MessageReceived(sender, message);
     }
+    */
   }
 }
