@@ -1,6 +1,7 @@
 ﻿using RobotControl.Command;
 using RobotControl.Communication;
 using RobotControl.Core;
+using RobotControl.Messages;
 using System;
 using System.Windows.Forms;
 
@@ -13,6 +14,8 @@ namespace RobotControl.Windows
     public ListenerControl(Control control)
     {
       this.control = control;
+      //MessageManager.RegisterListener(this);
+      //CommandManager.RegisterListener(this);
     }
 
     public void MessageReceived(IChannel channel, string data)
@@ -30,7 +33,11 @@ namespace RobotControl.Windows
 
     protected override void Dispose(bool disposing)
     {
-      ;
+      if (disposing)
+      {
+        //CommandManager.UnregisterListener(this);
+        //MessageManager.UnregisterListener(this);
+      }
     }
 
     private void ProcessMessage<T>(IChannel channel, T data, Action<IChannel, T> action) where T: class
