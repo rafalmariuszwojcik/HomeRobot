@@ -1,4 +1,4 @@
-﻿namespace RobotControl.Views
+﻿namespace RobotControl.Windows.Views
 {
   partial class SimulationView
   {

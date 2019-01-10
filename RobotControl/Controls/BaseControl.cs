@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace RobotControl.Controls
 {
-  public class BaseControl : UserControl
+  public abstract class BaseControl : UserControl
   {
     private readonly ListenerControl listener;
 

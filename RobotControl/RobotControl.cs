@@ -1,7 +1,7 @@
 ﻿using RobotControl.Communication;
 using RobotControl.Forms;
 using RobotControl.Messages;
-using RobotControl.Views;
+using RobotControl.Windows.Views;
 using System.Drawing;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;

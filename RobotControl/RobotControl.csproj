@@ -108,19 +108,19 @@
     <Compile Include="Forms\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\BaseView.cs">
+    <Compile Include="Windows\Views\BaseView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\EngineInfoView.cs">
+    <Compile Include="Windows\Views\EngineInfoView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\EngineInfoView.Designer.cs">
+    <Compile Include="Windows\Views\EngineInfoView.Designer.cs">
       <DependentUpon>EngineInfoView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\SimulationView.cs">
+    <Compile Include="Windows\Views\SimulationView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\SimulationView.Designer.cs">
+    <Compile Include="Windows\Views\SimulationView.Designer.cs">
       <DependentUpon>SimulationView.cs</DependentUpon>
     </Compile>
     <Compile Include="IMessageReceiver.cs" />
@@ -160,26 +160,26 @@
     <Compile Include="Simulation\SimulationPoint.cs" />
     <Compile Include="Simulation\SimulatorElement.cs" />
     <Compile Include="Simulation\Vector.cs" />
-    <Compile Include="Views\CommunicationManagerView.cs">
+    <Compile Include="Windows\Views\CommunicationManagerView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\CommunicationManagerView.Designer.cs">
+    <Compile Include="Windows\Views\CommunicationManagerView.Designer.cs">
       <DependentUpon>CommunicationManagerView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\OutputView.cs">
+    <Compile Include="Windows\Views\OutputView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\OutputView.Designer.cs">
+    <Compile Include="Windows\Views\OutputView.Designer.cs">
       <DependentUpon>OutputView.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\ListenerControl.cs" />
     <EmbeddedResource Include="Controls\AreaViewControl.resx">
       <DependentUpon>AreaViewControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\EngineInfoView.resx">
+    <EmbeddedResource Include="Windows\Views\EngineInfoView.resx">
       <DependentUpon>EngineInfoView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\SimulationView.resx">
+    <EmbeddedResource Include="Windows\Views\SimulationView.resx">
       <DependentUpon>SimulationView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="RobotControl.resx">
@@ -194,10 +194,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Views\CommunicationManagerView.resx">
+    <EmbeddedResource Include="Windows\Views\CommunicationManagerView.resx">
       <DependentUpon>CommunicationManagerView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\OutputView.resx">
+    <EmbeddedResource Include="Windows\Views\OutputView.resx">
       <DependentUpon>OutputView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />

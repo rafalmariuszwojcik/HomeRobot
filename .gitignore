@@ -31,3 +31,11 @@ RobotControl/obj/Debug/RobotControl.Controls.AreaViewControl.resources
 RobotControl/obj/Debug/RobotControl.csproj.CopyComplete
 RobotControl/obj/Debug/RobotControl.Views.EngineInfoView.resources
 RobotControl/bin/Debug/WeifenLuo.WinFormsUI.Docking.dll
+RobotControl/obj/Debug/RobotControl.Views.OutputView.resources
+RobotControl/obj/Debug/RobotControl.Views.OutputView.resources
+RobotControl/obj/Debug/RobotControl.Views.SimulationView.resources
+RobotControl/obj/Debug/RobotControl.Windows.Views.EngineInfoView.resources
+RobotControl/obj/Debug/RobotControl.Windows.Views.OutputView.resources
+RobotControl/obj/Debug/RobotControl.Windows.Views.SimulationView.resources
+RobotControl/obj/Debug/RobotControl.Views.OutputView.resources
+RobotControl/obj/Debug/RobotControl.Views.CommunicationManagerView.resources

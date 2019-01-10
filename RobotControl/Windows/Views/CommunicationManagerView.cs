@@ -1,6 +1,6 @@
 ﻿using RobotControl.Communication;
 
-namespace RobotControl.Views
+namespace RobotControl.Windows.Views
 {
   public partial class CommunicationManagerView : BaseView
   {
