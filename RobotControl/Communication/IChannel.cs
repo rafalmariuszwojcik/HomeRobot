@@ -8,6 +8,7 @@ namespace RobotControl.Communication
     void Open();
     void Close();
     void Send(ICommand[] commands);
+    void Send(string data);
     event EventHandler<IDataReceivedEventArgs> DataReceived;
     bool Active { get; set; }
     string Name { get; }

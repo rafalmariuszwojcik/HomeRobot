@@ -74,10 +74,21 @@ namespace RobotControl.Communication
       InternalSend(channel, commands);
     }
 
+    public void Send(string data)
+    {
+      if (channel == null)
+      {
+        throw new NotImplementedException();
+      }
+
+      InternalSend(channel, data);
+    }
+
     protected abstract T InternalOpen(U configuration);
     protected abstract void InternalClose(T channel);
     public abstract void InternalSend(T channel, ICommand[] commands);
-
+    public abstract void InternalSend(T channel, string data);
+    
     protected void OnDataReceived(string data)
     {
       DataReceived?.Invoke(this, new DataReceivedEventArgs(data));

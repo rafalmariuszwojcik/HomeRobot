@@ -44,6 +44,7 @@
       this.visualStudioToolStripExtender1 = new WeifenLuo.WinFormsUI.Docking.VisualStudioToolStripExtender(this.components);
       this.dockPanel1 = new WeifenLuo.WinFormsUI.Docking.DockPanel();
       this.vS2005Theme1 = new WeifenLuo.WinFormsUI.Docking.VS2005Theme();
+      this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
       this.toolStrip1.SuspendLayout();
       this.menuStrip1.SuspendLayout();
       this.SuspendLayout();
@@ -56,7 +57,8 @@
             this.toolStripSeparator1,
             this.toolStripButton3,
             this.toolStripButton4,
-            this.toolStripButton5});
+            this.toolStripButton5,
+            this.toolStripButton6});
       resources.ApplyResources(this.toolStrip1, "toolStrip1");
       this.toolStrip1.Name = "toolStrip1";
       // 
@@ -130,6 +132,13 @@
       this.dockPanel1.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingWindow;
       this.dockPanel1.Name = "dockPanel1";
       // 
+      // toolStripButton6
+      // 
+      this.toolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      resources.ApplyResources(this.toolStripButton6, "toolStripButton6");
+      this.toolStripButton6.Name = "toolStripButton6";
+      this.toolStripButton6.Click += new System.EventHandler(this.toolStripButton6_Click);
+      // 
       // formRobotControl
       // 
       resources.ApplyResources(this, "$this");
@@ -165,6 +174,7 @@
     private WeifenLuo.WinFormsUI.Docking.VS2005Theme vS2005Theme1;
     private System.Windows.Forms.ToolStripButton toolStripButton4;
     private System.Windows.Forms.ToolStripButton toolStripButton5;
+    private System.Windows.Forms.ToolStripButton toolStripButton6;
   }
 }
 

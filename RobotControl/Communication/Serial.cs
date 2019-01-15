@@ -44,5 +44,10 @@ namespace RobotControl.Communication
     {
       //channel.Write(data);
     }
+
+    public override void InternalSend(SerialPort channel, string data)
+    {
+      channel.Write(data);
+    }
   }
 }

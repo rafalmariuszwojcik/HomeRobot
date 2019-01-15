@@ -26,5 +26,10 @@ namespace RobotControl.Communication
     {
       throw new NotImplementedException();
     }
+
+    public override void InternalSend(FakeRobot channel, string data)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

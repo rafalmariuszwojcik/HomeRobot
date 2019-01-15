@@ -117,6 +117,10 @@ namespace RobotControl
       {
         return new CommunicationManagerView();
       }
+      else if (persistString == typeof(InputView).ToString())
+      {
+        return new InputView();
+      }
       else
       {
         return null;
@@ -161,6 +165,12 @@ namespace RobotControl
     private void toolStripButton4_Click(object sender, System.EventArgs e)
     {
       var dockOutput = new SimulationView();
+      dockOutput.Show(this.dockPanel1, DockState.Document);
+    }
+
+    private void toolStripButton6_Click(object sender, System.EventArgs e)
+    {
+      var dockOutput = new InputView();
       dockOutput.Show(this.dockPanel1, DockState.Document);
     }
   }

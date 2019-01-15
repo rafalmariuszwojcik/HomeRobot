@@ -1,10 +1,9 @@
 ﻿using RobotControl.Command;
-using RobotControl.Windows;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace RobotControl.Windows.Views
 {
-  public abstract class BaseView : DockContent
+  public class BaseView : DockContent
   {
     private readonly ListenerControl listener;
     

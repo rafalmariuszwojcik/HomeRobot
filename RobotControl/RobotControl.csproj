@@ -117,6 +117,12 @@
     <Compile Include="Windows\Views\EngineInfoView.Designer.cs">
       <DependentUpon>EngineInfoView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Views\InputView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Views\InputView.Designer.cs">
+      <DependentUpon>InputView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Views\SimulationView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -178,6 +184,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Views\EngineInfoView.resx">
       <DependentUpon>EngineInfoView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Views\InputView.resx">
+      <DependentUpon>InputView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Views\SimulationView.resx">
       <DependentUpon>SimulationView.cs</DependentUpon>

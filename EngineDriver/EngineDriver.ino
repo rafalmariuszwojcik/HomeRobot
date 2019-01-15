@@ -71,8 +71,8 @@ void setup() {
   Robot_initialize(&robot);
   
   // Attach an interrupt to the ISR vector
-  //attachInterrupt(0, pin_ISR, RISING);
-  //attachInterrupt(1, pin_ISR1, RISING);
+  attachInterrupt(0, pin_ISR, RISING);
+  attachInterrupt(1, pin_ISR1, RISING);
 
   // attach the service routine here 100 Hz.
   Timer1.initialize(10000);
@@ -194,21 +194,21 @@ void pin_ISR1()
   Robot_control(&robot, LEFT_ENGINE_PULSE);
 }
 
-volatile uint16_t sss = 0;
+//volatile uint16_t sss = 0;
 
 void timerIsr()
 {
-  sss++;
+  //sss++;
 
-  if (!(sss % 100))
-  {
-    Robot_control(&robot, LEFT_ENGINE_PULSE);
-  }
+  //if (!(sss % 100))
+  //{
+  //  Robot_control(&robot, LEFT_ENGINE_PULSE);
+  //}
 
-  if (!(sss % 25))
-  {
-    Robot_control(&robot, RIGHT_ENGINE_PULSE);
-  }
+  //if (!(sss % 25))
+  //{
+  //  Robot_control(&robot, RIGHT_ENGINE_PULSE);
+  //}
     
   Robot_control(&robot, CONTROL);
 }
