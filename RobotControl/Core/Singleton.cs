@@ -40,12 +40,13 @@ namespace RobotControl.Core
 
     private static void TearDownInstance(object sender, EventArgs e)
     {
-      if (instance != null)
+      lock (syncRoot)
       {
-        instance.TearDown();
+        if (instance != null)
+        {
+          instance.TearDown();
+        }
       }
-
-      instance = null;
     }
   }
 }
