@@ -37,6 +37,7 @@
       this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
       this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
       this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
+      this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
       this.printDocument1 = new System.Drawing.Printing.PrintDocument();
       this.menuStrip1 = new System.Windows.Forms.MenuStrip();
       this.testsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,7 +45,7 @@
       this.visualStudioToolStripExtender1 = new WeifenLuo.WinFormsUI.Docking.VisualStudioToolStripExtender(this.components);
       this.dockPanel1 = new WeifenLuo.WinFormsUI.Docking.DockPanel();
       this.vS2005Theme1 = new WeifenLuo.WinFormsUI.Docking.VS2005Theme();
-      this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
+      this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
       this.toolStrip1.SuspendLayout();
       this.menuStrip1.SuspendLayout();
       this.SuspendLayout();
@@ -102,6 +103,13 @@
       this.toolStripButton5.Name = "toolStripButton5";
       this.toolStripButton5.Click += new System.EventHandler(this.toolStripButton5_Click);
       // 
+      // toolStripButton6
+      // 
+      this.toolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      resources.ApplyResources(this.toolStripButton6, "toolStripButton6");
+      this.toolStripButton6.Name = "toolStripButton6";
+      this.toolStripButton6.Click += new System.EventHandler(this.toolStripButton6_Click);
+      // 
       // menuStrip1
       // 
       this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -132,12 +140,9 @@
       this.dockPanel1.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingWindow;
       this.dockPanel1.Name = "dockPanel1";
       // 
-      // toolStripButton6
+      // backgroundWorker1
       // 
-      this.toolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-      resources.ApplyResources(this.toolStripButton6, "toolStripButton6");
-      this.toolStripButton6.Name = "toolStripButton6";
-      this.toolStripButton6.Click += new System.EventHandler(this.toolStripButton6_Click);
+      this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
       // 
       // formRobotControl
       // 
@@ -175,6 +180,7 @@
     private System.Windows.Forms.ToolStripButton toolStripButton4;
     private System.Windows.Forms.ToolStripButton toolStripButton5;
     private System.Windows.Forms.ToolStripButton toolStripButton6;
+    private System.ComponentModel.BackgroundWorker backgroundWorker1;
   }
 }
 

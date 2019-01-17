@@ -5,6 +5,9 @@ using RobotControl.Windows.Views;
 using System.Drawing;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
+using System.IO;
+using System.Threading;
+using System;
 
 namespace RobotControl
 {
@@ -96,7 +99,12 @@ namespace RobotControl
     private void formRobotControl_Load(object sender, System.EventArgs e)
     {
       var m_deserializeDockContent = new DeserializeDockContent(GetContentFromPersistString);
-      dockPanel1.LoadFromXml(@"c:\temp\layout.xml", m_deserializeDockContent);
+      if (File.Exists(@"c:\temp\layout.xml"))
+      {
+        dockPanel1.LoadFromXml(@"c:\temp\layout.xml", m_deserializeDockContent);
+      }
+
+     // backgroundWorker1.RunWorkerAsync();
     }
 
     private IDockContent GetContentFromPersistString(string persistString)
@@ -172,6 +180,17 @@ namespace RobotControl
     {
       var dockOutput = new InputView();
       dockOutput.Show(this.dockPanel1, DockState.Document);
+    }
+
+    int cnt = 0;
+
+    private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+    {
+      while (true)
+      {
+        Thread.Sleep(3);
+        MessageManager.Instance.MessageReceived(null, $"Bolek i Lolek {cnt++}.{Environment.NewLine}");
+      }
     }
   }
 }

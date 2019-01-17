@@ -39,7 +39,8 @@ namespace RobotControl.Windows
 
       if (control.InvokeRequired)
       {
-        control.BeginInvoke(action, new[] { (object)channel, data });
+        //control.BeginInvoke(action, new[] { (object)channel, data });
+        control.Invoke(action, new[] { (object)channel, data });
       }
       else
       {
