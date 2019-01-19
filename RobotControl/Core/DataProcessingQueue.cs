@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace RobotControl.Core
 {
   public class DataProcessingQueue<T> : DisposableBase
-    where T: class
+    where T : class
   {
     private readonly object lockData = new object();
     private readonly CancellationTokenSource tokenSource;
@@ -16,13 +16,30 @@ namespace RobotControl.Core
     private readonly ManualResetEvent signal;
     private readonly Queue<T> data = new Queue<T>();
     private readonly Action<T> action;
+    private readonly Action<IEnumerable<T>> listAction;
 
-    public DataProcessingQueue(Action<T> action)
+    private enum ProcessDataMode
+    {
+      Single,
+      All,
+    }
+
+    private DataProcessingQueue()
     {
       tokenSource = new CancellationTokenSource();
       token = tokenSource.Token;
       signal = new ManualResetEvent(true);
+    }
+
+    public DataProcessingQueue(Action<T> action) : this()
+    {
       this.action = action;
+      worker = Task.Run(() => ProcessData(), token);
+    }
+
+    public DataProcessingQueue(Action<IEnumerable<T>> action) : this()
+    {
+      listAction = action;
       worker = Task.Run(() => ProcessData(), token);
     }
 
@@ -48,6 +65,8 @@ namespace RobotControl.Core
       tokenSource?.Dispose();
     }
 
+    private ProcessDataMode Mode => listAction != null ? ProcessDataMode.All : ProcessDataMode.Single;
+
     private void Signal()
     {
       lock (lockData)
@@ -59,6 +78,7 @@ namespace RobotControl.Core
     private void ProcessData()
     {
       T item = null;
+      var items = new Queue<T>();
       if (token.IsCancellationRequested)
       {
         return;
@@ -67,18 +87,32 @@ namespace RobotControl.Core
       while (true)
       {
         signal.WaitOne();
+        items.Clear();
         do
         {
           lock (lockData)
           {
-            item = data.Any() ? data.Dequeue() : null;
+            do
+            {
+              item = data.Any() ? data.Dequeue() : null;
+              if (Mode == ProcessDataMode.All && item != null)
+              {
+                items.Enqueue(item);
+              }
+            }
+            while (Mode == ProcessDataMode.All && item != null);
+
             if (item == null)
             {
               signal.Reset();
             }
           }
 
-          if (item != null && action != null)
+          if (Mode == ProcessDataMode.All && items.Any())
+          {
+            listAction(items);
+          }
+          else if (item != null && action != null)
           {
             action(item);
           }
