@@ -17,6 +17,8 @@ namespace RobotControl.Core
     private readonly Queue<T> data = new Queue<T>();
     private readonly Action<T> action;
     private readonly Action<IEnumerable<T>> listAction;
+    private readonly int minInterval;
+    private DateTime nextAction = DateTime.Now;
 
     private enum ProcessDataMode
     {
@@ -37,9 +39,10 @@ namespace RobotControl.Core
       worker = Task.Run(() => ProcessData(), token);
     }
 
-    public DataProcessingQueue(Action<IEnumerable<T>> action) : this()
+    public DataProcessingQueue(Action<IEnumerable<T>> action, int minInterval = 0) : this()
     {
       listAction = action;
+      this.minInterval = minInterval;
       worker = Task.Run(() => ProcessData(), token);
     }
 
@@ -77,6 +80,7 @@ namespace RobotControl.Core
 
     private void ProcessData()
     {
+      var timeOut = Timeout.Infinite;
       T item = null;
       var items = new Queue<T>();
       if (token.IsCancellationRequested)
@@ -86,7 +90,20 @@ namespace RobotControl.Core
 
       while (true)
       {
-        signal.WaitOne();
+        signal.WaitOne(timeOut);
+        var now = DateTime.Now;
+        if (minInterval > 0 && now < nextAction)
+        {
+          lock (lockData)
+          {
+            timeOut = (int)(nextAction - now).TotalMilliseconds;
+            timeOut = timeOut <= 0 ? 1 : timeOut;
+            timeOut = timeOut > minInterval ? minInterval : timeOut;
+            signal.Reset();
+            continue;
+          }
+        }
+                     
         items.Clear();
         do
         {
@@ -123,6 +140,11 @@ namespace RobotControl.Core
           }
         }
         while (item != null);
+
+        if (minInterval > 0)
+        {
+          nextAction = DateTime.Now.AddMilliseconds(minInterval);
+        }
       }
     }
   }
