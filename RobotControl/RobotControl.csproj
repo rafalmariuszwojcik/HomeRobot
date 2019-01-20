@@ -70,6 +70,7 @@
     <Compile Include="Communication\SerialConfiguration.cs" />
     <Compile Include="Configuration\AppSettingsConfigurationRepository.cs" />
     <Compile Include="Configuration\IConfigurationRepository.cs" />
+    <Compile Include="Windows\ControlManager.cs" />
     <Compile Include="Windows\Controls\AreaViewControl.cs">
       <SubType>Component</SubType>
     </Compile>
