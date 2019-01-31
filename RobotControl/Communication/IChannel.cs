@@ -9,7 +9,7 @@ namespace RobotControl.Communication
     void Close();
     void Send(ICommand[] commands);
     void Send(string data);
-    event EventHandler<IDataReceivedEventArgs> DataReceived;
+    event EventHandler<DataReceivedEventArgs> DataReceived;
     bool Active { get; set; }
     string Name { get; }
     IConfiguration Configuration { get; }
@@ -24,7 +24,7 @@ namespace RobotControl.Communication
     string Data { get; }
   }
 
-  public class DataReceivedEventArgs : IDataReceivedEventArgs
+  public class DataReceivedEventArgs : EventArgs, IDataReceivedEventArgs
   {
     public DataReceivedEventArgs(string data)
     {

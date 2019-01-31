@@ -36,14 +36,14 @@ namespace RobotControl.Core
     public DataProcessingQueue(Action<T> action) : this()
     {
       this.action = action;
-      worker = Task.Run(() => ProcessData(), token);
+      worker = Task.Factory.StartNew(() => ProcessData(), token);
     }
 
     public DataProcessingQueue(Action<IEnumerable<T>> action, int minInterval = 0) : this()
     {
       listAction = action;
       this.minInterval = minInterval;
-      worker = Task.Run(() => ProcessData(), token);
+      worker = Task.Factory.StartNew(() => ProcessData(), token);
     }
 
     public void Enqueue(T item)

@@ -34,7 +34,7 @@ namespace RobotControl.Core
       tearDownInProgress = true;
       try
       {
-        var task = Task.Run(() =>
+        var task = Task.Factory.StartNew(() =>
         {
           foreach (var handler in tearDownEvents.ToList())
           {

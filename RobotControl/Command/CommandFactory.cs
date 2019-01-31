@@ -47,11 +47,11 @@ namespace RobotControl.Command
           {
             if (property.PropertyType == typeof(int))
             {
-              property.SetValue(command, int.Parse(value));
+              property.SetValue(command, int.Parse(value), null);
             }
             else
             {
-              property.SetValue(command, value);
+              property.SetValue(command, value, null);
             }
           }
         }

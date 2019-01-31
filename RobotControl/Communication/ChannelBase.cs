@@ -33,7 +33,7 @@ namespace RobotControl.Communication
       }
     }
 
-    public event EventHandler<IDataReceivedEventArgs> DataReceived;
+    public event EventHandler<DataReceivedEventArgs> DataReceived;
 
     public ChannelBase(U configuration)
     {

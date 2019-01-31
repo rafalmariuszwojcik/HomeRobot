@@ -49,7 +49,7 @@ namespace RobotControl.Fake.FakeRobot
     {
       while (!token.IsCancellationRequested)
       {
-        Task.Delay(10);
+        //Task.Delay(10);
       }
     }
   }

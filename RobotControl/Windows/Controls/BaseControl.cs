@@ -13,12 +13,14 @@ namespace RobotControl.Windows.Controls
       listener = new ListenerControl(this);
       listener.OnMessageReceived += (s, e) => MessageReceived(s, e.Message);
       listener.OnCommandReceived += (s, e) => CommandReceived(s, e.Command);
+      ControlManager.Instance.RegisterListener(this);
     }
 
     protected override void Dispose(bool disposing)
     {
       if (disposing)
       {
+        ControlManager.Instance.UnregisterListener(this);
         listener?.Dispose();
       }
 
