@@ -7,13 +7,13 @@ namespace RobotControl.Windows.Views
 {
   public class BaseView : DockContent
   {
-    private readonly ListenerControl listener;
+    //private readonly ListenerControl listener;
     
     public BaseView()
     {
-      listener = new ListenerControl(this);
-      listener.OnMessageReceived += (s, e) => MessageReceived(s, e.Message);
-      listener.OnCommandReceived += (s, e) => CommandReceived(s, e.Command);
+      //listener = new ListenerControl(this);
+      //listener.OnMessageReceived += (s, e) => MessageReceived(s, e.Message);
+      //listener.OnCommandReceived += (s, e) => CommandReceived(s, e.Command);
       Text = GetType().Name;
       ControlManager.Instance.RegisterListener(this);
     }
@@ -23,7 +23,7 @@ namespace RobotControl.Windows.Views
       if (disposing)
       {
         ControlManager.Instance.UnregisterListener(this);
-        listener?.Dispose();
+        //listener?.Dispose();
       }
 
       base.Dispose(disposing);

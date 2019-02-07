@@ -125,15 +125,22 @@ namespace RobotControl.Core
             }
           }
 
-          if (Mode == ProcessDataMode.All && items.Any())
+          try
           {
-            listAction(items);
+            if (Mode == ProcessDataMode.All && items.Any())
+            {
+              listAction(items);
+            }
+            else if (item != null && action != null)
+            {
+              action(item);
+            }
           }
-          else if (item != null && action != null)
+          catch (Exception)
           {
-            action(item);
+            ;
           }
-
+          
           if (token.IsCancellationRequested)
           {
             return;

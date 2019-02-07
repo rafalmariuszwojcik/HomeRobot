@@ -13,6 +13,7 @@ namespace RobotControl.Windows
   public class ControlManager : Singleton<ControlManager>
   {
     private readonly object lockObject = new object();
+    private readonly object lockDispose = new object();
     private readonly IList<Control> listeners = new List<Control>();
     private readonly DataProcessingQueue<DataPackage> messageQueue;
     private readonly IList<DisposableBase> dataSupply = new List<DisposableBase>();
@@ -39,6 +40,7 @@ namespace RobotControl.Windows
     public void UnregisterListener(Control listener)
     {
       lock (lockObject)
+      lock (lockDispose)
       {
         if (listeners.Contains(listener))
         {
@@ -88,13 +90,19 @@ namespace RobotControl.Windows
           data.Add(item);
         }
 
-        if (control.InvokeRequired)
+        //lock (lockDispose)
         {
-          control.Invoke(new Action(() => intf.Method.Invoke(control, new object[] { null, data })));
-        }
-        else
-        {
-          intf.Method.Invoke(control, new object[] { null, data });
+          if (!control.IsDisposed)
+          {
+            if (control.InvokeRequired)
+            {
+              control.Invoke(new Action(() => intf.Method.Invoke(control, new object[] { null, data })));
+            }
+            else
+            {
+              intf.Method.Invoke(control, new object[] { null, data });
+            }
+          }
         }
       }
     }
