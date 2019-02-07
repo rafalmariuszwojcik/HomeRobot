@@ -19,6 +19,7 @@ namespace RobotControl.Core
     private readonly Action<IEnumerable<T>> listAction;
     private readonly int minInterval;
     private DateTime nextAction = DateTime.Now;
+    private bool isDisposing = false;
 
     private enum ProcessDataMode
     {
@@ -50,7 +51,7 @@ namespace RobotControl.Core
     {
       lock (lockData)
       {
-        if (item != null)
+        if (item != null && !isDisposing)
         {
           data.Enqueue(item);
           signal.Set();
@@ -60,6 +61,11 @@ namespace RobotControl.Core
 
     protected override void Dispose(bool disposing)
     {
+      lock (lockData)
+      {
+        isDisposing = true;
+      }
+        
       tokenSource?.Cancel();
       Signal();
       worker?.Wait();
