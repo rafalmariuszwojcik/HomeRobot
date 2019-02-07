@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Channels;
-using System.Text;
 using System.Windows.Forms;
 using RobotControl.Command;
 
@@ -22,17 +17,6 @@ namespace RobotControl.Windows.Controls
       propertyGrid.Dock = DockStyle.Fill;
       propertyGrid.SelectedObject = engineInfo;
       Controls.Add(propertyGrid);
-    }
-
-    protected override void CommandReceived(object sender, ICommand message)
-    {
-      /*
-      if (message is EngineSpeedCommand)
-      {
-        engineInfo.Speed = ((EngineSpeedCommand)message).Speed;
-        propertyGrid.Refresh();
-      }
-      */
     }
 
     void IListenerControl<CommandPackage>.MessageReceived(IChannel channel, IEnumerable<CommandPackage> data)
