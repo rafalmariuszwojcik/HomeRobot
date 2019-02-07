@@ -1,4 +1,6 @@
 ﻿using RobotControl.Command;
+using RobotControl.Communication;
+using RobotControl.Core;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace RobotControl.Windows.Views

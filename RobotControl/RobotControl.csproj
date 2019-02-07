@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Command\CommandFactory.cs" />
+    <Compile Include="Command\CommandListener.cs" />
     <Compile Include="Command\CommandManager.cs" />
     <Compile Include="Command\EngineAvgSpeedCommand.cs" />
     <Compile Include="Command\EnginePwmCommand.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Configuration\IConfigurationRepository.cs" />
     <Compile Include="Core\ListenerBase.cs" />
     <Compile Include="Messages\MessageListener.cs" />
+    <Compile Include="Windows\CommandPackage.cs" />
     <Compile Include="Windows\ControlManager.cs" />
     <Compile Include="Windows\Controls\AreaViewControl.cs">
       <SubType>Component</SubType>
@@ -113,6 +115,7 @@
     <Compile Include="Windows\Forms\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Windows\IListenerControl.cs" />
     <Compile Include="Windows\ListenerControl2.cs" />
     <Compile Include="Windows\MessagePackage.cs" />
     <Compile Include="Windows\Views\BaseView.cs">
