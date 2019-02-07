@@ -71,6 +71,8 @@
     <Compile Include="Communication\SerialConfiguration.cs" />
     <Compile Include="Configuration\AppSettingsConfigurationRepository.cs" />
     <Compile Include="Configuration\IConfigurationRepository.cs" />
+    <Compile Include="Core\ListenerBase.cs" />
+    <Compile Include="Messages\MessageListener.cs" />
     <Compile Include="Windows\ControlManager.cs" />
     <Compile Include="Windows\Controls\AreaViewControl.cs">
       <SubType>Component</SubType>
@@ -107,10 +109,12 @@
     <Compile Include="Drawing\RouteDraw.cs" />
     <Compile Include="Fake\FakeRobot\Engine.cs" />
     <Compile Include="Fake\FakeRobot\FakeRobot.cs" />
+    <Compile Include="Windows\DataPackage.cs" />
     <Compile Include="Windows\Forms\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Windows\ListenerControl2.cs" />
+    <Compile Include="Windows\MessagePackage.cs" />
     <Compile Include="Windows\Views\BaseView.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -72,7 +72,7 @@
       // 
       // toolStripButton2
       // 
-      this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+      this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
       resources.ApplyResources(this.toolStripButton2, "toolStripButton2");
       this.toolStripButton2.Name = "toolStripButton2";
       this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);

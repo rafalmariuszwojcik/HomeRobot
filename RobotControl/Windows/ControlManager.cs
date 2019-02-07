@@ -1,4 +1,5 @@
 ﻿using RobotControl.Core;
+using RobotControl.Messages;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -8,6 +9,14 @@ namespace RobotControl.Windows
   {
     private readonly object lockObject = new object();
     private readonly IList<Control> listeners = new List<Control>();
+    private readonly DataProcessingQueue<DataPackage> messageQueue;
+    private readonly IList<DisposableBase> dataSupply = new List<DisposableBase>();
+
+    public ControlManager()
+    {
+      messageQueue = new DataProcessingQueue<DataPackage>(x => PostMessage(x), 20);
+      dataSupply.Add(new MessageListener((s) => messageQueue.Enqueue(new MessagePackage(s))));
+    }
 
     public void RegisterListener(Control listener)
     {
@@ -33,7 +42,17 @@ namespace RobotControl.Windows
 
     protected override void TearDown()
     {
+      foreach (var disposable in dataSupply)
+      {
+        disposable.Dispose();
+      }
+
+      messageQueue?.Dispose();
       base.TearDown();
+    }
+
+    private void PostMessage(IEnumerable<DataPackage> dataPackages)
+    {
     }
   }
 }

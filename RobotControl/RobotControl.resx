@@ -164,10 +164,10 @@
     <value>Magenta</value>
   </data>
   <data name="toolStripButton2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
+    <value>40, 22</value>
   </data>
   <data name="toolStripButton2.Text" xml:space="preserve">
-    <value>toolStripButton2</value>
+    <value>Bolek</value>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
