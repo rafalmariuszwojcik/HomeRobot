@@ -16,11 +16,14 @@ namespace RobotControl.Core
     private readonly IList<T> listeners = new List<T>();
     private readonly DataProcessingQueue<M> messageQueue;
     private readonly IDictionary<Type, ListenerInfo> types = new Dictionary<Type, ListenerInfo>();
+    private readonly IList<IDisposable> disposables = new List<IDisposable>();
 
     protected ManagerBase(int interval)
     {
       messageQueue = new DataProcessingQueue<M>(x => PostMessage(null, x), interval);
     }
+
+    protected IList<IDisposable> Disposables => disposables;
 
     public void MessageReceived(object sender, M message)
     {
@@ -51,6 +54,11 @@ namespace RobotControl.Core
 
     protected override void TearDown()
     {
+      foreach (var disposable in disposables)
+      {
+        disposable.Dispose();
+      }
+
       messageQueue?.Dispose();
       base.TearDown();
     }

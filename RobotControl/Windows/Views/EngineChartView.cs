@@ -1,18 +1,19 @@
 ﻿using RobotControl.Command;
+using RobotControl.Core;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Channels;
 
 namespace RobotControl.Windows.Views
 {
-  public partial class EngineChartView : RobotControl.Windows.Views.BaseView, IListenerControl<CommandPackage>
+  public partial class EngineChartView : RobotControl.Windows.Views.BaseView, IListener<CommandPackage>
   {
     public EngineChartView()
     {
       InitializeComponent();
     }
 
-    void IListenerControl<CommandPackage>.MessageReceived(Communication.IChannel channel, IEnumerable<CommandPackage> data)
+    void IListener<CommandPackage>.MessageReceived(Communication.IChannel channel, IEnumerable<CommandPackage> data)
     {
       chart1.Series.SuspendUpdates();
 

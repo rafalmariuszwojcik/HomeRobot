@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Channels;
 using System.Windows.Forms;
 using RobotControl.Command;
-using RobotControl.Communication;
 using RobotControl.Core;
 
 namespace RobotControl.Windows.Controls
 {
-  public partial class EngineInfoControl : RobotControl.Windows.Controls.BaseControl, IListenerControl<CommandPackage>, IListener<CommandPackage>
+  public partial class EngineInfoControl : BaseControl, IListener<CommandPackage>
   {
     private EngineInfo engineInfo = new EngineInfo();
     private readonly PropertyGrid propertyGrid = new PropertyGrid();
@@ -19,21 +17,6 @@ namespace RobotControl.Windows.Controls
       propertyGrid.Dock = DockStyle.Fill;
       propertyGrid.SelectedObject = engineInfo;
       Controls.Add(propertyGrid);
-    }
-
-    void IListenerControl<CommandPackage>.MessageReceived(Communication.IChannel channel, IEnumerable<CommandPackage> data)
-    {
-      /*
-      var lastItem = data.LastOrDefault();
-      if (lastItem?.Command is EngineSpeedCommand)
-      {
-        engineInfo.Speed = ((EngineSpeedCommand)lastItem.Command).Speed;
-        engineInfo.AvgSpeed = ((EngineSpeedCommand)lastItem.Command).AvgSpeed;
-        engineInfo.PWM = ((EngineSpeedCommand)lastItem.Command).PWM;
-        engineInfo.Distance = ((EngineSpeedCommand)lastItem.Command).Distance;
-        propertyGrid.Refresh();
-      }
-      */
     }
 
     void IListener<CommandPackage>.MessageReceived(Communication.IChannel channel, IEnumerable<CommandPackage> data)

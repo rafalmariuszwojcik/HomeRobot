@@ -7,7 +7,7 @@ using System.Text;
 
 namespace RobotControl.Windows.Views
 {
-  public partial class OutputView : BaseView, IListenerControl<MessagePackage>
+  public partial class OutputView : BaseView, IListener<MessagePackage>
   {
     const int MAX_BUFFER_LENGHT = 4096;
     const int REFRESH_FREQUENCY = 50; // Hz
