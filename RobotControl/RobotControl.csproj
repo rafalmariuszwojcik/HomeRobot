@@ -37,6 +37,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -122,6 +123,12 @@
     <Compile Include="Windows\Views\BaseView.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Windows\Views\EngineChartView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\Views\EngineChartView.Designer.cs">
+      <DependentUpon>EngineChartView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Views\EngineInfoView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -191,6 +198,9 @@
     </Compile>
     <EmbeddedResource Include="Windows\Controls\AreaViewControl.resx">
       <DependentUpon>AreaViewControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Windows\Views\EngineChartView.resx">
+      <DependentUpon>EngineChartView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\Views\EngineInfoView.resx">
       <DependentUpon>EngineInfoView.cs</DependentUpon>

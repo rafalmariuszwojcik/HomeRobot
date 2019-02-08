@@ -62,3 +62,4 @@ RobotControl/obj/Release/RobotControl.Windows.Views.CommunicationManagerView.res
 RobotControl/bin/Release/RobotControl.exe.config
 RobotControl/bin/Release/RobotControl.pdb
 RobotControl/bin/Release/WeifenLuo.WinFormsUI.Docking.dll
+RobotControl/obj/Debug/RobotControl.Windows.Views.EngineChartView.resources

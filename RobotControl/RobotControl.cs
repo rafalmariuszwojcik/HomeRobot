@@ -129,6 +129,10 @@ namespace RobotControl
       {
         return new InputView();
       }
+      else if (persistString == typeof(EngineChartView).ToString())
+      {
+        return new EngineChartView();
+      }
       else
       {
         return null;
@@ -191,6 +195,12 @@ namespace RobotControl
         Thread.Sleep(3);
         MessageManager.Instance.MessageReceived(null, $"Bolek i Lolek {cnt++}.{Environment.NewLine}");
       }
+    }
+
+    private void toolStripButton7_Click(object sender, EventArgs e)
+    {
+      var dockOutput = new EngineChartView();
+      dockOutput.Show(this.dockPanel1, DockState.Document);
     }
   }
 }

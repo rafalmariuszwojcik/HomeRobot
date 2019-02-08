@@ -146,7 +146,7 @@ void loop()
     robot.rightEngine.signaled = 0;
     Serial.println(speedInfo);
 
-    sprintf(speedInfo, "E00,1,%u;", robot.rightEngine.speedCounter.curr_speed);
+    sprintf(speedInfo, "E00,1,%u,%u,%u,%u;", robot.rightEngine.speedCounter.curr_speed, robot.rightEngine.speedCounter.avg_speed, robot.rightEngine.pwm, robot.rightEngine.fullDistance);
     Serial.println(speedInfo);
   }
 
@@ -162,7 +162,7 @@ void loop()
     robot.leftEngine.signaled = 0;
     Serial.println(speedInfo);
 
-    sprintf(speedInfo, "E00,0,%u;", robot.leftEngine.speedCounter.curr_speed);
+    sprintf(speedInfo, "E00,0,%u,%u,%u,%u;", robot.leftEngine.speedCounter.curr_speed, robot.leftEngine.speedCounter.avg_speed, robot.leftEngine.pwm, robot.leftEngine.fullDistance);
     Serial.println(speedInfo);
   }
 }

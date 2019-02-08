@@ -46,6 +46,7 @@
       this.dockPanel1 = new WeifenLuo.WinFormsUI.Docking.DockPanel();
       this.vS2005Theme1 = new WeifenLuo.WinFormsUI.Docking.VS2005Theme();
       this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+      this.toolStripButton7 = new System.Windows.Forms.ToolStripButton();
       this.toolStrip1.SuspendLayout();
       this.menuStrip1.SuspendLayout();
       this.SuspendLayout();
@@ -59,7 +60,8 @@
             this.toolStripButton3,
             this.toolStripButton4,
             this.toolStripButton5,
-            this.toolStripButton6});
+            this.toolStripButton6,
+            this.toolStripButton7});
       resources.ApplyResources(this.toolStrip1, "toolStrip1");
       this.toolStrip1.Name = "toolStrip1";
       // 
@@ -84,28 +86,24 @@
       // 
       // toolStripButton3
       // 
-      this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
       resources.ApplyResources(this.toolStripButton3, "toolStripButton3");
       this.toolStripButton3.Name = "toolStripButton3";
       this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
       // 
       // toolStripButton4
       // 
-      this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
       resources.ApplyResources(this.toolStripButton4, "toolStripButton4");
       this.toolStripButton4.Name = "toolStripButton4";
       this.toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click);
       // 
       // toolStripButton5
       // 
-      this.toolStripButton5.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
       resources.ApplyResources(this.toolStripButton5, "toolStripButton5");
       this.toolStripButton5.Name = "toolStripButton5";
       this.toolStripButton5.Click += new System.EventHandler(this.toolStripButton5_Click);
       // 
       // toolStripButton6
       // 
-      this.toolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
       resources.ApplyResources(this.toolStripButton6, "toolStripButton6");
       this.toolStripButton6.Name = "toolStripButton6";
       this.toolStripButton6.Click += new System.EventHandler(this.toolStripButton6_Click);
@@ -144,6 +142,12 @@
       // 
       this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
       // 
+      // toolStripButton7
+      // 
+      resources.ApplyResources(this.toolStripButton7, "toolStripButton7");
+      this.toolStripButton7.Name = "toolStripButton7";
+      this.toolStripButton7.Click += new System.EventHandler(this.toolStripButton7_Click);
+      // 
       // formRobotControl
       // 
       resources.ApplyResources(this, "$this");
@@ -181,6 +185,7 @@
     private System.Windows.Forms.ToolStripButton toolStripButton5;
     private System.Windows.Forms.ToolStripButton toolStripButton6;
     private System.ComponentModel.BackgroundWorker backgroundWorker1;
+    private System.Windows.Forms.ToolStripButton toolStripButton7;
   }
 }
 

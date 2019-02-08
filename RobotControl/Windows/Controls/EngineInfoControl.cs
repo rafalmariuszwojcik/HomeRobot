@@ -25,6 +25,9 @@ namespace RobotControl.Windows.Controls
       if (lastItem?.Command is EngineSpeedCommand)
       {
         engineInfo.Speed = ((EngineSpeedCommand)lastItem.Command).Speed;
+        engineInfo.AvgSpeed = ((EngineSpeedCommand)lastItem.Command).AvgSpeed;
+        engineInfo.PWM = ((EngineSpeedCommand)lastItem.Command).PWM;
+        engineInfo.Distance = ((EngineSpeedCommand)lastItem.Command).Distance;
         propertyGrid.Refresh();
       }
     }
@@ -32,6 +35,9 @@ namespace RobotControl.Windows.Controls
     private class EngineInfo
     {
       public int Speed { get; set; }
+      public int AvgSpeed { get; set; }
+      public int PWM { get; set; }
+      public int Distance { get; set; }
     }
   }
 }
