@@ -21,7 +21,7 @@ namespace RobotControl.Windows
 
     public ControlManager()
     {
-      messageQueue = new DataProcessingQueue<DataPackage>(x => PostMessage(x), 10); // 10 = 100Hz
+      messageQueue = new DataProcessingQueue<DataPackage>(x => PostMessage(x), 20); // 20 = 50Hz
       dataSupply.Add(new MessageListener((s) => messageQueue.Enqueue(new MessagePackage(s))));
       dataSupply.Add(new CommandListener((s) => messageQueue.Enqueue(new CommandPackage(s))));
     }

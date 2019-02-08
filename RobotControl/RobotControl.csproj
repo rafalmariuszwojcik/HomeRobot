@@ -74,6 +74,7 @@
     <Compile Include="Configuration\AppSettingsConfigurationRepository.cs" />
     <Compile Include="Configuration\IConfigurationRepository.cs" />
     <Compile Include="Core\DataProcessingQueueBase.cs" />
+    <Compile Include="Core\IManager.cs" />
     <Compile Include="Core\ListenerBase.cs" />
     <Compile Include="Messages\MessageListener.cs" />
     <Compile Include="Windows\CommandPackage.cs" />
