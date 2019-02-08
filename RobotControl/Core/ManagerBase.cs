@@ -1,4 +1,5 @@
-﻿using RobotControl.Communication;
+﻿using RobotControl.Command;
+using RobotControl.Communication;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -88,11 +89,19 @@ namespace RobotControl.Core
         return;
       }
 
+      /* Test
+      if (data.Any() && data.First() is ICommand)
+      {
+        var x = 0;
+        var y = x;
+      }
+      */
+
       var listenerInfo = GetListenerInfo(listener);
       foreach (var intf in listenerInfo.Interfaces)
       {
         var dataToSend = (IList)Activator.CreateInstance(intf.PackageType);
-        foreach (var item in data.Where(x => x.GetType().Equals(intf.DataType)))
+        foreach (var item in data.Where(x => x.GetType().Equals(intf.DataType) || x.GetType().GetInterfaces().Contains(intf.DataType)))
         {
           dataToSend.Add(item);
         }
