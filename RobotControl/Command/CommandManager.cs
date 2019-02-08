@@ -9,14 +9,62 @@ using System.Threading.Tasks;
 
 namespace RobotControl.Command
 {
-  public class CommandManager : Singleton<CommandManager>, ICommandManager, IMessageListener
+  public class CommandManager : ManagerBase<CommandManager, ICommandListener, ICommand>
+  {
+    private readonly StringBuilder incomingData = new StringBuilder();
+
+    public CommandManager() 
+      : base()
+    {
+      Disposables.Add(new MessageListener((s) => MessageReceived(null, s.FirstOrDefault())));
+    }
+
+    private void MessageReceived(IChannel channel, string message)
+    {
+      if (string.IsNullOrWhiteSpace(message))
+      {
+        return;
+      }
+
+      incomingData.Append(message.ToUpper().Replace("\r", string.Empty).Replace("\n", string.Empty));
+      var data = incomingData.ToString();
+      var index = data.LastIndexOf(';');
+      if (index >= 0)
+      {
+        data = data.Substring(0, index + 1);
+        incomingData.Remove(0, index + 1);
+        var commandLines = data.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+        foreach (var commandLine in commandLines)
+        {
+          var commandParts = commandLine.Split(',');
+          if (commandParts.Any())
+          {
+            var commandId = commandParts[0];
+            var commandParameters = commandParts.Length > 1 ? new string[commandParts.Length - 1] : null;
+            if (commandParameters != null)
+            {
+              Array.Copy(commandParts, 1, commandParameters, 0, commandParameters.Length);
+            }
+
+            var command = CommandFactory.CreateCommand(commandId, commandParameters);
+            if (command != null)
+            {
+              MessageReceived(channel, command);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  public class CommandManager_old : Singleton<CommandManager_old>, ICommandManager, IMessageListener
   {
     private readonly object lockListeners = new object();
     private readonly IList<ICommandListener> listeners = new List<ICommandListener>();
     private readonly StringBuilder incomingData = new StringBuilder();
     private readonly DataProcessingQueue<ICommand> commandQueue;
 
-    public CommandManager()
+    public CommandManager_old()
     {
       commandQueue = new DataProcessingQueue<ICommand>(x => CommandReceived(null, x));
       MessageManager.Instance.RegisterListener(this);
@@ -105,12 +153,5 @@ namespace RobotControl.Command
         MessageReceived(channel, item);
       }
     }
-
-    /*
-    void IMessageListener.MessageReceived(object sender, string message)
-    {
-      MessageReceived(sender, message);
-    }
-    */
   }
 }

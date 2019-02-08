@@ -16,14 +16,13 @@ namespace RobotControl.Core
     private readonly IList<T> listeners = new List<T>();
     private readonly DataProcessingQueue<M> messageQueue;
     private readonly IDictionary<Type, ListenerInfo> types = new Dictionary<Type, ListenerInfo>();
-    private readonly IList<IDisposable> disposables = new List<IDisposable>();
 
-    protected ManagerBase(int interval)
+    protected ManagerBase(int interval = 0)
     {
       messageQueue = new DataProcessingQueue<M>(x => PostMessage(null, x), interval);
     }
 
-    protected IList<IDisposable> Disposables => disposables;
+    protected IList<IDisposable> Disposables { get; } = new List<IDisposable>();
 
     public void MessageReceived(object sender, M message)
     {
@@ -54,7 +53,7 @@ namespace RobotControl.Core
 
     protected override void TearDown()
     {
-      foreach (var disposable in disposables)
+      foreach (var disposable in Disposables)
       {
         disposable.Dispose();
       }
@@ -100,29 +99,6 @@ namespace RobotControl.Core
 
         var action = new Action(() => intf.Method.Invoke(listener, new object[] { null, dataToSend }));
         SendData(listener, action);
-
-
-        /*
-        if (control.InvokeRequired)
-        {
-          try
-          {
-            control.Invoke(new Action(() => intf.Method.Invoke(control, new object[] { null, data })));
-          }
-          catch (ObjectDisposedException)
-          {
-            ;
-          }
-          catch (InvalidAsynchronousStateException)
-          {
-            ;
-          }
-        }
-        else
-        {
-          intf.Method.Invoke(control, new object[] { null, data });
-        }
-        */
       }
     }
 
