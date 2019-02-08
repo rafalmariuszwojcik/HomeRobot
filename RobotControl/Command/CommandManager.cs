@@ -53,14 +53,11 @@ namespace RobotControl.Command
 
     private void CommandReceived(object sender, IEnumerable<ICommand> commands)
     {
-      foreach (var command in commands)
+      lock (lockListeners)
       {
-        lock (lockListeners)
-        {
-          Parallel.ForEach(listeners, (listener) => {
-            listener.MessageReceived((IChannel)sender, command);
-          });
-        }
+        Parallel.ForEach(listeners, (listener) => {
+          listener.MessageReceived((IChannel)sender, commands);
+        });
       }
     }
 
@@ -101,9 +98,12 @@ namespace RobotControl.Command
       }
     }
 
-    void IListener<string>.MessageReceived(IChannel channel, string data)
+    void IListener<string>.MessageReceived(IChannel channel, IEnumerable<string> data)
     {
-      MessageReceived(channel, data);
+      foreach (var item in data)
+      {
+        MessageReceived(channel, item);
+      }
     }
 
     /*

@@ -1,11 +1,12 @@
 ﻿using RobotControl.Core;
 using System;
+using System.Collections.Generic;
 
 namespace RobotControl.Messages
 {
   public class MessageListener : ListenerBase<string>, IMessageListener
   {
-    public MessageListener(Action<string> action) : base(action)
+    public MessageListener(Action<IEnumerable<string>> action) : base(action)
     {
       MessageManager.Instance.RegisterListener(this);
     }

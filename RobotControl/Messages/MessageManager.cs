@@ -51,14 +51,11 @@ namespace RobotControl.Messages
 
     private void PostMessage(IChannel channel, IEnumerable<string> messages)
     {
-      foreach (var message in messages)
+      lock (lockObject)
       {
-        lock (lockObject)
-        {
-          Parallel.ForEach(listeners, (listener) => {
-            listener.MessageReceived(channel, message);
-          });
-        }
+        Parallel.ForEach(listeners, (listener) => {
+          listener.MessageReceived(channel, messages);
+        });
       }
     }
   }

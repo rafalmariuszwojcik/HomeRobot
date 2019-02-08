@@ -23,6 +23,7 @@ namespace RobotControl.Windows.Controls
 
     void IListenerControl<CommandPackage>.MessageReceived(Communication.IChannel channel, IEnumerable<CommandPackage> data)
     {
+      /*
       var lastItem = data.LastOrDefault();
       if (lastItem?.Command is EngineSpeedCommand)
       {
@@ -32,11 +33,20 @@ namespace RobotControl.Windows.Controls
         engineInfo.Distance = ((EngineSpeedCommand)lastItem.Command).Distance;
         propertyGrid.Refresh();
       }
+      */
     }
 
-    void IListener<CommandPackage>.MessageReceived(Communication.IChannel channel, CommandPackage data)
+    void IListener<CommandPackage>.MessageReceived(Communication.IChannel channel, IEnumerable<CommandPackage> data)
     {
-      throw new System.NotImplementedException();
+      var lastItem = data.LastOrDefault();
+      if (lastItem?.Command is EngineSpeedCommand)
+      {
+        engineInfo.Speed = ((EngineSpeedCommand)lastItem.Command).Speed;
+        engineInfo.AvgSpeed = ((EngineSpeedCommand)lastItem.Command).AvgSpeed;
+        engineInfo.PWM = ((EngineSpeedCommand)lastItem.Command).PWM;
+        engineInfo.Distance = ((EngineSpeedCommand)lastItem.Command).Distance;
+        propertyGrid.Refresh();
+      }
     }
 
     private class EngineInfo

@@ -7,7 +7,8 @@ using System.Reflection;
 
 namespace RobotControl.Core
 {
-  public abstract class ManagerBase<T, M> : Singleton<ManagerBase<T, M>>, IManager<T, M>
+  public abstract class ManagerBase<S, T, M> : Singleton<S>, IManager<T, M>
+    where S : Singleton<S>
     where T : class
     where M : class
   {
@@ -54,7 +55,7 @@ namespace RobotControl.Core
       base.TearDown();
     }
 
-    protected virtual void SendData(Action action)
+    protected virtual void SendData(T listener, Action action)
     {
       action?.Invoke();
     }
@@ -90,7 +91,7 @@ namespace RobotControl.Core
         }
 
         var action = new Action(() => intf.Method.Invoke(listener, new object[] { null, dataToSend }));
-        SendData(action);
+        SendData(listener, action);
 
 
         /*

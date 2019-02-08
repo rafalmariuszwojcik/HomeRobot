@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using RobotControl.Communication;
 
 namespace RobotControl.Core
@@ -6,14 +7,14 @@ namespace RobotControl.Core
   public abstract class ListenerBase<T> : DisposableBase, IListener<T>
     where T : class
   {
-    private readonly Action<T> action;
+    private readonly Action<IEnumerable<T>> action;
 
-    public ListenerBase(Action<T> action)
+    public ListenerBase(Action<IEnumerable<T>> action)
     {
       this.action = action;
     }
 
-    public void MessageReceived(IChannel channel, T data)
+    public void MessageReceived(IChannel channel, IEnumerable<T> data)
     {
       action?.Invoke(data);
     }
