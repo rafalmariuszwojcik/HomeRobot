@@ -1,162 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace RobotControl.Core
 {
-  public class DataProcessingQueue<T> : DisposableBase
+  public class DataProcessingQueue<T> : DataProcessingQueueBase<T>
     where T : class
   {
-    private readonly object lockData = new object();
-    private readonly CancellationTokenSource tokenSource;
-    private readonly CancellationToken token;
-    private readonly Task worker;
-    private readonly ManualResetEvent signal;
-    private readonly Queue<T> data = new Queue<T>();
-    private readonly Action<T> action;
-    private readonly Action<IEnumerable<T>> listAction;
-    private readonly int minInterval;
+    private readonly Action<IEnumerable<T>> action;
+    private readonly int interval;
+    private readonly Queue<T> items = new Queue<T>();
     private DateTime nextAction = DateTime.Now;
-    private bool isDisposing = false;
 
-    private enum ProcessDataMode
-    {
-      Single,
-      All,
-    }
-
-    private DataProcessingQueue()
-    {
-      tokenSource = new CancellationTokenSource();
-      token = tokenSource.Token;
-      signal = new ManualResetEvent(true);
-    }
-
-    public DataProcessingQueue(Action<T> action) : this()
+    public DataProcessingQueue(Action<IEnumerable<T>> action, int interval = 0) 
+      : base()
     {
       this.action = action;
-      worker = Task.Factory.StartNew(() => ProcessData(), token);
+      this.interval = interval;
+      Start();
     }
 
-    public DataProcessingQueue(Action<IEnumerable<T>> action, int minInterval = 0) : this()
+    protected override void ProcessItem(T item)
     {
-      listAction = action;
-      this.minInterval = minInterval;
-      worker = Task.Factory.StartNew(() => ProcessData(), token);
-    }
-
-    public void Enqueue(T item)
-    {
-      lock (lockData)
+      if (interval <= 0)
       {
-        if (item != null && !isDisposing)
-        {
-          data.Enqueue(item);
-          signal.Set();
-        }
+        action?.Invoke(new[] { item });
+      }
+      else
+      {
+        items.Enqueue(item);
       }
     }
 
-    protected override void Dispose(bool disposing)
+    protected override int GetTimeout()
     {
-      lock (lockData)
+      if (interval > 0)
       {
-        isDisposing = true;
+        var timeOut = (int)(nextAction - DateTime.Now).TotalMilliseconds;
+        timeOut = timeOut <= 0 ? 1 : timeOut;
+        timeOut = timeOut > interval ? interval : timeOut;
+        return timeOut;
       }
-        
-      tokenSource?.Cancel();
-      Signal();
-      worker?.Wait();
-      worker?.Dispose();
-      signal?.Dispose();
-      tokenSource?.Dispose();
-    }
-
-    private ProcessDataMode Mode => listAction != null ? ProcessDataMode.All : ProcessDataMode.Single;
-
-    private void Signal()
-    {
-      lock (lockData)
+      else
       {
-        signal?.Set();
+        return base.GetTimeout();
       }
     }
 
-    private void ProcessData()
+    protected override void Work()
     {
-      var timeOut = Timeout.Infinite;
-      T item = null;
-      var items = new Queue<T>();
-      if (token.IsCancellationRequested)
+      if (interval > 0)
       {
-        return;
-      }
-
-      while (true)
-      {
-        signal.WaitOne(timeOut);
-        var now = DateTime.Now;
-        if (minInterval > 0 && now < nextAction)
+        if (DateTime.Now >= nextAction && items.Any())
         {
-          lock (lockData)
-          {
-            timeOut = (int)(nextAction - now).TotalMilliseconds;
-            timeOut = timeOut <= 0 ? 1 : timeOut;
-            timeOut = timeOut > minInterval ? minInterval : timeOut;
-            signal.Reset();
-            continue;
-          }
-        }
-                     
-        items.Clear();
-        do
-        {
-          lock (lockData)
-          {
-            do
-            {
-              item = data.Any() ? data.Dequeue() : null;
-              if (Mode == ProcessDataMode.All && item != null)
-              {
-                items.Enqueue(item);
-              }
-            }
-            while (Mode == ProcessDataMode.All && item != null);
-
-            if (item == null)
-            {
-              signal.Reset();
-            }
-          }
-
-          try
-          {
-            if (Mode == ProcessDataMode.All && items.Any())
-            {
-              listAction(items);
-            }
-            else if (item != null && action != null)
-            {
-              action(item);
-            }
-          }
-          catch (Exception)
-          {
-            ;
-          }
-          
-          if (token.IsCancellationRequested)
-          {
-            return;
-          }
-        }
-        while (item != null);
-
-        if (minInterval > 0)
-        {
-          nextAction = DateTime.Now.AddMilliseconds(minInterval);
+          action?.Invoke(items);
+          items.Clear();
+          nextAction = DateTime.Now.AddMilliseconds(interval);
         }
       }
     }

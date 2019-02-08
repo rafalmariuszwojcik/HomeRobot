@@ -51,13 +51,16 @@ namespace RobotControl.Command
       }
     }
 
-    private void CommandReceived(object sender, ICommand command)
+    private void CommandReceived(object sender, IEnumerable<ICommand> commands)
     {
-      lock (lockListeners)
+      foreach (var command in commands)
       {
-        Parallel.ForEach(listeners, (listener) => {
-          listener.MessageReceived((IChannel)sender, command);
-        });
+        lock (lockListeners)
+        {
+          Parallel.ForEach(listeners, (listener) => {
+            listener.MessageReceived((IChannel)sender, command);
+          });
+        }
       }
     }
 
