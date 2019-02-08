@@ -4,6 +4,7 @@ using RobotControl.Messages;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -87,24 +88,25 @@ namespace RobotControl.Windows
         {
           data.Add(item);
         }
-                
-        if (!control.IsDisposed)
+
+        if (control.InvokeRequired)
         {
-          if (control.InvokeRequired)
+          try
           {
-            try
-            {
-              control.Invoke(new Action(() => intf.Method.Invoke(control, new object[] { null, data })));
-            }
-            catch (ObjectDisposedException)
-            {
-              ;
-            }
+            control.Invoke(new Action(() => intf.Method.Invoke(control, new object[] { null, data })));
           }
-          else
+          catch (ObjectDisposedException)
           {
-            intf.Method.Invoke(control, new object[] { null, data });
+            ;
           }
+          catch (InvalidAsynchronousStateException)
+          {
+            ;
+          }
+        }
+        else
+        {
+          intf.Method.Invoke(control, new object[] { null, data });
         }
       }
     }
