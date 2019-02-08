@@ -9,6 +9,6 @@ namespace RobotControl.Windows
   public interface IListenerControl<T>
     where T : class
   {
-    void MessageReceived(IChannel channel, IEnumerable<T> data);
+    void MessageReceived(Communication.IChannel channel, IEnumerable<T> data);
   }
 }

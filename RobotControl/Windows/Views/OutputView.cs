@@ -51,7 +51,7 @@ namespace RobotControl.Windows.Views
       //uxOutputText.AppendText(message);
     }
 
-    public void MessageReceived(System.Runtime.Remoting.Channels.IChannel channel, IEnumerable<MessagePackage> data)
+    public void MessageReceived(Communication.IChannel channel, IEnumerable<MessagePackage> data)
     {
       foreach (var item in data)
       {
