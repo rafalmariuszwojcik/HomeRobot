@@ -63,3 +63,4 @@ RobotControl/bin/Release/RobotControl.exe.config
 RobotControl/bin/Release/RobotControl.pdb
 RobotControl/bin/Release/WeifenLuo.WinFormsUI.Docking.dll
 RobotControl/obj/Debug/RobotControl.Windows.Views.EngineChartView.resources
+RobotControl/obj/Release/RobotControl.Windows.Views.EngineChartView.resources
