@@ -74,9 +74,11 @@ namespace RobotControl
       
     }
 
+    int i = 0;
+
     private void toolStripButton2_Click(object sender, System.EventArgs e)
     {
-      MessageManager.Instance.MessageReceived(this, "Bolek i Lolek.");
+      MessageManager.Instance.MessageReceived(this, $"Bolek i Lolek.;E00,0,{i++},{i++},{i++};");
     }
 
     private void toolStripButton3_Click(object sender, System.EventArgs e)
