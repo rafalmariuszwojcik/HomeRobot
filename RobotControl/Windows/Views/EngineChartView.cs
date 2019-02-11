@@ -13,7 +13,7 @@ namespace RobotControl.Windows.Views
       InitializeComponent();
     }
 
-    void IListener<CommandPackage>.MessageReceived(Communication.IChannel channel, IEnumerable<CommandPackage> data)
+    void IListener<CommandPackage>.DataReceived(Communication.IChannel channel, IEnumerable<CommandPackage> data)
     {
       chart1.Series.SuspendUpdates();
 

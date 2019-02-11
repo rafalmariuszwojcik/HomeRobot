@@ -78,7 +78,7 @@ namespace RobotControl
 
     private void toolStripButton2_Click(object sender, System.EventArgs e)
     {
-      MessageManager.Instance.MessageReceived(this, $"Bolek i Lolek.;E00,0,{i++},{i++},{i++};");
+      MessageManager.Instance.DataReceived(this, $"Bolek i Lolek.;E00,0,{i++},{i++},{i++};");
     }
 
     private void toolStripButton3_Click(object sender, System.EventArgs e)
@@ -195,7 +195,7 @@ namespace RobotControl
       while (true)
       {
         Thread.Sleep(3);
-        MessageManager.Instance.MessageReceived(null, $"Bolek i Lolek {cnt++}.{Environment.NewLine}");
+        MessageManager.Instance.DataReceived(null, $"Bolek i Lolek {cnt++}.{Environment.NewLine}");
       }
     }
 

@@ -25,7 +25,7 @@ namespace RobotControl.Core
 
     protected IList<IDisposable> Disposables { get; } = new List<IDisposable>();
 
-    public void MessageReceived(object sender, M message)
+    public void DataReceived(object sender, M message)
     {
       messageQueue.Enqueue(message);
     }
@@ -124,7 +124,7 @@ namespace RobotControl.Core
           if (dataType != null)
           {
             var packageType = typeof(List<>).MakeGenericType(dataType);
-            var method = intf.GetMethod("MessageReceived");
+            var method = intf.GetMethod("DataReceived");
             if (packageType != null && method != null)
             {
               listenerInfo.Interfaces.Add(new InterfaceInfo { DataType = dataType, PackageType = packageType, Method = method });

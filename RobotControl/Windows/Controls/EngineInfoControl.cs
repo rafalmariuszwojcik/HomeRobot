@@ -19,7 +19,7 @@ namespace RobotControl.Windows.Controls
       Controls.Add(propertyGrid);
     }
 
-    void IListener<CommandPackage>.MessageReceived(Communication.IChannel channel, IEnumerable<CommandPackage> data)
+    void IListener<CommandPackage>.DataReceived(Communication.IChannel channel, IEnumerable<CommandPackage> data)
     {
       var lastItem = data.LastOrDefault();
       if (lastItem?.Command is EngineSpeedCommand)

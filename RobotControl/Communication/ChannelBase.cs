@@ -92,7 +92,7 @@ namespace RobotControl.Communication
     protected void OnDataReceived(string data)
     {
       DataReceived?.Invoke(this, new DataReceivedEventArgs(data));
-      MessageManager.Instance.MessageReceived(this, data);
+      MessageManager.Instance.DataReceived(this, data);
     }
 
     protected override void Dispose(bool disposing)

@@ -14,7 +14,7 @@ namespace RobotControl.Core
       this.action = action;
     }
 
-    public void MessageReceived(IChannel channel, IEnumerable<T> data)
+    public void DataReceived(IChannel channel, IEnumerable<T> data)
     {
       action?.Invoke(data);
     }

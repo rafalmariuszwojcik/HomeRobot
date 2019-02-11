@@ -6,6 +6,6 @@
   {
     void RegisterListener(T listener);
     void UnregisterListener(T listener);
-    void MessageReceived(object sender, M message);
+    void DataReceived(object sender, M message);
   }
 }

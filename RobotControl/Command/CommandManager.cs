@@ -47,7 +47,7 @@ namespace RobotControl.Command
             var command = CommandFactory.CreateCommand(commandId, commandParameters);
             if (command != null)
             {
-              MessageReceived(channel, command);
+              DataReceived(channel, command);
             }
           }
         }
