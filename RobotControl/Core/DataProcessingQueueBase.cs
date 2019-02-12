@@ -24,13 +24,17 @@ namespace RobotControl.Core
       signal = new ManualResetEvent(true);
     }
 
-    public void Enqueue(T item)
+    public void Enqueue(IEnumerable<T> items)
     {
       lock (lockData)
       {
-        if (item != null && !isDisposing)
+        if (items != null && items.Any() && !isDisposing)
         {
-          data.Enqueue(item);
+          foreach (var item in items)
+          {
+            data.Enqueue(item);
+          }
+          
           signal.Set();
         }
       }

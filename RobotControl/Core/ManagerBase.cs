@@ -1,5 +1,4 @@
-﻿using RobotControl.Command;
-using RobotControl.Communication;
+﻿using RobotControl.Communication;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,9 +24,9 @@ namespace RobotControl.Core
 
     protected IList<IDisposable> Disposables { get; } = new List<IDisposable>();
 
-    public void DataReceived(object sender, M message)
+    public void DataReceived(object sender, IEnumerable<M> data)
     {
-      messageQueue.Enqueue(message);
+      messageQueue.Enqueue(data);
     }
 
     public void RegisterListener(T listener)

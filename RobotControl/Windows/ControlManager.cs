@@ -13,8 +13,8 @@ namespace RobotControl.Windows
     public ControlManager()
       : base(20)
     {
-      Disposables.Add(new MessageListener((s) => DataReceived(null, new MessagePackage(s.FirstOrDefault()))));
-      Disposables.Add(new CommandListener((s) => DataReceived(null, new CommandPackage(s.FirstOrDefault()))));
+      Disposables.Add(new MessageListener((s) => DataReceived(null, s.Select(x => new MessagePackage(x)))));
+      Disposables.Add(new CommandListener((s) => DataReceived(null, s.Select(x => new CommandPackage(x)))));
     }
 
     protected override void SendData(Control listener, Action action)
