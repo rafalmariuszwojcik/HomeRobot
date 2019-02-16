@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace RobotControl.Simulation.Robot
 {
-  public class Robot : SimulationElement, IRobot, IMessageReceiver, ICommandListener
+  public class Robot : SimulationElement, IRobot, ICommandListener
   {
     private const double ROBOT_WIDTH = 124.0;
     private const double WHEEL_RADIUS = 33.2;
@@ -17,8 +17,6 @@ namespace RobotControl.Simulation.Robot
     private Route route;
     public int? leftEncoderPoints = null;
     public int? rightEncoderPoints = null;
-
-
 
     public Robot()
       : base(0.0, 0.0, 0.0)
@@ -35,8 +33,6 @@ namespace RobotControl.Simulation.Robot
       get { return route; }
     }
 
-
-
     Point2D IPositionAwareItem.Position => new Point2D(position.X, position.Y);
     Angle2D IAngleAwareItem.Angle => new Angle2D { Value = position.Angle };
 
@@ -51,50 +47,29 @@ namespace RobotControl.Simulation.Robot
 
       route.Movements.Add(new Movement(distance, angle));
     }
-        
-    public void MessageReceived(string message, object[] parameters) 
+
+    public void MessageReceived(int leftDirection, int leftDistance, int rightDirection, int rightDistance)
     {
-      const int FORWARD = 2;
-      const int BACKWARD = 3;
-      const int MAXVALUE = 255;
-
       double oneHoleDistance = (RobotCalculator.WheelRadius * 2.0 * Math.PI) / (double)RobotCalculator.EncoderHoles;
-      int leftDirection;
-      int leftDistance;
-      int rightDirection;
-      int rightDistance;
-
-      if (object.Equals(message, "DIST")) 
+      if (!leftEncoderPoints.HasValue) 
       {
-        if (
-          parameters.Length >= 4 &&
-          int.TryParse(parameters[0] as string, out leftDirection) &&
-          int.TryParse(parameters[1] as string, out leftDistance) &&
-          int.TryParse(parameters[2] as string, out rightDirection) &&
-          int.TryParse(parameters[3] as string, out rightDistance))
-        {
-          if (!leftEncoderPoints.HasValue) 
-          {
-            leftEncoderPoints = leftDistance;
-          }
+        leftEncoderPoints = leftDistance;
+      }
 
-          if (!rightEncoderPoints.HasValue)
-          {
-            rightEncoderPoints = rightDistance;
-          }
+      if (!rightEncoderPoints.HasValue)
+      {
+        rightEncoderPoints = rightDistance;
+      }
                     
-          if (leftDistance != leftEncoderPoints || rightDistance != rightEncoderPoints)
-          {
-            var leftDifference = CalcDifference(leftEncoderPoints.Value, leftDistance, leftDirection);
-            var rightDifference = CalcDifference(rightEncoderPoints.Value, rightDistance, rightDirection);
-            WheelMove(leftDifference * oneHoleDistance, rightDifference * oneHoleDistance);
-            //CalcEstimatedPoint(leftDifference * oneHoleDistance, rightDifference * oneHoleDistance);
-            leftEncoderPoints = leftDistance;
-            rightEncoderPoints = rightDistance;
-
-            this.NeedsRedraw = true;
-          }
-        }
+      if (leftDistance != leftEncoderPoints || rightDistance != rightEncoderPoints)
+      {
+        var leftDifference = CalcDifference(leftEncoderPoints.Value, leftDistance, leftDirection);
+        var rightDifference = CalcDifference(rightEncoderPoints.Value, rightDistance, rightDirection);
+        WheelMove(leftDifference * oneHoleDistance, rightDifference * oneHoleDistance);
+        //CalcEstimatedPoint(leftDifference * oneHoleDistance, rightDifference * oneHoleDistance);
+        leftEncoderPoints = leftDistance;
+        rightEncoderPoints = rightDistance;
+        StateChanged = true;
       }
     }
 
@@ -112,10 +87,6 @@ namespace RobotControl.Simulation.Robot
       }
       
       return result;
-    }
-    
-    public void WheelMove(int left, int right) 
-    { 
     }
     
     public void WheelMove(double left, double right) 
@@ -155,15 +126,13 @@ namespace RobotControl.Simulation.Robot
       }
 
       position.Angle += (float)RadiansToDegrees(angleInRadians);
-      //NeedsRedraw = true;
     }
 
     private void ProcessCommand(ICommand command)
     {
-      if (command is RobotMoveCommand)
+      if (command is RobotMoveCommand cmd)
       {
-        var cmd = (RobotMoveCommand)command;
-        MessageReceived("DIST", new[] { cmd.LeftDirection.ToString(), cmd.LeftDistance.ToString(), cmd.RightDirection.ToString(), cmd.RightDistance.ToString() });
+        MessageReceived(cmd.LeftDirection, (int)cmd.LeftDistance, cmd.RightDirection, (int)cmd.RightDistance);
       }
     }
 

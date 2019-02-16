@@ -12,7 +12,7 @@ namespace RobotControl.Windows.Controls
 {
   public partial class AreaViewControl : ViewControl, IListener<SimulationPackage>
   {
-    private int viewZoom = 100;
+    private int viewZoom = 25;//100;
     private Point2D originPoint = new Point2D(0, 0, MeasurementUnit.Milimeter);
     private Point? previousMousePosition;
     

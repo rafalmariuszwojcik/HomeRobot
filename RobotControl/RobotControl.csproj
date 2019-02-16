@@ -150,7 +150,6 @@
     <Compile Include="Windows\Views\SimulationView.Designer.cs">
       <DependentUpon>SimulationView.cs</DependentUpon>
     </Compile>
-    <Compile Include="IMessageReceiver.cs" />
     <Compile Include="Messages\IMessageListener.cs" />
     <Compile Include="Messages\IMessageManager.cs" />
     <Compile Include="Messages\MessageManager.cs" />

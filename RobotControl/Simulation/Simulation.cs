@@ -2,6 +2,7 @@
 using RobotControl.Communication;
 using RobotControl.Core;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RobotControl.Simulation
 {
@@ -13,13 +14,17 @@ namespace RobotControl.Simulation
 
     void IListener<ICommand>.DataReceived(IChannel channel, IEnumerable<ICommand> data)
     {
-      StateChanged = false;
+      foreach (var item in Items)
+      {
+        item.ResetState();
+      }
+
       foreach (var item in Items)
       {
         (item as ICommandListener)?.DataReceived(channel, data);
       }
-           
-      StateChanged = true;
+
+      StateChanged = Items.Any(x => x.StateChanged);
     }
   }
 }

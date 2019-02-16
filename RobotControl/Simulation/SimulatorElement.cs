@@ -4,8 +4,6 @@ namespace RobotControl.Simulation
 {
   public abstract class SimulationElement : ISimulationItem
   {
-    public bool NeedsRedraw { get; set; }
-
     protected readonly SimulationPoint position;
 
     public SimulationElement(double x, double y, double angle)
@@ -18,8 +16,6 @@ namespace RobotControl.Simulation
       get { return position; }
     }
 
-    public ISimulation Simulation => throw new NotImplementedException();
-
     public static double RadiansToDegrees(double radians)
     {
       return (radians * 180) / (Math.PI);
@@ -28,6 +24,17 @@ namespace RobotControl.Simulation
     public static double DegreesToRadians(double degrees)
     {
       return (degrees * Math.PI) / 180;
+    }
+
+    protected bool StateChanged { get; set; }
+
+    ISimulation ISimulationItem.Simulation => throw new NotImplementedException();
+
+    bool ISimulationItem.StateChanged => StateChanged;
+    
+    void ISimulationItem.ResetState()
+    {
+      StateChanged = false;
     }
   }
 }
