@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace RobotControl.Simulation
 {
@@ -10,5 +6,6 @@ namespace RobotControl.Simulation
   {
     IList<ISimulationItem> Items { get; }
     ISimulationArea SimulationArea { get; }
+    bool StateChanged { get; }
   }
 }

@@ -120,7 +120,6 @@ void loop()
     Serial.println(speedInfo);
   }
 
-  /*
   if (robot.rightEngine.signaled || robot.leftEngine.signaled)
   {
     sprintf(
@@ -132,8 +131,7 @@ void loop()
       robot.rightEngine.fullDistance);
     Serial.print(speedInfo);
   }
-  */
-  
+    
   if (robot.rightEngine.signaled)
   {
     sprintf(

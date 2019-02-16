@@ -78,7 +78,7 @@ namespace RobotControl
 
     private void toolStripButton2_Click(object sender, System.EventArgs e)
     {
-      MessageManager.Instance.DataReceived(this, new[] { $"Bolek i Lolek.;E00,0,{i++},{i++},{i++};" });
+      MessageManager.Instance.DataReceived(this, new[] { $"Bolek i Lolek.;E00,0,{i++},{i++},{i++};DIST,1,2,3,4;" });
     }
 
     private void toolStripButton3_Click(object sender, System.EventArgs e)

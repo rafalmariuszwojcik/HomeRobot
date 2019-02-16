@@ -1,23 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
+using RobotControl.Communication;
+using RobotControl.Core;
 using RobotControl.Drawing;
 using RobotControl.Simulation;
-using RobotControl.Simulation.Robot;
 
 namespace RobotControl.Windows.Controls
 {
-  public partial class AreaViewControl : ViewControl
+  public partial class AreaViewControl : ViewControl, IListener<SimulationPackage>
   {
     private int viewZoom = 100;
     private Point2D originPoint = new Point2D(0, 0, MeasurementUnit.Milimeter);
     private Point? previousMousePosition;
-    private ISimulation simulation = new Simulation.Simulation();
-
+    
     public AreaViewControl()
     {
       InitializeComponent();
-      simulation.Items.Add(new Robot(0, 0, 75));
       AutoScrollMinSize = CalcAreaSize();
       AutoScrollPosition = CalcScrollPosition();
     }
@@ -81,12 +82,12 @@ namespace RobotControl.Windows.Controls
 
     private void DrawGrid(Graphics g)
     {
-      var rect = simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Milimeter);
+      var rect = Simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Milimeter);
       var x = (float)rect.Left.Value;
       var y = (float)rect.Top.Value;
       var r = (float)rect.Right.Value;
       var b = (float)rect.Bottom.Value;
-      
+
       var pen = new Pen(Color.FromArgb(255, 160, 160, 160)) { DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot };
       var drawFont = new Font("Arial", 32);
       var drawBrush = new SolidBrush(Color.Gray);
@@ -97,7 +98,7 @@ namespace RobotControl.Windows.Controls
         g.DrawString(y.ToString(), drawFont, drawBrush, new PointF(-(float)Origin.ConvertTo(MeasurementUnit.Milimeter).X, y));
         y += 100F;
       }
-            
+
       y = (float)rect.Top.Value;
       while (x <= r)
       {
@@ -116,7 +117,7 @@ namespace RobotControl.Windows.Controls
 
     private void DrawSimulation(Graphics g)
     {
-      foreach (var item in simulation.Items)
+      foreach (var item in Simulation.Items)
       {
         var draw = DrawingFactory.GetDrawingInstance(item);
         if (draw != null)
@@ -145,7 +146,7 @@ namespace RobotControl.Windows.Controls
 
     private Point2D CalculateOrigin(Point2D origin)
     {
-      var rect = simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Milimeter);
+      var rect = Simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Milimeter);
       origin = origin.ConvertTo(MeasurementUnit.Milimeter);
       var x = origin.X;
       var y = origin.Y;
@@ -162,13 +163,13 @@ namespace RobotControl.Windows.Controls
 
     private Size CalcAreaSize()
     {
-      var rect = simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Inch);
+      var rect = Simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Inch);
       return new Size((int)Math.Ceiling(rect.Width.Value * DpiX * DrawScale), (int)Math.Ceiling(rect.Height.Value * DpiY * DrawScale));
     }
 
     private Point CalcStartPoint()
     {
-      var rect = simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Inch);
+      var rect = Simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Inch);
       return new Point((int)Math.Ceiling(rect.Left.Value * DpiX * DrawScale), (int)Math.Ceiling(rect.Top.Value * DpiY * DrawScale));
     }
 
@@ -186,5 +187,16 @@ namespace RobotControl.Windows.Controls
       var y = -start.Y - origin.Y;
       return new Point(x, y);
     }
+
+    void IListener<SimulationPackage>.DataReceived(IChannel channel, IEnumerable<SimulationPackage> data)
+    {
+      var simulation = data.FirstOrDefault(x => x.Simulation.Equals(Simulation));
+      if (simulation != null)
+      {
+        Refresh();
+      }
+    }
+
+    private ISimulation Simulation => SimulationManager.Instance.Simulation;
   }
 }

@@ -1,6 +1,7 @@
 ﻿using RobotControl.Command;
 using RobotControl.Core;
 using RobotControl.Messages;
+using RobotControl.Simulation;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace RobotControl.Windows
     {
       Disposables.Add(new MessageListener((s) => DataReceived(null, s.Select(x => new MessagePackage(x)))));
       Disposables.Add(new CommandListener((s) => DataReceived(null, s.Select(x => new CommandPackage(x)))));
+      Disposables.Add(new SimulationListener((s) => DataReceived(null, s.Select(x => new SimulationPackage(x)))));
     }
 
     protected override void SendData(Control listener, Action action)

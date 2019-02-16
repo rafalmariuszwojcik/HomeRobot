@@ -1,8 +1,12 @@
-﻿using System;
+﻿using RobotControl.Command;
+using RobotControl.Communication;
+using RobotControl.Core;
+using System;
+using System.Collections.Generic;
 
 namespace RobotControl.Simulation.Robot
 {
-  public class Robot : SimulationElement, IRobot, IMessageReceiver
+  public class Robot : SimulationElement, IRobot, IMessageReceiver, ICommandListener
   {
     private const double ROBOT_WIDTH = 124.0;
     private const double WHEEL_RADIUS = 33.2;
@@ -152,6 +156,23 @@ namespace RobotControl.Simulation.Robot
 
       position.Angle += (float)RadiansToDegrees(angleInRadians);
       //NeedsRedraw = true;
+    }
+
+    private void ProcessCommand(ICommand command)
+    {
+      if (command is RobotMoveCommand)
+      {
+        var cmd = (RobotMoveCommand)command;
+        MessageReceived("DIST", new[] { cmd.LeftDirection.ToString(), cmd.LeftDistance.ToString(), cmd.RightDirection.ToString(), cmd.RightDistance.ToString() });
+      }
+    }
+
+    void IListener<ICommand>.DataReceived(IChannel channel, IEnumerable<ICommand> data)
+    {
+      foreach (var command in data)
+      {
+        ProcessCommand(command);
+      }
     }
   }
 }

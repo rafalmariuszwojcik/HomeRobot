@@ -62,6 +62,7 @@
     <Compile Include="Command\ICommandListener.cs" />
     <Compile Include="Command\ICommandManager.cs" />
     <Compile Include="Command\IEngineCommand.cs" />
+    <Compile Include="Command\RobotMoveCommand.cs" />
     <Compile Include="Communication\ChannelBase.cs" />
     <Compile Include="Communication\CommunicationManager.cs" />
     <Compile Include="Communication\ConfigurationBase.cs" />
@@ -77,6 +78,8 @@
     <Compile Include="Core\IManager.cs" />
     <Compile Include="Core\ListenerBase.cs" />
     <Compile Include="Messages\MessageListener.cs" />
+    <Compile Include="Simulation\SimulationListener.cs" />
+    <Compile Include="Simulation\SimulationManager.cs" />
     <Compile Include="Windows\CommandPackage.cs" />
     <Compile Include="Windows\ControlManager.cs" />
     <Compile Include="Windows\Controls\AreaViewControl.cs">
@@ -119,6 +122,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Windows\MessagePackage.cs" />
+    <Compile Include="Windows\SimulationPackage.cs" />
     <Compile Include="Windows\Views\BaseView.cs">
       <SubType>Form</SubType>
     </Compile>

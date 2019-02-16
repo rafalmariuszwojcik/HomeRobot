@@ -10,8 +10,19 @@ namespace RobotControl.Windows.Controls
 
     public ManualScrollableControl()
     {
+      ControlManager.Instance.RegisterListener(this);
       VScroll = true;
       HScroll = true;
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+      if (disposing)
+      {
+        ControlManager.Instance.UnregisterListener(this);
+      }
+
+      base.Dispose(disposing);
     }
 
     protected override void WndProc(ref Message msg)
