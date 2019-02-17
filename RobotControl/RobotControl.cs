@@ -75,10 +75,20 @@ namespace RobotControl
     }
 
     int i = 0;
+    int distanceL = 0;
+    int distanceR = 0;
 
     private void toolStripButton2_Click(object sender, System.EventArgs e)
     {
-      MessageManager.Instance.DataReceived(this, new[] { $"Bolek i Lolek.;E00,0,{i++},{i++},{i++};DIST,1,2,3,4;" });
+      MessageManager.Instance.DataReceived(this, new[] { $"Bolek i Lolek.;E00,0,{i++},{i++},{i++};DIST,2,{distanceL},2,{distanceR};" });
+      if (distanceR > distanceL)
+      {
+        distanceL += 1;
+      }
+      else
+      {
+        distanceR += 1;
+      }
     }
 
     private void toolStripButton3_Click(object sender, System.EventArgs e)

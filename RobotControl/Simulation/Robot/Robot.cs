@@ -17,6 +17,7 @@ namespace RobotControl.Simulation.Robot
     private Route route;
     public int? leftEncoderPoints = null;
     public int? rightEncoderPoints = null;
+    private MovementStartPoint startPoint;
 
     public Robot()
       : base(0.0, 0.0, 0.0)
@@ -50,27 +51,29 @@ namespace RobotControl.Simulation.Robot
 
     public void MessageReceived(int leftDirection, int leftDistance, int rightDirection, int rightDistance)
     {
-      double oneHoleDistance = (RobotCalculator.WheelRadius * 2.0 * Math.PI) / (double)RobotCalculator.EncoderHoles;
-      if (!leftEncoderPoints.HasValue) 
+      if (startPoint == null)
       {
-        leftEncoderPoints = leftDistance;
+        startPoint = new MovementStartPoint(position.X, position.Y, position.Angle, leftDistance, rightDistance);
       }
 
-      if (!rightEncoderPoints.HasValue)
+      double oneHoleDistance = (RobotCalculator.WheelRadius * 2.0 * Math.PI) / (double)RobotCalculator.EncoderHoles;
+      var leftDifference = leftDistance - startPoint.LeftEncoder;
+      var rightDifference = rightDistance - startPoint.RightEncoder;
+      if (leftDifference == 0 && rightDifference == 0)
       {
-        rightEncoderPoints = rightDistance;
+        return;
       }
-                    
-      if (leftDistance != leftEncoderPoints || rightDistance != rightEncoderPoints)
+
+      var newPoint = CalculateMovement(startPoint, (double)leftDifference * oneHoleDistance, (double)rightDifference * oneHoleDistance);
+      position.X = newPoint.X;
+      position.Y = newPoint.Y;
+      position.Angle = newPoint.Angle;
+      if (startPoint.IsExpired)
       {
-        var leftDifference = CalcDifference(leftEncoderPoints.Value, leftDistance, leftDirection);
-        var rightDifference = CalcDifference(rightEncoderPoints.Value, rightDistance, rightDirection);
-        WheelMove(leftDifference * oneHoleDistance, rightDifference * oneHoleDistance);
-        //CalcEstimatedPoint(leftDifference * oneHoleDistance, rightDifference * oneHoleDistance);
-        leftEncoderPoints = leftDistance;
-        rightEncoderPoints = rightDistance;
-        StateChanged = true;
+        startPoint = new MovementStartPoint(newPoint.X, newPoint.Y, newPoint.Angle, leftDistance, rightDistance);
       }
+
+      StateChanged = true;
     }
 
     private int CalcDifference(int oldValue, int newValue, int direction) 
@@ -110,7 +113,7 @@ namespace RobotControl.Simulation.Robot
         vectorAngle = DegreesToRadians(90.0);
       }
 
-      vectorAngle -= DegreesToRadians(this.position.Angle);
+      vectorAngle -= DegreesToRadians(position.Angle);
       var deltaX = vector * Math.Cos(vectorAngle);
       var deltaY = vector * Math.Sin(vectorAngle);
           
@@ -128,6 +131,46 @@ namespace RobotControl.Simulation.Robot
       position.Angle += (float)RadiansToDegrees(angleInRadians);
     }
 
+    public SimulationPoint CalculateMovement(SimulationPoint startPoint, double leftWheel, double rightWheel)
+    {
+      var angleInRadians = (leftWheel - rightWheel) / (RobotCalculator.RobotRadius * 2F);
+      var centerDistance = (leftWheel + rightWheel) / 2.0;
+
+      double vector;
+      double vectorAngle;
+      if (angleInRadians != 0.0 && centerDistance != 0.0)
+      {
+        var r = centerDistance / angleInRadians;
+        var vectorX = r - (r * Math.Cos(angleInRadians));
+        var vectorY = r * Math.Sin(angleInRadians);
+        vector = Math.Sqrt(Math.Pow(vectorX, 2) + Math.Pow(vectorY, 2));
+        vectorAngle = (Math.Atan(vectorY / vectorX));
+      }
+      else
+      {
+        vector = centerDistance;
+        vectorAngle = DegreesToRadians(90.0);
+      }
+
+      vectorAngle -= DegreesToRadians(startPoint.Angle);
+      var deltaX = vector * Math.Cos(vectorAngle);
+      var deltaY = vector * Math.Sin(vectorAngle);
+
+      var result = new SimulationPoint(startPoint.X, startPoint.Y, startPoint.Angle + RadiansToDegrees(angleInRadians));
+      if (angleInRadians * centerDistance >= 0.0)
+      {
+        result.Y -= deltaY;
+        result.X += deltaX;
+      }
+      else
+      {
+        result.Y += deltaY;
+        result.X -= deltaX;
+      }
+
+      return result;
+    }
+
     private void ProcessCommand(ICommand command)
     {
       if (command is RobotMoveCommand cmd)
@@ -142,6 +185,59 @@ namespace RobotControl.Simulation.Robot
       {
         ProcessCommand(command);
       }
+    }
+
+    /*
+    public void MessageReceived(int leftDirection, int leftDistance, int rightDirection, int rightDistance)
+    {
+      if (startPoint == null)
+      {
+        startPoint = new MovementStartPoint(position.X, position.Y, position.Angle, leftDistance, rightDistance);
+      }
+
+      double oneHoleDistance = (RobotCalculator.WheelRadius * 2.0 * Math.PI) / (double)RobotCalculator.EncoderHoles;
+      if (!leftEncoderPoints.HasValue)
+      {
+        leftEncoderPoints = leftDistance;
+      }
+
+      if (!rightEncoderPoints.HasValue)
+      {
+        rightEncoderPoints = rightDistance;
+      }
+
+      if (leftDistance != leftEncoderPoints || rightDistance != rightEncoderPoints)
+      {
+        var leftDifference = CalcDifference(leftEncoderPoints.Value, leftDistance, leftDirection);
+        var rightDifference = CalcDifference(rightEncoderPoints.Value, rightDistance, rightDirection);
+        WheelMove(leftDifference * oneHoleDistance, rightDifference * oneHoleDistance);
+        //CalcEstimatedPoint(leftDifference * oneHoleDistance, rightDifference * oneHoleDistance);
+        leftEncoderPoints = leftDistance;
+        rightEncoderPoints = rightDistance;
+        StateChanged = true;
+      }
+    }
+    */
+
+    private class MovementStartPoint : SimulationPoint
+    {
+      private readonly DateTime expiration;
+
+      public MovementStartPoint(double x, double y, double angle, int leftEncoder, int rightEncoder)
+        : base(x, y, angle)
+      {
+        expiration = DateTime.Now.AddMilliseconds(500);
+        LeftEncoder = leftEncoder;
+        RightEncoder = rightEncoder;
+      }
+
+      public bool IsExpired
+      {
+        get { return DateTime.Now > expiration; }
+      }
+
+      public int LeftEncoder { get; private set; }
+      public int RightEncoder { get; private set; }
     }
   }
 }
