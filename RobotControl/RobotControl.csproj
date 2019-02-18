@@ -78,6 +78,7 @@
     <Compile Include="Core\IManager.cs" />
     <Compile Include="Core\ListenerBase.cs" />
     <Compile Include="Messages\MessageListener.cs" />
+    <Compile Include="Simulation\Robot\PositionCalculator.cs" />
     <Compile Include="Simulation\SimulationListener.cs" />
     <Compile Include="Simulation\SimulationManager.cs" />
     <Compile Include="Windows\CommandPackage.cs" />
