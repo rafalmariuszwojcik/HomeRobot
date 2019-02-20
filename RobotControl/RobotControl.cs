@@ -8,6 +8,7 @@ using WeifenLuo.WinFormsUI.Docking;
 using System.IO;
 using System.Threading;
 using System;
+using System.Threading.Tasks;
 
 namespace RobotControl
 {
@@ -80,9 +81,10 @@ namespace RobotControl
 
     private void toolStripButton2_Click(object sender, System.EventArgs e)
     {
-      MessageManager.Instance.DataReceived(this, new[] { $"Bolek i Lolek.;E00,0,{i++},{i++},{i++};DIST,2,{distanceL},2,{distanceR};" });
-      MessageManager.Instance.DataReceived(this, new[] { $"ENC,0,{distanceL},0,2;" });
+      //MessageManager.Instance.DataReceived(this, new[] { $"Bolek i Lolek.;E00,0,{i++},{i++},{i++};DIST,2,{distanceL},2,{distanceR};" });
+      //MessageManager.Instance.DataReceived(this, new[] { $"ENC,0,{distanceL},0,2;" });
 
+      /*
       if (distanceR > distanceL)
       {
         distanceL += 1;
@@ -91,6 +93,16 @@ namespace RobotControl
       {
         distanceR += 1;
       }
+      */
+
+      Task.Factory.StartNew(new Action(() => 
+      {
+        for (var i = 0; i < 100; i++)
+        {
+          MessageManager.Instance.DataReceived(this, new[] { $"ENC,0,{i},0,2;{Environment.NewLine}" });
+          Task.Delay(10).Wait();
+        }
+      }));
     }
 
     private void toolStripButton3_Click(object sender, System.EventArgs e)
