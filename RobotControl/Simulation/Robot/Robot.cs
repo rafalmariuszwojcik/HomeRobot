@@ -13,20 +13,22 @@ namespace RobotControl.Simulation.Robot
     private const double WHEEL_WIDTH = 25.0;
     private const int ENCODER_POINTS = 20;
 
+    private readonly Odometry odometry;
     private RobotGeometry robotGeometry = new RobotGeometry(ROBOT_WIDTH, WHEEL_RADIUS, WHEEL_WIDTH, ENCODER_POINTS);
     private Route route;
     public int? leftEncoderPoints = null;
     public int? rightEncoderPoints = null;
     private MovementStartPoint startPoint;
-
+    
     public Robot()
-      : base(0.0, 0.0, 0.0)
+      : this(0.0, 0.0, 0.0)
     {
     }
 
     public Robot(double x, double y, double angle) 
       : base(x, y, angle)
     {
+      odometry = new Odometry(new Action<IEnumerable<IEncoderCommand>>((s) => { }), 50);
     }
 
     public Route Route
@@ -171,11 +173,22 @@ namespace RobotControl.Simulation.Robot
       return result;
     }
 
+    protected override void Dispose(bool disposing)
+    {
+      if (disposing)
+      {
+      }
+    }
+
     private void ProcessCommand(ICommand command)
     {
       if (command is RobotMoveCommand cmd)
       {
-        MessageReceived(cmd.LeftDirection, (int)cmd.LeftDistance, cmd.RightDirection, (int)cmd.RightDistance);
+        //MessageReceived(cmd.LeftDirection, (int)cmd.LeftDistance, cmd.RightDirection, (int)cmd.RightDistance);
+      }
+      else if (command is IEncoderCommand encoderCommand)
+      {
+        odometry.Enqueue(new[] { encoderCommand });
       }
     }
 

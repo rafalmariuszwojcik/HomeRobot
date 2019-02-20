@@ -1,8 +1,9 @@
-﻿using System;
+﻿using RobotControl.Core;
+using System;
 
 namespace RobotControl.Simulation
 {
-  public abstract class SimulationElement : ISimulationItem
+  public abstract class SimulationElement : DisposableBase, ISimulationItem
   {
     protected readonly SimulationPoint position;
 

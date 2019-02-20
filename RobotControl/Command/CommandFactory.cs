@@ -20,7 +20,8 @@ namespace RobotControl.Command
     private static IDictionary<string, Type> commandTypes = new Dictionary<string, Type>()
     {
       { "E00", typeof(EngineSpeedCommand)},
-      { "DIST", typeof(RobotMoveCommand)}
+      { "DIST", typeof(RobotMoveCommand)},
+      { "ENC", typeof(EncoderCommand)},
     };
 
     public static ICommand CreateCommand(string commandId, string[] parameters)
@@ -49,6 +50,10 @@ namespace RobotControl.Command
             if (property.PropertyType == typeof(int))
             {
               property.SetValue(command, int.Parse(value), null);
+            }
+            else if (property.PropertyType == typeof(long))
+            {
+              property.SetValue(command, long.Parse(value), null);
             }
             else if (property.PropertyType == typeof(double))
             {

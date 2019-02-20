@@ -81,6 +81,8 @@ namespace RobotControl
     private void toolStripButton2_Click(object sender, System.EventArgs e)
     {
       MessageManager.Instance.DataReceived(this, new[] { $"Bolek i Lolek.;E00,0,{i++},{i++},{i++};DIST,2,{distanceL},2,{distanceR};" });
+      MessageManager.Instance.DataReceived(this, new[] { $"ENC,0,{distanceL},0,2;" });
+
       if (distanceR > distanceL)
       {
         distanceL += 1;
