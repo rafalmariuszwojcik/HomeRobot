@@ -2,13 +2,26 @@
 using RobotControl.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RobotControl.Simulation.Robot
 {
   public class Odometry : DataProcessingQueue<IEncoderCommand>
   {
-    public Odometry(Action<IEnumerable<IEncoderCommand>> action, int interval = 0) : base(action, interval)
+    private IList<int> list = new List<int>();
+
+    public Odometry(Action<double, double> action)
+      : base((s, d) => ((Odometry)s).PostData(d), 50)
     {
+    }
+
+    private void PostData(IEnumerable<IEncoderCommand> data)
+    {
+      list.Add(data.Count());
+      if (data.Any(x => x.Distance >= 99))
+      {
+      }
+
     }
   }
 }

@@ -28,7 +28,7 @@ namespace RobotControl.Simulation.Robot
     public Robot(double x, double y, double angle) 
       : base(x, y, angle)
     {
-      odometry = new Odometry(new Action<IEnumerable<IEncoderCommand>>((s) => { }), 50);
+      odometry = new Odometry(new Action<double, double>((dl, dr) => { }));
     }
 
     public Route Route

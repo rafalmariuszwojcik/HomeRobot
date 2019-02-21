@@ -17,7 +17,7 @@ namespace RobotControl.Core
     
     protected ManagerBase(int interval = 0)
     {
-      messageQueue = new DataProcessingQueue<M>(x => PostData(null, x), interval);
+      messageQueue = new DataProcessingQueue<M>((s, x) => PostData(null, x), interval);
     }
 
     protected IList<IDisposable> Disposables { get; } = new List<IDisposable>();
