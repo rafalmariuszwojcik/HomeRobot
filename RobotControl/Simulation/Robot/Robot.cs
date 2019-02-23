@@ -74,7 +74,7 @@ namespace RobotControl.Simulation.Robot
       position.X = newPoint.X;
       position.Y = newPoint.Y;
       position.Angle = newPoint.Angle;
-      if (startPoint.IsExpired)
+      //if (startPoint.IsExpired)
       {
         startPoint = new MovementStartPoint(newPoint.X, newPoint.Y, newPoint.Angle, leftDistance, rightDistance);
       }

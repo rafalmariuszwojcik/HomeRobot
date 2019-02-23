@@ -15,7 +15,13 @@ namespace RobotControl.Simulation
     public SimulationManager()
     {
       var simulation = new Simulation();
-      simulation.Items.Add(new Robot.Robot(0, 0, -90));
+      var robot = new Robot.Robot(0, 0, -90);
+      robot.OnStateChanged += (s, e) =>
+      {
+        DataReceived(null, new[] { simulation });
+      };
+      
+      simulation.Items.Add(robot);
       Add(simulation);
 
       CommandManager.Instance.RegisterListener(this);

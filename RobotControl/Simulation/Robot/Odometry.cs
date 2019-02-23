@@ -31,8 +31,10 @@ namespace RobotControl.Simulation.Robot
       {
       }
 
-      var dl = data.Where(x => x.Index == 0).Max(x => x.Distance);
-      var dr = data.Where(x => x.Index == 1).Max(x => x.Distance);
+      var dlItems = data.Where(x => x.Index == 0);//.FirstOrDefault();//?.Max(x => x.Distance);
+      var drItems = data.Where(x => x.Index == 1);//.FirstOrDefault();//?.Max(x => x.Distance);
+      var dl = dlItems.Any() ? dlItems.Max(x => x.Distance) : 0;
+      var dr = drItems.Any() ? drItems.Max(x => x.Distance) : 0;
       action?.Invoke(dl, dr);
 
     }

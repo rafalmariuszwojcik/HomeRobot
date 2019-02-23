@@ -5,7 +5,9 @@ namespace RobotControl.Simulation
 {
   public abstract class SimulationElement : DisposableBase, ISimulationItem
   {
+    private bool stateChanged;
     protected readonly SimulationPoint position;
+    public event EventHandler OnStateChanged;
 
     public SimulationElement(double x, double y, double angle)
     {
@@ -27,7 +29,22 @@ namespace RobotControl.Simulation
       return (degrees * Math.PI) / 180;
     }
 
-    protected bool StateChanged { get; set; }
+    protected bool StateChanged
+    {
+      get
+      {
+        return stateChanged;
+      }
+
+      set
+      {
+        if (stateChanged != value)
+        {
+          stateChanged = value;
+          OnStateChanged.Invoke(this, new EventArgs());
+        }
+      }
+    }
 
     ISimulation ISimulationItem.Simulation => throw new NotImplementedException();
 
