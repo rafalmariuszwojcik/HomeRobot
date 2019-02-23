@@ -11,7 +11,7 @@ namespace RobotControl.Simulation.Robot
     private IList<int> list = new List<int>();
 
     public Odometry(Action<double, double> action)
-      : base((s, d) => ((Odometry)s).PostData(d), 50)
+      : base((s, d) => ((Odometry)s).PostData(d), 250)
     {
     }
 

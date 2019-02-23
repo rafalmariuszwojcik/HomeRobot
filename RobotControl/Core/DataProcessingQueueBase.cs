@@ -17,7 +17,7 @@ namespace RobotControl.Core
     private Task worker;
     private bool isDisposing = false;
 
-    public DataProcessingQueueBase()
+    protected DataProcessingQueueBase()
     {
       tokenSource = new CancellationTokenSource();
       token = tokenSource.Token;
@@ -70,7 +70,7 @@ namespace RobotControl.Core
     protected virtual void Work()
     {
     }
-    
+
     private void Signal()
     {
       lock (lockData)

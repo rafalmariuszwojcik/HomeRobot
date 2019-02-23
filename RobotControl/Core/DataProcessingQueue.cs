@@ -10,14 +10,13 @@ namespace RobotControl.Core
     private readonly Action<object, IEnumerable<T>> action;
     private readonly int interval;
     private readonly Queue<T> items = new Queue<T>();
-    private DateTime nextAction;
+    private DateTime nextAction = DateTime.Now;
 
     public DataProcessingQueue(Action<object, IEnumerable<T>> action, int interval = 0) 
       : base()
     {
       this.action = action;
       this.interval = interval;
-      nextAction = DateTime.Now.AddMilliseconds(interval);
       Start();
     }
 
@@ -29,6 +28,11 @@ namespace RobotControl.Core
       }
       else
       {
+        if (!items.Any())
+        {
+          nextAction = DateTime.Now.AddMilliseconds(interval);
+        }
+
         items.Enqueue(item);
       }
     }
@@ -59,7 +63,7 @@ namespace RobotControl.Core
             action?.Invoke(this, items);
             items.Clear();
           }
-          
+
           nextAction = DateTime.Now.AddMilliseconds(interval);
         }
       }
