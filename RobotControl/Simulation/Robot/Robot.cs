@@ -28,7 +28,11 @@ namespace RobotControl.Simulation.Robot
     public Robot(double x, double y, double angle) 
       : base(x, y, angle)
     {
-      odometry = new Odometry(new Action<double, double>((dl, dr) => { }));
+      odometry = new Odometry(new Action<double, double>((dl, dr) => 
+        {
+          MessageReceived(2, (int)dl, 2, (int)dr);
+        }
+      ));
     }
 
     public Route Route
@@ -239,7 +243,7 @@ namespace RobotControl.Simulation.Robot
       public MovementStartPoint(double x, double y, double angle, int leftEncoder, int rightEncoder)
         : base(x, y, angle)
       {
-        expiration = DateTime.Now.AddMilliseconds(500);
+        expiration = DateTime.Now.AddMilliseconds(1);
         LeftEncoder = leftEncoder;
         RightEncoder = rightEncoder;
       }

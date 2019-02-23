@@ -8,19 +8,32 @@ namespace RobotControl.Simulation.Robot
 {
   public class Odometry : DataProcessingQueue<IEncoderCommand>
   {
-    private IList<int> list = new List<int>();
+    private readonly Action<double, double> action;
+    private IList<Tuple<int, IList<long>>> list = new List<Tuple<int, IList<long>>>();
 
     public Odometry(Action<double, double> action)
-      : base((s, d) => ((Odometry)s).PostData(d), 250)
+      : base((s, d) => ((Odometry)s).PostData(d), 50)
     {
+      this.action = action;
     }
 
     private void PostData(IEnumerable<IEncoderCommand> data)
     {
-      list.Add(data.Count());
+      var copy = new List<long>(data.Select(x => x.Milis));
+      for (var i = 0; i < data.Count() - 1; i++)
+      {
+        copy[i] = copy[i + 1] - copy[i];
+      }
+
+      list.Add(new Tuple<int, IList<long>>(data.Count(), copy));
+      
       if (data.Any(x => x.Distance >= 99))
       {
       }
+
+      var dl = data.Where(x => x.Index == 0).Max(x => x.Distance);
+      var dr = data.Where(x => x.Index == 1).Max(x => x.Distance);
+      action?.Invoke(dl, dr);
 
     }
   }

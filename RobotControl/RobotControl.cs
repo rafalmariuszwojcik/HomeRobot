@@ -9,6 +9,8 @@ using System.IO;
 using System.Threading;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace RobotControl
 {
@@ -95,13 +97,28 @@ namespace RobotControl
       }
       */
 
+      //var x = MessageManager.Instance;
+      //var y = x;
       Task.Factory.StartNew(new Action(() => 
       {
+        var list = new List<long>();
         for (var i = 0; i < 100; i++)
         {
-          MessageManager.Instance.DataReceived(this, new[] { $"ENC,0,{i},0,2;{Environment.NewLine}" });
-          Task.Delay(10).Wait();
+          var totalMilliseconds = (long)new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
+          MessageManager.Instance.DataReceived(this, new[] { $"ENC,0,{i},{totalMilliseconds},2;{Environment.NewLine}" });
+          MessageManager.Instance.DataReceived(this, new[] { $"ENC,1,{i},{totalMilliseconds},2;{Environment.NewLine}" });
+          list.Add(totalMilliseconds);
+
+          // Dont use Task.Delay, it is very not precise.
+          Thread.Sleep(10);
         }
+
+        for (var i = 0; i < list.Count() - 1; i++)
+        {
+          list[i] = list[i + 1] - list[i];
+        }
+
+        var xyz = list;
       }));
     }
 

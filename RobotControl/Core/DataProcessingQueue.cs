@@ -10,6 +10,7 @@ namespace RobotControl.Core
     private readonly Action<object, IEnumerable<T>> action;
     private readonly int interval;
     private readonly Queue<T> items = new Queue<T>();
+    private readonly object nextActionLock = new object();
     private DateTime nextAction = DateTime.Now;
 
     public DataProcessingQueue(Action<object, IEnumerable<T>> action, int interval = 0) 
@@ -30,7 +31,7 @@ namespace RobotControl.Core
       {
         if (!items.Any())
         {
-          nextAction = DateTime.Now.AddMilliseconds(interval);
+          AddDelay();
         }
 
         items.Enqueue(item);
@@ -41,7 +42,7 @@ namespace RobotControl.Core
     {
       if (interval > 0)
       {
-        var timeOut = (int)(nextAction - DateTime.Now).TotalMilliseconds;
+        var timeOut = GetNextTimeout();
         timeOut = timeOut <= 0 ? 1 : timeOut;
         timeOut = timeOut > interval ? interval : timeOut;
         return timeOut;
@@ -56,7 +57,7 @@ namespace RobotControl.Core
     {
       if (interval > 0)
       {
-        if (DateTime.Now >= nextAction)
+        if (CanDoWork())
         {
           if (items.Any())
           {
@@ -64,8 +65,32 @@ namespace RobotControl.Core
             items.Clear();
           }
 
-          nextAction = DateTime.Now.AddMilliseconds(interval);
+          AddDelay();
         }
+      }
+    }
+
+    private void AddDelay()
+    {
+      lock (nextActionLock)
+      {
+        nextAction = DateTime.Now.AddMilliseconds(interval);
+      }
+    }
+
+    private bool CanDoWork()
+    {
+      lock (nextActionLock)
+      {
+        return DateTime.Now >= nextAction;
+      }
+    }
+
+    private int GetNextTimeout()
+    {
+      lock (nextActionLock)
+      {
+        return (int)(nextAction - DateTime.Now).TotalMilliseconds;
       }
     }
   }
