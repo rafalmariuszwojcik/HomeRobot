@@ -190,7 +190,7 @@
     <Compile Include="Simulation\Simulation.cs" />
     <Compile Include="Simulation\SimulationArea.cs" />
     <Compile Include="Simulation\SimulationPoint.cs" />
-    <Compile Include="Simulation\SimulatorElement.cs" />
+    <Compile Include="Simulation\SimulationItem.cs" />
     <Compile Include="Simulation\Vector.cs" />
     <Compile Include="Windows\Views\CommunicationManagerView.cs">
       <SubType>Form</SubType>

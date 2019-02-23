@@ -16,12 +16,12 @@ namespace RobotControl.Simulation
     {
       var simulation = new Simulation();
       var robot = new Robot.Robot(0, 0, -90);
-      robot.OnStateChanged += (s, e) =>
+      simulation.OnStateSet += (s, e) =>
       {
         DataReceived(null, new[] { simulation });
       };
       
-      simulation.Items.Add(robot);
+      simulation.Add(robot);
       Add(simulation);
 
       CommandManager.Instance.RegisterListener(this);
@@ -76,11 +76,14 @@ namespace RobotControl.Simulation
 
       Parallel.ForEach(list, x =>
         {
+          x.ResetState();
           (x as ICommandListener)?.DataReceived(channel, data);
-          if (x.StateChanged)
+          /*
+          if (x.State)
           {
             DataReceived(null, new[] { x });
           }
+          */
         }
       );
     }

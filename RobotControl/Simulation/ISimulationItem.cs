@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace RobotControl.Simulation
 {
   public interface ISimulationItem
   {
-    ISimulation Simulation { get; }
-    bool StateChanged { get; }
+    ISimulationItem Parent { get; }
+    IEnumerable<ISimulationItem> Items { get; }
+    bool State { get; }
+    void Add(ISimulationItem item);
     void ResetState();
-    event EventHandler OnStateChanged;
+    void SetState();
+    event EventHandler OnStateSet;
   }
 }

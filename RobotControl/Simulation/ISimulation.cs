@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace RobotControl.Simulation
 {
-  public interface ISimulation
+  public interface ISimulation : ISimulationItem
   {
-    IList<ISimulationItem> Items { get; }
     ISimulationArea SimulationArea { get; }
-    bool StateChanged { get; }
-    event EventHandler OnStateChanged;
   }
 }

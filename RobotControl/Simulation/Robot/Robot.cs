@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace RobotControl.Simulation.Robot
 {
-  public class Robot : SimulationElement, IRobot, ICommandListener
+  public class Robot : SimulationItem, IRobot, ICommandListener
   {
     private const double ROBOT_WIDTH = 124.0;
     private const double WHEEL_RADIUS = 33.2;
@@ -79,7 +79,7 @@ namespace RobotControl.Simulation.Robot
         startPoint = new MovementStartPoint(newPoint.X, newPoint.Y, newPoint.Angle, leftDistance, rightDistance);
       }
 
-      StateChanged = true;
+      SetState();
     }
 
     private int CalcDifference(int oldValue, int newValue, int direction) 

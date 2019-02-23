@@ -7,12 +7,21 @@ using System.Linq;
 
 namespace RobotControl.Simulation
 {
-  public class Simulation : ISimulation, ICommandListener
+  public class Simulation : SimulationItem, ISimulation, ICommandListener
   {
-    public IList<ISimulationItem> Items { get; } = new List<ISimulationItem>();
     public ISimulationArea SimulationArea => new SimulationArea(new Length(10, MeasurementUnit.Meter), new Length(1, MeasurementUnit.Meter));
-    public bool StateChanged { get; private set; }
-    public event EventHandler OnStateChanged;
+    
+
+    
+
+    
+
+    
+
+    protected override void Dispose(bool disposing)
+    {
+      ;// throw new NotImplementedException();
+    }
 
     void IListener<ICommand>.DataReceived(IChannel channel, IEnumerable<ICommand> data)
     {
@@ -26,7 +35,7 @@ namespace RobotControl.Simulation
         (item as ICommandListener)?.DataReceived(channel, data);
       }
 
-      StateChanged = Items.Any(x => x.StateChanged);
+      //StateChanged = Items.Any(x => x.State);
     }
   }
 }
