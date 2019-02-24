@@ -78,12 +78,6 @@ namespace RobotControl.Simulation
         {
           x.ResetState();
           (x as ICommandListener)?.DataReceived(channel, data);
-          /*
-          if (x.State)
-          {
-            DataReceived(null, new[] { x });
-          }
-          */
         }
       );
     }
