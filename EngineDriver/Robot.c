@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "robot.h"
 
 const float Pi2 = 3.14159 * 2.0;

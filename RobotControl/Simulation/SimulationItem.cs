@@ -8,8 +8,6 @@ namespace RobotControl.Simulation
   {
     protected ISimulationItem parent;
     private readonly IList<ISimulationItem> items = new List<ISimulationItem>();
-    protected readonly SimulationPoint position;
-    private bool state;
     public event EventHandler OnStateSet;
 
     public SimulationItem(ISimulationItem parent = null)
@@ -17,37 +15,13 @@ namespace RobotControl.Simulation
       this.parent = parent;
     }
 
-    public SimulationItem(double x, double y, double angle)
-    {
-      position = new SimulationPoint(x, y, angle);
-    }
-
-    public SimulationPoint Position
-    {
-      get { return position; }
-    }
-
-    public static double RadiansToDegrees(double radians)
-    {
-      return (radians * 180) / (Math.PI);
-    }
-
-    public static double DegreesToRadians(double degrees)
-    {
-      return (degrees * Math.PI) / 180;
-    }
-
-    //ISimulation ISimulationItem.Simulation => throw new NotImplementedException();
-
-    bool ISimulationItem.State => state;
-
+    public bool State { get; private set; }
     public IEnumerable<ISimulationItem> Items => items;
-
-    public ISimulationItem Parent => throw new NotImplementedException();
-
-    void ISimulationItem.ResetState()
+    public ISimulationItem Parent => parent;
+    
+    public void ResetState()
     {
-      state = false;
+      State = false;
       foreach (var item in items)
       {
         item.ResetState();
@@ -56,9 +30,9 @@ namespace RobotControl.Simulation
 
     public void SetState()
     {
-      if (!state)
+      if (!State)
       {
-        state = true;
+        State = true;
         OnStateSet?.Invoke(this, new EventArgs());
         if (parent != null)
         {
@@ -74,6 +48,24 @@ namespace RobotControl.Simulation
         items.Add(item);
         ((SimulationItem)item).parent = this;
       }
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+      if (disposing)
+      {
+        ;
+      }
+    }
+
+    protected static double RadiansToDegrees(double radians)
+    {
+      return (radians * 180) / (Math.PI);
+    }
+
+    protected static double DegreesToRadians(double degrees)
+    {
+      return (degrees * Math.PI) / 180;
     }
   }
 }

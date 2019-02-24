@@ -131,6 +131,26 @@ void loop()
       robot.rightEngine.fullDistance);
     Serial.print(speedInfo);
   }
+
+  if (robot.leftEngine.signaled)
+  {
+    sprintf(
+      speedInfo, 
+      "ENC,0,%u,0,%u;", 
+      robot.leftEngine.fullDistance, 
+      robot.leftEngine.state);
+    Serial.print(speedInfo);
+  }
+
+  if (robot.rightEngine.signaled)
+  {
+    sprintf(
+      speedInfo, 
+      "ENC,0,%u,0,%u;", 
+      robot.rightEngine.fullDistance, 
+      robot.rightEngine.state);
+    Serial.print(speedInfo);
+  }
     
   if (robot.rightEngine.signaled)
   {

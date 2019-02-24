@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace RobotControl.Simulation
+﻿namespace RobotControl.Simulation
 {
   public interface ISimulation : ISimulationItem
   {

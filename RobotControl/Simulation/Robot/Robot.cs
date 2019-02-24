@@ -13,6 +13,7 @@ namespace RobotControl.Simulation.Robot
     private const double WHEEL_WIDTH = 25.0;
     private const int ENCODER_POINTS = 20;
 
+    private readonly SimulationPoint position;
     private readonly Odometry odometry;
     private RobotGeometry robotGeometry = new RobotGeometry(ROBOT_WIDTH, WHEEL_RADIUS, WHEEL_WIDTH, ENCODER_POINTS);
     private Route route;
@@ -26,8 +27,9 @@ namespace RobotControl.Simulation.Robot
     }
 
     public Robot(double x, double y, double angle) 
-      : base(x, y, angle)
+      : base()
     {
+      position = new SimulationPoint(x, y, angle);
       odometry = new Odometry(new Action<double, double>((dl, dr) => 
         {
           MessageReceived(2, (int)dl, 2, (int)dr);
