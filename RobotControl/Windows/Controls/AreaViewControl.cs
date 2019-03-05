@@ -15,12 +15,28 @@ namespace RobotControl.Windows.Controls
     private int viewZoom = 25;//100;
     private Point2D originPoint = new Point2D(0, 0, MeasurementUnit.Milimeter);
     private Point? previousMousePosition;
-    
+    private readonly Counter counter = new Counter();
+
     public AreaViewControl()
     {
       InitializeComponent();
       AutoScrollMinSize = CalcAreaSize();
       AutoScrollPosition = CalcScrollPosition();
+    }
+
+    /// <summary> 
+    /// Clean up any resources being used.
+    /// </summary>
+    /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+    protected override void Dispose(bool disposing)
+    {
+      if (disposing && (components != null))
+      {
+        counter?.Dispose();
+        components.Dispose();
+      }
+
+      base.Dispose(disposing);
     }
 
     public Point2D Origin
@@ -60,13 +76,28 @@ namespace RobotControl.Windows.Controls
     protected override void OnPaint(PaintEventArgs e)
     {
       base.OnPaint(e);
-      e.Graphics.PageUnit = GraphicsUnit.Millimeter;
-      e.Graphics.ScaleTransform(DrawScale, DrawScale);
-      e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-      e.Graphics.TranslateTransform((float)Origin.X, (float)Origin.Y);
-      DrawGrid(e.Graphics);
-      DrawOrigin(e.Graphics);
-      DrawSimulation(e.Graphics);
+      counter?.Signal();
+      var transState = e.Graphics.Save();
+      try
+      {
+        e.Graphics.PageUnit = GraphicsUnit.Millimeter;
+        e.Graphics.ScaleTransform(DrawScale, DrawScale);
+        e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+        e.Graphics.TranslateTransform((float)Origin.X, (float)Origin.Y);
+        DrawGrid(e.Graphics);
+        DrawOrigin(e.Graphics);
+        DrawSimulation(e.Graphics);
+      }
+      finally
+      {
+        e.Graphics.Restore(transState);
+      }
+
+      var drawFont = new Font("Arial", 16);
+      var drawBrush = new SolidBrush(Color.Green);
+      e.Graphics.DrawString($"FPS: {counter?.SignalsPerSecond}", drawFont, drawBrush, new Point(0, 0));
+
+
     }
 
     protected override void OnScroll(ScrollEventArgs se)
