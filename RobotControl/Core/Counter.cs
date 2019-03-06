@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace RobotControl.Core
 {
   public class Counter : DataProcessingQueue<object>
   {
+    private readonly Stopwatch stopwatch = new Stopwatch();
     private DateTime? lastSignal;
     private readonly object signalsPerSecondLock = new object();
     private double signalsPerSecond;
@@ -17,7 +19,15 @@ namespace RobotControl.Core
 
     public void Signal()
     {
-      Enqueue(new[] { this });
+      if (!stopwatch.IsRunning)
+      {
+        stopwatch.Start();
+        return;
+      }
+
+      var elapsed = stopwatch.Elapsed.TotalMilliseconds;
+      signalsPerSecond = elapsed >= 0.0001 ? (1000.0 * 1.0) / elapsed : 0.0;
+      stopwatch.Restart();
     }
 
     public double SignalsPerSecond
