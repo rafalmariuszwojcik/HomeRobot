@@ -27,22 +27,7 @@ namespace RobotControl.Windows
 
     protected override void SendData(Control listener, Action action)
     {
-      if (listener.InvokeRequired)
-      {
-        try
-        {
-          listener.Invoke(action);
-        }
-        catch (ObjectDisposedException)
-        {
-          ;
-        }
-        catch (InvalidAsynchronousStateException)
-        {
-          ;
-        }
-      }
-      else
+      if (!ControlHelper.InvokeAction(listener, action))
       {
         base.SendData(listener, action);
       }

@@ -88,6 +88,7 @@
     <Compile Include="Simulation\SimulationListener.cs" />
     <Compile Include="Simulation\SimulationManager.cs" />
     <Compile Include="Windows\CommandPackage.cs" />
+    <Compile Include="Windows\ControlHelper.cs" />
     <Compile Include="Windows\ControlManager.cs" />
     <Compile Include="Windows\Controls\AreaViewControl.cs">
       <SubType>Component</SubType>
