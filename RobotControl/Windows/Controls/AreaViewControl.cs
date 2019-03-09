@@ -81,7 +81,7 @@ namespace RobotControl.Windows.Controls
 
       if (signal)
       {
-       // counter?.Signal();
+        counter?.Signal();
       }
       
       var transState = e.Graphics.Save();
@@ -102,7 +102,7 @@ namespace RobotControl.Windows.Controls
 
       var drawFont = new Font("Arial", 16);
       var drawBrush = new SolidBrush(Color.Green);
-      e.Graphics.DrawString($"FPS: {counter?.SignalsPerSecond.ToString("0.00")}", drawFont, drawBrush, new Point(0, 0));
+      e.Graphics.DrawString($"FPS: {counter?.SignalsPerSecond.ToString("0.0")}", drawFont, drawBrush, new Point(0, 0));
     }
 
     protected override void OnScroll(ScrollEventArgs se)

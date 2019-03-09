@@ -80,6 +80,7 @@
     <Compile Include="Configuration\IConfigurationRepository.cs" />
     <Compile Include="Core\Counter.cs" />
     <Compile Include="Core\DataProcessingQueueBase.cs" />
+    <Compile Include="Core\DigitalFilter.cs" />
     <Compile Include="Core\IManager.cs" />
     <Compile Include="Core\ListenerBase.cs" />
     <Compile Include="Messages\MessageListener.cs" />

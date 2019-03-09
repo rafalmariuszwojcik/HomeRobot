@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace RobotControl.Core
@@ -8,14 +7,16 @@ namespace RobotControl.Core
   {
     private readonly object lockSignal = new object();
     private readonly Stopwatch stopwatch = new Stopwatch();
-    private double signalsPerSecond;
+    private DigitalFilter signalsPerSecond = new DigitalFilter(4);
     private double? lastElapsed;
+    //private double avg_spd;
+    //private int fLevel = 5;
 
     /// <summary>
     /// Common counter class. Used to count signals per second.
     /// </summary>
     /// <param name="timeout">Counter update frequency (delay in miliseconds).</param>
-    public Counter(int timeout = 10)
+    public Counter(int timeout = 1000)
       : base(null, timeout) // update every one second.
     {
     }
@@ -37,10 +38,7 @@ namespace RobotControl.Core
 
         var elapsed = stopwatch.Elapsed.TotalMilliseconds;
         lastElapsed = elapsed;
-
-
-
-        signalsPerSecond = elapsed >= 0.0001 ? (1000.0 * 1.0) / elapsed : 0.0;
+        signalsPerSecond.Input = elapsed >= 0.0001 ? (1000.0 * 1.0) / elapsed : 0.0;
         stopwatch.Restart();
       }
     }
@@ -51,7 +49,7 @@ namespace RobotControl.Core
       {
         lock (lockSignal)
         {
-          return signalsPerSecond;
+          return signalsPerSecond.Output;
         }
       }
     }
@@ -59,8 +57,8 @@ namespace RobotControl.Core
     protected override void DoWork()
     {
       base.DoWork();
-      Signal();
-      OnChanged?.Invoke(this, new EventArgs());
+      //Signal();
+      //OnChanged?.Invoke(this, new EventArgs());
     }
 
         /*
