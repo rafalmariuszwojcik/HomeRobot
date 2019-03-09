@@ -16,12 +16,14 @@ namespace RobotControl.Windows.Controls
     private Point2D originPoint = new Point2D(0, 0, MeasurementUnit.Milimeter);
     private Point? previousMousePosition;
     private readonly Counter counter = new Counter();
+    private bool signal = true;
 
     public AreaViewControl()
     {
       InitializeComponent();
       AutoScrollMinSize = CalcAreaSize();
       AutoScrollPosition = CalcScrollPosition();
+      counter.OnChanged += CounterOnChanged;
     }
 
     /// <summary> 
@@ -76,7 +78,12 @@ namespace RobotControl.Windows.Controls
     protected override void OnPaint(PaintEventArgs e)
     {
       base.OnPaint(e);
-      counter?.Signal();
+
+      if (signal)
+      {
+        counter?.Signal();
+      }
+      
       var transState = e.Graphics.Save();
       try
       {
@@ -227,5 +234,18 @@ namespace RobotControl.Windows.Controls
     }
 
     private ISimulation Simulation => SimulationManager.Instance.Simulation;
+
+    private void CounterOnChanged(object sender, EventArgs e)
+    {
+      signal = false;
+      try
+      {
+        ControlHelper.InvokeAction(this, () => Refresh());
+      }
+      finally
+      {
+        signal = true;
+      }
+    }
   }
 }
