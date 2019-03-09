@@ -59,14 +59,19 @@ namespace RobotControl.Core
       {
         if (CanDoWork())
         {
-          if (items.Any())
-          {
-            action?.Invoke(this, items);
-            items.Clear();
-          }
-
+          // AddDelay must be called before DoWork, to have more precise execution frequency.
           AddDelay();
+          DoWork();
         }
+      }
+    }
+
+    protected virtual void DoWork()
+    {
+      if (items.Any())
+      {
+        action?.Invoke(this, items);
+        items.Clear();
       }
     }
 
