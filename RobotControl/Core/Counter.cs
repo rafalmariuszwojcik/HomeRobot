@@ -7,17 +7,16 @@ namespace RobotControl.Core
   {
     private readonly object lockSignal = new object();
     private readonly Stopwatch stopwatch = new Stopwatch();
-    private DigitalFilter signalsPerSecond = new DigitalFilter(4);
+    private DigitalFilter signalsPerSecond = new DigitalFilter(6);
     private double? lastElapsed;
-    //private double avg_spd;
-    //private int fLevel = 5;
+    private bool lck;
 
     /// <summary>
     /// Common counter class. Used to count signals per second.
     /// </summary>
     /// <param name="timeout">Counter update frequency (delay in miliseconds).</param>
     public Counter(int timeout = 100)
-      : base(null, timeout) // update every one second.
+      : base(null, timeout) // update every 0.1 sec.
     {
     }
 
@@ -28,6 +27,11 @@ namespace RobotControl.Core
 
     public void Signal()
     {
+      if (lck)
+      {
+        return;
+      }
+
       lock (lockSignal)
       {
         if (!stopwatch.IsRunning)
@@ -57,8 +61,24 @@ namespace RobotControl.Core
     protected override void DoWork()
     {
       base.DoWork();
-      Signal();
-      OnChanged?.Invoke(this, new EventArgs());
+      var elapsed = stopwatch.Elapsed.TotalMilliseconds;
+      if (elapsed > lastElapsed)
+      {
+        signalsPerSecond.Input = elapsed >= 0.0001 ? (1000.0 * 1.0) / elapsed : 0.0;
+        lck = true;
+        try
+        {
+          OnChanged?.Invoke(this, new EventArgs());
+        }
+        finally
+        {
+          lck = false;
+        }
+      }
+      //Signal();
+
+      
+      
     }
 
         /*
