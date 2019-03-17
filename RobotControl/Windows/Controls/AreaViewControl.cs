@@ -81,7 +81,7 @@ namespace RobotControl.Windows.Controls
 
       if (signal)
       {
-        counter?.Signal();
+        //counter?.Signal();
       }
       
       var transState = e.Graphics.Save();

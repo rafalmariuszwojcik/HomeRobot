@@ -16,7 +16,7 @@ namespace RobotControl.Core
     /// Common counter class. Used to count signals per second.
     /// </summary>
     /// <param name="timeout">Counter update frequency (delay in miliseconds).</param>
-    public Counter(int timeout = 1000)
+    public Counter(int timeout = 100)
       : base(null, timeout) // update every one second.
     {
     }
@@ -57,8 +57,8 @@ namespace RobotControl.Core
     protected override void DoWork()
     {
       base.DoWork();
-      //Signal();
-      //OnChanged?.Invoke(this, new EventArgs());
+      Signal();
+      OnChanged?.Invoke(this, new EventArgs());
     }
 
         /*

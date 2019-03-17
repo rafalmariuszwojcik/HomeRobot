@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace RobotControl.Core
@@ -10,15 +11,24 @@ namespace RobotControl.Core
     private readonly Action<object, IEnumerable<T>> action;
     private readonly int interval;
     private readonly Queue<T> items = new Queue<T>();
-    private readonly object nextActionLock = new object();
-    private DateTime nextAction = DateTime.Now;
+    private readonly Stopwatch stopwatch = new Stopwatch();
 
     public DataProcessingQueue(Action<object, IEnumerable<T>> action, int interval = 0) 
       : base()
     {
       this.action = action;
       this.interval = interval;
+      stopwatch.Start();
       Start();
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+      base.Dispose(disposing);
+      if (disposing)
+      {
+        stopwatch.Stop();
+      }
     }
 
     protected override void ProcessItem(T item)
@@ -31,7 +41,7 @@ namespace RobotControl.Core
       {
         if (!items.Any())
         {
-          AddDelay();
+          stopwatch.Restart();
         }
 
         items.Enqueue(item);
@@ -42,7 +52,7 @@ namespace RobotControl.Core
     {
       if (interval > 0)
       {
-        var timeOut = GetNextTimeout();
+        var timeOut = interval - (int)stopwatch.ElapsedMilliseconds;
         timeOut = timeOut <= 0 ? 1 : timeOut;
         timeOut = timeOut > interval ? interval : timeOut;
         return timeOut;
@@ -57,10 +67,10 @@ namespace RobotControl.Core
     {
       if (interval > 0)
       {
-        if (CanDoWork())
+        if (stopwatch.ElapsedMilliseconds >= interval)
         {
-          // AddDelay must be called before DoWork, to have more precise execution frequency.
-          AddDelay();
+          // Restart must be called before DoWork, to have more precise execution frequency.
+          stopwatch.Restart();
           DoWork();
         }
       }
@@ -72,30 +82,6 @@ namespace RobotControl.Core
       {
         action?.Invoke(this, items);
         items.Clear();
-      }
-    }
-
-    private void AddDelay()
-    {
-      lock (nextActionLock)
-      {
-        nextAction = DateTime.Now.AddMilliseconds(interval);
-      }
-    }
-
-    private bool CanDoWork()
-    {
-      lock (nextActionLock)
-      {
-        return DateTime.Now >= nextAction;
-      }
-    }
-
-    private int GetNextTimeout()
-    {
-      lock (nextActionLock)
-      {
-        return (int)(nextAction - DateTime.Now).TotalMilliseconds;
       }
     }
   }
