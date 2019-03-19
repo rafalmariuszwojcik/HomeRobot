@@ -16,8 +16,7 @@ namespace RobotControl.Windows.Controls
     private Point2D originPoint = new Point2D(0, 0, MeasurementUnit.Milimeter);
     private Point? previousMousePosition;
     private readonly Counter counter = new Counter();
-    private bool signal = true;
-
+    
     public AreaViewControl()
     {
       InitializeComponent();
@@ -79,11 +78,7 @@ namespace RobotControl.Windows.Controls
     {
       base.OnPaint(e);
 
-      if (signal)
-      {
-        counter?.Signal();
-      }
-      
+      counter?.Signal();
       var transState = e.Graphics.Save();
       try
       {
@@ -237,15 +232,7 @@ namespace RobotControl.Windows.Controls
 
     private void CounterOnChanged(object sender, EventArgs e)
     {
-      signal = false;
-      try
-      {
-        ControlHelper.InvokeAction(this, () => Refresh());
-      }
-      finally
-      {
-        signal = true;
-      }
+      ControlHelper.InvokeAction(this, () => Refresh());
     }
   }
 }

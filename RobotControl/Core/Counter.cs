@@ -7,9 +7,10 @@ namespace RobotControl.Core
   {
     private readonly object lockSignal = new object();
     private readonly Stopwatch stopwatch = new Stopwatch();
-    private DigitalFilter signalsPerSecond = new DigitalFilter(6);
+    private DigitalFilter signalsPerSecond = new DigitalFilter(4);
     private double? lastElapsed;
-    private bool lck;
+    private bool disableSignal;
+    private bool zero;
 
     /// <summary>
     /// Common counter class. Used to count signals per second.
@@ -27,13 +28,13 @@ namespace RobotControl.Core
 
     public void Signal()
     {
-      if (lck)
-      {
-        return;
-      }
-
       lock (lockSignal)
       {
+        if (disableSignal)
+        {
+          return;
+        }
+
         if (!stopwatch.IsRunning)
         {
           stopwatch.Start();
@@ -53,6 +54,11 @@ namespace RobotControl.Core
       {
         lock (lockSignal)
         {
+          if (zero && signalsPerSecond.Output > 0.0)
+          {
+            zero = false;
+          }
+
           return signalsPerSecond.Output;
         }
       }
@@ -65,46 +71,30 @@ namespace RobotControl.Core
       if (elapsed > lastElapsed)
       {
         signalsPerSecond.Input = elapsed >= 0.0001 ? (1000.0 * 1.0) / elapsed : 0.0;
-        lck = true;
+        lock (lockSignal)
+        {
+          disableSignal = true;
+        }
         try
         {
-          OnChanged?.Invoke(this, new EventArgs());
+          if (!zero)
+          {
+            OnChanged?.Invoke(this, new EventArgs());
+          }
+
+          if (signalsPerSecond.Output <= 0.0)
+          {
+            zero = true;
+          }
         }
         finally
         {
-          lck = false;
+          lock (lockSignal)
+          {
+            disableSignal = false;
+          }
         }
       }
-      //Signal();
-
-      
-      
     }
-
-        /*
-    protected override void Work()
-    {
-      var changed = false;
-      lock (lockSignal)
-      {
-        //Signal();
-        //if (stopwatch.IsRunning && lastElapsed.HasValue)
-        //{
-        //  var elapsed = stopwatch.Elapsed.TotalMilliseconds;
-        //  if (elapsed > lastElapsed.Value)
-        //  {
-        //    signalsPerSecond = elapsed >= 0.0001 ? (1000.0 * 1.0) / elapsed : 0.0;
-        //    lastElapsed = elapsed;
-        //    changed = true;
-        //  }
-        //}
-      }
-
-      //if (changed)
-      {
-        OnChanged?.Invoke(this, new EventArgs());
-      }
-    }
-    */
   }
 }

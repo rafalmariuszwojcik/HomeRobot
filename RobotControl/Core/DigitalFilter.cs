@@ -22,6 +22,10 @@ namespace RobotControl.Core
       {
         Output = ((Output * (level - 1)) + value);
         Output = Output / level;
+        if (Output < 1.0)
+        {
+          Output = 0.0;
+        }
       }
     }
 
