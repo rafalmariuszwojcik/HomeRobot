@@ -42,9 +42,8 @@ namespace RobotControl.Core
         }
 
         var elapsed = stopwatch.Elapsed.TotalMilliseconds;
-        lastElapsed = elapsed;
-        Calculate(elapsed);
         stopwatch.Restart();
+        Calculate(elapsed);
       }
     }
 
@@ -68,7 +67,7 @@ namespace RobotControl.Core
       lock (lockSignal)
       {
         elapsed = stopwatch.Elapsed.TotalMilliseconds;
-        down = elapsed > lastElapsed;
+        down = lastElapsed.HasValue && elapsed > lastElapsed * 1.2;
       }
         
       if (down)
@@ -102,6 +101,7 @@ namespace RobotControl.Core
       lock (lockSignal)
       {
         signalsPerSecond.Input = elapsed >= 0.0001 ? (1000.0 * 1.0) / elapsed : 0.0;
+        lastElapsed = elapsed;
       }
     }
   }
