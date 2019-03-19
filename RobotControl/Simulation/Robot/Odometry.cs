@@ -19,17 +19,17 @@ namespace RobotControl.Simulation.Robot
 
     private void PostData(IEnumerable<IEncoderCommand> data)
     {
-      var copy = new List<long>(data.Select(x => x.Milis));
-      for (var i = 0; i < data.Count() - 1; i++)
-      {
-        copy[i] = copy[i + 1] - copy[i];
-      }
+      //var copy = new List<long>(data.Select(x => x.Milis));
+      //for (var i = 0; i < data.Count() - 1; i++)
+      //{
+      //  copy[i] = copy[i + 1] - copy[i];
+      //}
 
-      list.Add(new Tuple<int, IList<long>>(data.Count(), copy));
+      //list.Add(new Tuple<int, IList<long>>(data.Count(), copy));
       
-      if (data.Any(x => x.Distance >= 99))
-      {
-      }
+      //if (data.Any(x => x.Distance >= 99))
+      //{
+      //}
 
       var dlItems = data.Where(x => x.Index == 0);//.FirstOrDefault();//?.Max(x => x.Distance);
       var drItems = data.Where(x => x.Index == 1);//.FirstOrDefault();//?.Max(x => x.Distance);
