@@ -43,7 +43,7 @@ namespace RobotControl.Core
 
         var elapsed = stopwatch.Elapsed.TotalMilliseconds;
         lastElapsed = elapsed;
-        signalsPerSecond.Input = elapsed >= 0.0001 ? (1000.0 * 1.0) / elapsed : 0.0;
+        Calculate(elapsed);
         stopwatch.Restart();
       }
     }
@@ -54,11 +54,7 @@ namespace RobotControl.Core
       {
         lock (lockSignal)
         {
-          if (zero && signalsPerSecond.Output > 0.0)
-          {
-            zero = false;
-          }
-
+          zero = signalsPerSecond.Output <= 0.0;
           return signalsPerSecond.Output;
         }
       }
@@ -67,24 +63,28 @@ namespace RobotControl.Core
     protected override void DoWork()
     {
       base.DoWork();
-      var elapsed = stopwatch.Elapsed.TotalMilliseconds;
-      if (elapsed > lastElapsed)
+      bool down;
+      double elapsed;
+      lock (lockSignal)
       {
-        signalsPerSecond.Input = elapsed >= 0.0001 ? (1000.0 * 1.0) / elapsed : 0.0;
+        elapsed = stopwatch.Elapsed.TotalMilliseconds;
+        down = elapsed > lastElapsed;
+      }
+        
+      if (down)
+      {
+        bool update;
         lock (lockSignal)
         {
           disableSignal = true;
+          Calculate(elapsed);
+          update = !zero;
         }
         try
         {
-          if (!zero)
+          if (update)
           {
             OnChanged?.Invoke(this, new EventArgs());
-          }
-
-          if (signalsPerSecond.Output <= 0.0)
-          {
-            zero = true;
           }
         }
         finally
@@ -94,6 +94,14 @@ namespace RobotControl.Core
             disableSignal = false;
           }
         }
+      }
+    }
+
+    private void Calculate(double elapsed)
+    {
+      lock (lockSignal)
+      {
+        signalsPerSecond.Input = elapsed >= 0.0001 ? (1000.0 * 1.0) / elapsed : 0.0;
       }
     }
   }
