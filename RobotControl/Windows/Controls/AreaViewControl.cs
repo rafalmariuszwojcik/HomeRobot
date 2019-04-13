@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 using RobotControl.Communication;
@@ -95,9 +96,25 @@ namespace RobotControl.Windows.Controls
         e.Graphics.Restore(transState);
       }
 
-      var drawFont = new Font("Arial", 16);
-      var drawBrush = new SolidBrush(Color.Green);
-      e.Graphics.DrawString($"FPS: {counter?.SignalsPerSecond.ToString("0.0")}", drawFont, drawBrush, new Point(0, 0));
+      var drawFont = new Font("Arial", 16, FontStyle.Bold);
+            var drawBrush = new SolidBrush(Color.Green);
+      //e.Graphics.DrawString($"FPS: {counter?.SignalsPerSecond.ToString("0.0")}", drawFont, drawBrush, new Point(0, 0));
+
+      
+
+      // assuming g is the Graphics object on which you want to draw the text
+      GraphicsPath p = new GraphicsPath();
+      p.AddString(
+          $"FPS: {counter?.SignalsPerSecond.ToString("0.0")}",             // text to draw
+          FontFamily.GenericSansSerif,  // or any other font family
+          (int)FontStyle.Bold,      // font style (bold, italic, etc.)
+          /*g.DpiY*/96 * /*fontSize*/24 / 72,       // em size
+          new Point(0, 0),              // location where to draw text
+          new StringFormat());          // set options here (e.g. center alignment)
+      e.Graphics.FillPath(new System.Drawing.SolidBrush(System.Drawing.Color.Yellow), p);
+      e.Graphics.DrawPath(Pens.Black, p);
+      
+      // + g.FillPath if you want it filled as well
     }
 
     protected override void OnScroll(ScrollEventArgs se)
