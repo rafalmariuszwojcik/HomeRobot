@@ -7,7 +7,8 @@ namespace RobotControl.Core
   {
     private readonly object lockSignal = new object();
     private readonly Stopwatch stopwatch = new Stopwatch();
-    private DigitalFilter signalsPerSecond = new DigitalFilter(4);
+    private int count = 0;
+    private DigitalFilter signalsPerSecond = new DigitalFilter(6);
     private double? lastElapsed;
     private bool disableSignal;
     private bool zero;
@@ -16,7 +17,7 @@ namespace RobotControl.Core
     /// Common counter class. Used to count signals per second.
     /// </summary>
     /// <param name="timeout">Counter update frequency (delay in miliseconds).</param>
-    public Counter(int timeout = 100)
+    public Counter(int timeout = 250)
       : base(null, timeout) // update every 0.1 sec.
     {
     }
@@ -35,6 +36,16 @@ namespace RobotControl.Core
           return;
         }
 
+        count++;
+      }
+      /*
+      lock (lockSignal)
+      {
+        if (disableSignal)
+        {
+          return;
+        }
+
         if (!stopwatch.IsRunning)
         {
           stopwatch.Start();
@@ -45,6 +56,7 @@ namespace RobotControl.Core
         stopwatch.Restart();
         Calculate(elapsed);
       }
+      */
     }
 
     public double SignalsPerSecond
@@ -62,6 +74,41 @@ namespace RobotControl.Core
     protected override void DoWork()
     {
       base.DoWork();
+      double prevSps;
+      double sps;
+      lock (lockSignal)
+      {
+        var elapsed = stopwatch.Elapsed.TotalMilliseconds;
+        stopwatch.Restart();
+        sps = elapsed != 0 ? (count / elapsed) * 1000 : 0;
+        count = 0;
+        prevSps = signalsPerSecond.Output;
+        signalsPerSecond.Input = sps;
+      }
+
+      if (prevSps != sps)
+      {
+        lock (lockSignal)
+        {
+          //disableSignal = true;
+        }
+
+        try
+        {
+          OnChanged?.Invoke(this, new EventArgs());
+        }
+        finally
+        {
+          lock (lockSignal)
+          {
+            disableSignal = false;
+          }
+        }
+        
+      }
+
+
+      /*
       bool down;
       double elapsed;
       lock (lockSignal)
@@ -94,6 +141,7 @@ namespace RobotControl.Core
           }
         }
       }
+      */
     }
 
     private void Calculate(double elapsed)

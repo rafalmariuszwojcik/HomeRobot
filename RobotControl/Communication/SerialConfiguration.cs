@@ -6,7 +6,7 @@ namespace RobotControl.Communication
   {
     public SerialConfiguration()
     {
-      Port = "COM5";
+      Port = "COM3";
       BaudRate = 115200;
     }
 
