@@ -86,7 +86,7 @@ namespace RobotControl.Core
         signalsPerSecond.Input = sps;
       }
 
-      if (prevSps != sps && sps == 0.0)
+      if (prevSps != sps && sps <= 0.1)
       {
         lock (lockSignal)
         {
