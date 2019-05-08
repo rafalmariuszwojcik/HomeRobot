@@ -5,7 +5,6 @@ using RobotControl.Simulation;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -18,7 +17,7 @@ namespace RobotControl.Windows
     private readonly IDictionary<Type, ListenerInfo> types = new Dictionary<Type, ListenerInfo>();
 
     public ControlManager()
-      : base(20)
+      : base(20) // Controls refresh 50Hz
     {
       Disposables.Add(new MessageListener((s) => DataReceived(null, s.Select(x => new MessagePackage(x)))));
       Disposables.Add(new CommandListener((s) => DataReceived(null, s.Select(x => new CommandPackage(x)))));

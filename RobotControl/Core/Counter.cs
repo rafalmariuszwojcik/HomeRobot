@@ -8,7 +8,7 @@ namespace RobotControl.Core
     private readonly object lockSignal = new object();
     private readonly Stopwatch stopwatch = new Stopwatch();
     private int count = 0;
-    private DigitalFilter signalsPerSecond = new DigitalFilter(6);
+    private DigitalFilter signalsPerSecond = new DigitalFilter(1);
     private double? lastElapsed;
     private bool disableSignal;
     private bool zero;
@@ -17,8 +17,8 @@ namespace RobotControl.Core
     /// Common counter class. Used to count signals per second.
     /// </summary>
     /// <param name="timeout">Counter update frequency (delay in miliseconds).</param>
-    public Counter(int timeout = 250)
-      : base(null, timeout) // update every 0.1 sec.
+    public Counter(int timeout = 1000)
+      : base(null, timeout) // update every 1 sec.
     {
     }
 
@@ -86,11 +86,11 @@ namespace RobotControl.Core
         signalsPerSecond.Input = sps;
       }
 
-      if (prevSps != sps)
+      if (prevSps != sps && sps == 0.0)
       {
         lock (lockSignal)
         {
-          //disableSignal = true;
+          disableSignal = true;
         }
 
         try
