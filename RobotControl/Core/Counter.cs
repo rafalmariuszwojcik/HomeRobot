@@ -55,7 +55,7 @@ namespace RobotControl.Core
       lock (lockSignal)
       {
         var sps = signals / (elapsed / 1000.0);
-        zero = sps <= 0.01 && signalsPerSecond > 0.01;
+        zero = sps <= 0.1 && signalsPerSecond > 0.1;
         signalsPerSecond = sps;
         signals = 0;
       }
