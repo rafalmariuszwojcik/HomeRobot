@@ -1,24 +1,21 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace RobotControl.Core
 {
   public class Counter : DataProcessingQueue<object>
   {
+    const int UPDATE_FREQUENCY = 1000; // update every 1 sec.
+
     private readonly object lockSignal = new object();
-    private readonly Stopwatch stopwatch = new Stopwatch();
-    private int count = 0;
-    private DigitalFilter signalsPerSecond = new DigitalFilter(1);
-    private double? lastElapsed;
-    private bool disableSignal;
-    private bool zero;
+    private int signals;
+    private double signalsPerSecond;
 
     /// <summary>
     /// Common counter class. Used to count signals per second.
     /// </summary>
     /// <param name="timeout">Counter update frequency (delay in miliseconds).</param>
-    public Counter(int timeout = 1000)
-      : base(null, timeout) // update every 1 sec.
+    public Counter()
+      : base(null, UPDATE_FREQUENCY) 
     {
     }
 
@@ -27,129 +24,45 @@ namespace RobotControl.Core
     /// </summary>
     public event EventHandler OnChanged;
 
-    public void Signal()
-    {
-      lock (lockSignal)
-      {
-        if (disableSignal)
-        {
-          return;
-        }
-
-        count++;
-      }
-      /*
-      lock (lockSignal)
-      {
-        if (disableSignal)
-        {
-          return;
-        }
-
-        if (!stopwatch.IsRunning)
-        {
-          stopwatch.Start();
-          return;
-        }
-
-        var elapsed = stopwatch.Elapsed.TotalMilliseconds;
-        stopwatch.Restart();
-        Calculate(elapsed);
-      }
-      */
-    }
-
     public double SignalsPerSecond
     {
       get
       {
-        lock (lockSignal)
+        lock(lockSignal)
         {
-          zero = signalsPerSecond.Output <= 0.0;
-          return signalsPerSecond.Output;
+          return signalsPerSecond;
         }
+      }
+    }
+    
+    public void Signal()
+    {
+      lock (lockSignal)
+      {
+        signals++;
       }
     }
 
     protected override void DoWork()
     {
       base.DoWork();
-      double prevSps;
-      double sps;
-      lock (lockSignal)
-      {
-        var elapsed = stopwatch.Elapsed.TotalMilliseconds;
-        stopwatch.Restart();
-        sps = elapsed != 0 ? (count / elapsed) * 1000 : 0;
-        count = 0;
-        prevSps = signalsPerSecond.Output;
-        signalsPerSecond.Input = sps;
-      }
-
-      if (prevSps != sps && sps <= 0.1)
-      {
-        lock (lockSignal)
-        {
-          disableSignal = true;
-        }
-
-        try
-        {
-          OnChanged?.Invoke(this, new EventArgs());
-        }
-        finally
-        {
-          lock (lockSignal)
-          {
-            disableSignal = false;
-          }
-        }
-        
-      }
-
-
-      /*
-      bool down;
-      double elapsed;
-      lock (lockSignal)
-      {
-        elapsed = stopwatch.Elapsed.TotalMilliseconds;
-        down = lastElapsed.HasValue && elapsed > lastElapsed * 1.2;
-      }
-        
-      if (down)
-      {
-        bool update;
-        lock (lockSignal)
-        {
-          disableSignal = true;
-          Calculate(elapsed);
-          update = !zero;
-        }
-        try
-        {
-          if (update)
-          {
-            OnChanged?.Invoke(this, new EventArgs());
-          }
-        }
-        finally
-        {
-          lock (lockSignal)
-          {
-            disableSignal = false;
-          }
-        }
-      }
-      */
+      Calculate(ElapsedMilliseconds);
     }
 
     private void Calculate(double elapsed)
     {
+      var zero = false;
       lock (lockSignal)
       {
-        signalsPerSecond.Input = elapsed >= 0.0001 ? (1000.0 * 1.0) / elapsed : 0.0;
-        lastElapsed = elapsed;
+        var sps = signals / (elapsed / 1000.0);
+        zero = sps <= 0.01 && signalsPerSecond > 0.01;
+        signalsPerSecond = sps;
+        signals = 0;
+      }
+
+      if (zero)
+      {
+        OnChanged?.Invoke(this, new EventArgs());
       }
     }
   }

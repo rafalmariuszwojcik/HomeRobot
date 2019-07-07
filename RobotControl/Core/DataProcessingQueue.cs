@@ -31,6 +31,8 @@ namespace RobotControl.Core
       }
     }
 
+    protected long ElapsedMilliseconds { get; private set; }
+
     protected override void ProcessItem(T item)
     {
       if (interval <= 0)
@@ -70,6 +72,7 @@ namespace RobotControl.Core
         if (stopwatch.ElapsedMilliseconds >= interval)
         {
           // Restart must be called before DoWork, to have more precise execution frequency.
+          ElapsedMilliseconds = stopwatch.ElapsedMilliseconds;
           stopwatch.Restart();
           DoWork();
         }

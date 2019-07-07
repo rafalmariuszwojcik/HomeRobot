@@ -13,11 +13,13 @@ namespace RobotControl.Windows
 {
   public class ControlManager : ManagerBase<ControlManager, Control, DataPackage>
   {
+    const int UPDATE_FREQUENCY = 20; // refresh frequency = 50Hz.
+
     private readonly object listenerInfoLockObject = new object();
     private readonly IDictionary<Type, ListenerInfo> types = new Dictionary<Type, ListenerInfo>();
 
     public ControlManager()
-      : base(20) // Controls refresh 50Hz
+      : base(UPDATE_FREQUENCY)
     {
       Disposables.Add(new MessageListener((s) => DataReceived(null, s.Select(x => new MessagePackage(x)))));
       Disposables.Add(new CommandListener((s) => DataReceived(null, s.Select(x => new CommandPackage(x)))));
