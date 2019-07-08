@@ -135,23 +135,35 @@ namespace RobotControl.Windows.Controls
       var y = (float)rect.Top.Value;
       var r = (float)rect.Right.Value;
       var b = (float)rect.Bottom.Value;
+      var widthMilimeter = new Length(ClientSize.Width / DpiX / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
+      var heightMilimeter = new Length(ClientSize.Height / DpiY / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
+      var originX = Origin.ConvertTo(MeasurementUnit.Milimeter).X;
+      var originY = Origin.ConvertTo(MeasurementUnit.Milimeter).Y;
 
       var pen = new Pen(Color.FromArgb(255, 160, 160, 160)) { DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot };
       var drawFont = new Font("Arial", 32);
       var drawBrush = new SolidBrush(Color.Gray);
-
+           
       while (y <= b)
       {
-        g.DrawLine(pen, new PointF(x, y), new PointF(r, y));
-        g.DrawString(y.ToString(), drawFont, drawBrush, new PointF(-(float)Origin.ConvertTo(MeasurementUnit.Milimeter).X, y));
+        if (y >= originY - (heightMilimeter.Value / 2) && y <= originY + (heightMilimeter.Value / 2))
+        {
+          g.DrawLine(pen, new PointF(x, y), new PointF(r, y));
+          g.DrawString(y.ToString(), drawFont, drawBrush, new PointF(-(float)Origin.ConvertTo(MeasurementUnit.Milimeter).X, y));
+        }
+
         y += 100F;
       }
 
       y = (float)rect.Top.Value;
       while (x <= r)
       {
-        g.DrawLine(pen, new PointF(x, y), new PointF(x, b));
-        g.DrawString(x.ToString(), drawFont, drawBrush, new PointF(x, -(float)Origin.ConvertTo(MeasurementUnit.Milimeter).Y));
+        if (x >= originX - (widthMilimeter.Value / 2) && x <= originX + (widthMilimeter.Value / 2))
+        {
+          g.DrawLine(pen, new PointF(x, y), new PointF(x, b));
+          g.DrawString(x.ToString(), drawFont, drawBrush, new PointF(x, -(float)Origin.ConvertTo(MeasurementUnit.Milimeter).Y));
+        }
+
         x += 100F;
       }
     }

@@ -57,7 +57,7 @@ namespace RobotControl.Core
         var sps = signals / (elapsed / 1000.0);
         zero = sps <= 0.1 && signalsPerSecond > 0.1;
         signalsPerSecond = sps;
-        signals = 0;
+        signals = zero ? - 1: 0;
       }
 
       if (zero)
