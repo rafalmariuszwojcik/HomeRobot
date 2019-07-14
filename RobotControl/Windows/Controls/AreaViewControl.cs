@@ -13,7 +13,7 @@ namespace RobotControl.Windows.Controls
 {
   public partial class AreaViewControl : ViewControl, IListener<SimulationPackage>
   {
-    private int viewZoom = 25;//100;
+    private int viewZoom = 25;
     private Point2D originPoint = new Point2D(0, 0, MeasurementUnit.Milimeter);
     private Point? previousMousePosition;
     private readonly Counter counter = new Counter();
@@ -98,7 +98,7 @@ namespace RobotControl.Windows.Controls
       {
         e.Graphics.PageUnit = GraphicsUnit.Millimeter;
         e.Graphics.ScaleTransform(DrawScale, DrawScale);
-        e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+        e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
         e.Graphics.TranslateTransform((float)Origin.X, (float)Origin.Y);
         DrawGrid(e.Graphics);
         DrawOrigin(e.Graphics);
