@@ -79,14 +79,12 @@ namespace RobotControl.Windows.Controls
     {
       get
       {
-        //var rect = Simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Milimeter);
-        //var rect = new Rect2D();
-        //rect.TopLeft = new Point2D(Origin.X, Origin.Y);
-
-        
-
-
-        return new Rect2D();
+        var originX = Origin.ConvertTo(MeasurementUnit.Milimeter).X;
+        var originY = Origin.ConvertTo(MeasurementUnit.Milimeter).Y;
+        var widthMilimeter = new Length(ClientSize.Width / DpiX / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
+        var heightMilimeter = new Length(ClientSize.Height / DpiY / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
+        var rect = new Rect2D(new Point2D(-originX, -originY, MeasurementUnit.Milimeter), widthMilimeter, heightMilimeter);
+        return rect;
       }
     }
 
@@ -145,56 +143,38 @@ namespace RobotControl.Windows.Controls
 
     private void DrawGrid(Graphics g)
     {
+      var viewRect = ViewRect;
       var rect = Simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Milimeter);
-      var x = (float)rect.Left.Value;
-      var y = (float)rect.Top.Value;
-      var r = (float)rect.Right.Value;
-      var b = (float)rect.Bottom.Value;
-      var widthMilimeter = new Length(ClientSize.Width / DpiX / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
-      var heightMilimeter = new Length(ClientSize.Height / DpiY / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
-      var originX = Origin.ConvertTo(MeasurementUnit.Milimeter).X;
-      var originY = Origin.ConvertTo(MeasurementUnit.Milimeter).Y;
+
+      var l = (float)rect.Left.Value + (float)(Math.Ceiling((viewRect.Left.Value - (float)rect.Left.Value) / 100F) * 100F);
+      var t = (float)rect.Top.Value + (float)(Math.Ceiling((viewRect.Top.Value - (float)rect.Top.Value) / 100F) * 100F);
+      var r = (float)rect.Right.Value - (float)(Math.Ceiling((viewRect.Right.Value - (float)rect.Right.Value) / 100F) * 100F);
+      var b = (float)rect.Bottom.Value - (float)(Math.Ceiling((viewRect.Bottom.Value - (float)rect.Bottom.Value) / 100F) * 100F);
 
       var pen = new Pen(Color.FromArgb(255, 160, 160, 160)) { DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot };
       var drawFont = new Font("Arial", 32);
       var drawBrush = new SolidBrush(Color.Gray);
 
-      var minY = -originY;
-      var maxY = minY + heightMilimeter.Value;
-      var minX = -originX;
-      var maxX = minX + widthMilimeter.Value;
-
-      //y = (float)minY;
-      //b = (float)maxY;
-      while (y <= b)
+      while (t <= b)
       {
-        //if (y >= originY - (heightMilimeter.Value / 2) && y <= originY + (heightMilimeter.Value / 2))
-        if (y >= minY && y <= maxY)
+        if (t >= viewRect.Top.Value && t <= viewRect.Bottom.Value)
         {
-          //g.DrawLine(pen, new PointF(x, y), new PointF(r, y));
-          //g.DrawString(y.ToString(), drawFont, drawBrush, new PointF(-(float)Origin.ConvertTo(MeasurementUnit.Milimeter).X, y));
-
-          g.DrawLine(pen, new PointF((float)minX, y), new PointF((float)maxX, y));
-          g.DrawString(y.ToString(), drawFont, drawBrush, new PointF(-(float)Origin.ConvertTo(MeasurementUnit.Milimeter).X, y));
+          g.DrawLine(pen, new PointF((float)viewRect.Left.Value, t), new PointF((float)viewRect.Right.Value, t));
+          g.DrawString(t.ToString(), drawFont, drawBrush, new PointF(-(float)Origin.ConvertTo(MeasurementUnit.Milimeter).X, t));
         }
 
-        y += 100F;
+        t += 100F;
       }
-
-      y = (float)rect.Top.Value;
-      //y = (float)minY;
-      //x = (float)minX;
-      //r = (float)maxX;
-      while (x <= r)
+      
+      while (l <= r)
       {
-        if (x >= minX && x <= maxX)
-        //if (x >= originX - (widthMilimeter.Value / 2) && x <= originX + (widthMilimeter.Value / 2))
+        if (l >= viewRect.Left.Value && l <= viewRect.Right.Value)
         {
-          g.DrawLine(pen, new PointF(x, (float)minY), new PointF(x, (float)maxY));
-          g.DrawString(x.ToString(), drawFont, drawBrush, new PointF(x, -(float)Origin.ConvertTo(MeasurementUnit.Milimeter).Y));
+          g.DrawLine(pen, new PointF(l, (float)viewRect.Top.Value), new PointF(l, (float)viewRect.Bottom.Value));
+          g.DrawString(l.ToString(), drawFont, drawBrush, new PointF(l, -(float)Origin.ConvertTo(MeasurementUnit.Milimeter).Y));
         }
 
-        x += 100F;
+        l += 100F;
       }
     }
 

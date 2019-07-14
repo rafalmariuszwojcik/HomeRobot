@@ -8,6 +8,12 @@
       BottomRight = new Point2D(width / 2F, height / 2F, unit);
     }
 
+    public Rect2D(Point2D topLeft, Length width, Length height)
+    {
+      TopLeft = topLeft;
+      BottomRight = new Point2D(topLeft.X + width.ConvertTo(topLeft.Unit).Value, topLeft.Y + height.ConvertTo(topLeft.Unit).Value, topLeft.Unit);
+    }
+
     public Point2D TopLeft { get; private set; }
 
     public Point2D BottomRight { get; private set; }
