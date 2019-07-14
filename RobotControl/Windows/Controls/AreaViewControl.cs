@@ -75,6 +75,21 @@ namespace RobotControl.Windows.Controls
       get { return Zoom / 100F; }
     }
 
+    private Rect2D ViewRect
+    {
+      get
+      {
+        //var rect = Simulation.SimulationArea.Area.ConvertTo(MeasurementUnit.Milimeter);
+        //var rect = new Rect2D();
+        //rect.TopLeft = new Point2D(Origin.X, Origin.Y);
+
+        
+
+
+        return new Rect2D();
+      }
+    }
+
     protected override void OnPaint(PaintEventArgs e)
     {
       base.OnPaint(e);
@@ -143,12 +158,23 @@ namespace RobotControl.Windows.Controls
       var pen = new Pen(Color.FromArgb(255, 160, 160, 160)) { DashStyle = System.Drawing.Drawing2D.DashStyle.DashDot };
       var drawFont = new Font("Arial", 32);
       var drawBrush = new SolidBrush(Color.Gray);
-           
+
+      var minY = -originY;
+      var maxY = minY + heightMilimeter.Value;
+      var minX = -originX;
+      var maxX = minX + widthMilimeter.Value;
+
+      //y = (float)minY;
+      //b = (float)maxY;
       while (y <= b)
       {
-        if (y >= originY - (heightMilimeter.Value / 2) && y <= originY + (heightMilimeter.Value / 2))
+        //if (y >= originY - (heightMilimeter.Value / 2) && y <= originY + (heightMilimeter.Value / 2))
+        if (y >= minY && y <= maxY)
         {
-          g.DrawLine(pen, new PointF(x, y), new PointF(r, y));
+          //g.DrawLine(pen, new PointF(x, y), new PointF(r, y));
+          //g.DrawString(y.ToString(), drawFont, drawBrush, new PointF(-(float)Origin.ConvertTo(MeasurementUnit.Milimeter).X, y));
+
+          g.DrawLine(pen, new PointF((float)minX, y), new PointF((float)maxX, y));
           g.DrawString(y.ToString(), drawFont, drawBrush, new PointF(-(float)Origin.ConvertTo(MeasurementUnit.Milimeter).X, y));
         }
 
@@ -156,11 +182,15 @@ namespace RobotControl.Windows.Controls
       }
 
       y = (float)rect.Top.Value;
+      //y = (float)minY;
+      //x = (float)minX;
+      //r = (float)maxX;
       while (x <= r)
       {
-        if (x >= originX - (widthMilimeter.Value / 2) && x <= originX + (widthMilimeter.Value / 2))
+        if (x >= minX && x <= maxX)
+        //if (x >= originX - (widthMilimeter.Value / 2) && x <= originX + (widthMilimeter.Value / 2))
         {
-          g.DrawLine(pen, new PointF(x, y), new PointF(x, b));
+          g.DrawLine(pen, new PointF(x, (float)minY), new PointF(x, (float)maxY));
           g.DrawString(x.ToString(), drawFont, drawBrush, new PointF(x, -(float)Origin.ConvertTo(MeasurementUnit.Milimeter).Y));
         }
 
