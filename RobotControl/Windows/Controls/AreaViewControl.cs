@@ -79,11 +79,10 @@ namespace RobotControl.Windows.Controls
     {
       get
       {
-        var originX = Origin.ConvertTo(MeasurementUnit.Milimeter).X;
-        var originY = Origin.ConvertTo(MeasurementUnit.Milimeter).Y;
+        var origin = Origin.ConvertTo(MeasurementUnit.Milimeter);
         var widthMilimeter = new Length(ClientSize.Width / DpiX / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
         var heightMilimeter = new Length(ClientSize.Height / DpiY / DrawScale, MeasurementUnit.Inch).ConvertTo(MeasurementUnit.Milimeter);
-        var rect = new Rect2D(new Point2D(-originX, -originY, MeasurementUnit.Milimeter), widthMilimeter, heightMilimeter);
+        var rect = new Rect2D(new Point2D(-origin.X, -origin.Y, MeasurementUnit.Milimeter), widthMilimeter, heightMilimeter);
         return rect;
       }
     }
@@ -98,7 +97,7 @@ namespace RobotControl.Windows.Controls
       {
         e.Graphics.PageUnit = GraphicsUnit.Millimeter;
         e.Graphics.ScaleTransform(DrawScale, DrawScale);
-        e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+        e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;// .HighQuality;
         e.Graphics.TranslateTransform((float)Origin.X, (float)Origin.Y);
         DrawGrid(e.Graphics);
         DrawOrigin(e.Graphics);

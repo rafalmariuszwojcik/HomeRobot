@@ -102,14 +102,16 @@ namespace RobotControl
       Task.Factory.StartNew(new Action(() => 
       {
         var list = new List<long>();
-        for (var i = 0; i < 3000; i++)
+        for (var i = 0; i < 90; i++)
         {
           var totalMilliseconds = (long)new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
+          MessageManager.Instance.DataReceived(this, new[] { $"ENC,1,{i},{totalMilliseconds},2;{Environment.NewLine}" });
+          
+          Thread.Sleep(20);
+
+          totalMilliseconds = (long)new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
           MessageManager.Instance.DataReceived(this, new[] { $"ENC,0,{i},{totalMilliseconds},2;{Environment.NewLine}" });
 
-          //Thread.Sleep(15);
-
-          //MessageManager.Instance.DataReceived(this, new[] { $"ENC,1,{i},{totalMilliseconds},2;{Environment.NewLine}" });
           list.Add(totalMilliseconds);
 
           // Dont use Task.Delay, it is very not precise.

@@ -131,3 +131,12 @@ RobotControlTest/bin/Release/netcoreapp2.1/nunit.engine.netstandard.dll
 RobotControlTest/bin/Release/netcoreapp2.1/NUnit3.TestAdapter.dll
 RobotControlTest/bin/Release/netcoreapp2.1/NUnit3.TestAdapter.pdb
 RobotControl/.vs/RobotControl/DesignTimeBuild/.dtbcache
+RobotControl/.vs/RobotControl/v16/Server/sqlite3/storage.ide-wal
+RobotControl/.vs/RobotControl/v16/Server/sqlite3/storage.ide-shm
+RobotControl/.vs/RobotControl/v16/Server/sqlite3/storage.ide
+RobotControl/.vs/RobotControl/v16/Server/sqlite3/db.lock
+RobotControl/.vs/RobotControl/v16/.suo
+RobotControl/.vs/RobotControl/DesignTimeBuild/.dtbcache
+RobotControl/.vs/RobotControl/DesignTimeBuild/.dtbcache
+RobotControl/.vs/RobotControl/DesignTimeBuild/.dtbcache
+RobotControlTest/obj/RobotControlTest.csproj.nuget.dgspec.json
