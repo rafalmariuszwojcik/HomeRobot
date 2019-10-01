@@ -32,7 +32,7 @@ namespace RobotControl.Simulation.Robot
       position = new SimulationPoint(x, y, angle);
       odometry = new Odometry(new Action<double, double>((dl, dr) => 
         {
-          MessageReceived(2, (int)dl, 2, (int)dr);
+          MessageReceived(2, dl, 2, dr);
         }
       ));
     }
@@ -57,7 +57,7 @@ namespace RobotControl.Simulation.Robot
       route.Movements.Add(new Movement(distance, angle));
     }
 
-    public void MessageReceived(int leftDirection, int leftDistance, int rightDirection, int rightDistance)
+    public void MessageReceived(int leftDirection, double leftDistance, int rightDirection, double rightDistance)
     {
       if (startPoint == null)
       {
@@ -242,7 +242,7 @@ namespace RobotControl.Simulation.Robot
     {
       private readonly DateTime expiration;
 
-      public MovementStartPoint(double x, double y, double angle, int leftEncoder, int rightEncoder)
+      public MovementStartPoint(double x, double y, double angle, double leftEncoder, double rightEncoder)
         : base(x, y, angle)
       {
         expiration = DateTime.Now.AddMilliseconds(1);
@@ -255,8 +255,8 @@ namespace RobotControl.Simulation.Robot
         get { return DateTime.Now > expiration; }
       }
 
-      public int LeftEncoder { get; private set; }
-      public int RightEncoder { get; private set; }
+      public double LeftEncoder { get; private set; }
+      public double RightEncoder { get; private set; }
     }
   }
 }

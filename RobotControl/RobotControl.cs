@@ -107,7 +107,7 @@ namespace RobotControl
           var totalMilliseconds = (long)new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
           MessageManager.Instance.DataReceived(this, new[] { $"ENC,1,{i},{totalMilliseconds},2;{Environment.NewLine}" });
           
-          //Thread.Sleep(10);
+          Thread.Sleep(10);
 
           totalMilliseconds = (long)new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
           MessageManager.Instance.DataReceived(this, new[] { $"ENC,0,{i},{totalMilliseconds},2;{Environment.NewLine}" });
@@ -116,7 +116,7 @@ namespace RobotControl
 
           // Dont use Task.Delay, it is very not precise.
           //Thread.Sleep(25);
-          Thread.Sleep(10);
+          Thread.Sleep(20);
         }
 
         for (var i = 0; i < list.Count() - 1; i++)
