@@ -85,6 +85,7 @@
     <Compile Include="Core\ListenerBase.cs" />
     <Compile Include="Messages\MessageListener.cs" />
     <Compile Include="Simulation\Robot\Odometry.cs" />
+    <Compile Include="Simulation\Robot\OdometryCounter.cs" />
     <Compile Include="Simulation\Robot\PositionCalculator.cs" />
     <Compile Include="Simulation\SimulationListener.cs" />
     <Compile Include="Simulation\SimulationManager.cs" />

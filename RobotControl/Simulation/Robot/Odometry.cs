@@ -35,7 +35,11 @@ namespace RobotControl.Simulation.Robot
       var drItems = data.Where(x => x.Index == 1);//.FirstOrDefault();//?.Max(x => x.Distance);
       var dl = dlItems.Any() ? dlItems.Max(x => x.Distance) : 0;
       var dr = drItems.Any() ? drItems.Max(x => x.Distance) : 0;
-      action?.Invoke(dl, dr);
+
+      var totalMilliseconds = (long)new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
+      var result = OdometryCounter.Calculate(totalMilliseconds, data);
+
+      action?.Invoke(result.Dl, result.Dr);
 
     }
   }
