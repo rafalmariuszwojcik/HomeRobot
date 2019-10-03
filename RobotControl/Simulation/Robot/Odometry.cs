@@ -37,9 +37,14 @@ namespace RobotControl.Simulation.Robot
       var dr = drItems.Any() ? drItems.Max(x => x.Distance) : 0;
 
       var totalMilliseconds = (long)new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
-      var result = OdometryCounter.Calculate(totalMilliseconds, data);
+      var result = OdometryHelper.Calculate(totalMilliseconds, data);
 
-      action?.Invoke(result.Dl, result.Dr);
+      if (result.Dl > 0.1 && result.Dr > 0.1)
+      {
+        action?.Invoke(result.Dl, result.Dr);
+      }
+      
+      
 
     }
   }

@@ -16,7 +16,7 @@ namespace RobotControl.Simulation.Robot
     public double Dr { get; }
   }
 
-  public static class OdometryCounter
+  public static class OdometryHelper
   {
     public static OdometryResult Calculate(long currentMilis, IEnumerable<IEncoderCommand> data)
     {

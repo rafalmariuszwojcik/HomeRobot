@@ -72,7 +72,26 @@ namespace RobotControl.Simulation.Robot
         return;
       }
 
+      /*
+      if (leftDifference < 0.0)
+      {
+        leftDifference = 0.0;
+      }
+
+      if (rightDifference < 0.0)
+      {
+        rightDifference = 0.0;
+      }
+      */
+
       var newPoint = CalculateMovement(startPoint, (double)leftDifference * oneHoleDistance, (double)rightDifference * oneHoleDistance);
+
+      if (newPoint.X > position.X)
+      {
+        var x = 1;
+        var y = x;
+      }
+
       position.X = newPoint.X;
       position.Y = newPoint.Y;
       position.Angle = newPoint.Angle;
@@ -107,7 +126,7 @@ namespace RobotControl.Simulation.Robot
 
       double vector;
       double vectorAngle;
-      if (angleInRadians != 0.0 && centerDistance != 0.0)
+      if (angleInRadians != 0.0 /*&& centerDistance != 0.0*/)
       {
         var r = centerDistance / angleInRadians;
         var vectorX = r - (r * Math.Cos(angleInRadians));
@@ -165,6 +184,7 @@ namespace RobotControl.Simulation.Robot
       var deltaY = vector * Math.Sin(vectorAngle);
 
       var result = new SimulationPoint(startPoint.X, startPoint.Y, startPoint.Angle + RadiansToDegrees(angleInRadians));
+      
       if (angleInRadians * centerDistance >= 0.0)
       {
         result.Y -= deltaY;
@@ -240,20 +260,22 @@ namespace RobotControl.Simulation.Robot
 
     private class MovementStartPoint : SimulationPoint
     {
-      private readonly DateTime expiration;
+      //private readonly DateTime expiration;
 
       public MovementStartPoint(double x, double y, double angle, double leftEncoder, double rightEncoder)
         : base(x, y, angle)
       {
-        expiration = DateTime.Now.AddMilliseconds(1);
+        //expiration = DateTime.Now.AddMilliseconds(1);
         LeftEncoder = leftEncoder;
         RightEncoder = rightEncoder;
       }
 
+      /*
       public bool IsExpired
       {
         get { return DateTime.Now > expiration; }
       }
+      */
 
       public double LeftEncoder { get; private set; }
       public double RightEncoder { get; private set; }

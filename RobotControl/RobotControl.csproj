@@ -87,6 +87,8 @@
     <Compile Include="Simulation\Robot\Odometry.cs" />
     <Compile Include="Simulation\Robot\OdometryCounter.cs" />
     <Compile Include="Simulation\Robot\PositionCalculator.cs" />
+    <Compile Include="Simulation\Robot\RobotHelper.cs" />
+    <Compile Include="Simulation\SimulationHelper.cs" />
     <Compile Include="Simulation\SimulationListener.cs" />
     <Compile Include="Simulation\SimulationManager.cs" />
     <Compile Include="Windows\CommandPackage.cs" />

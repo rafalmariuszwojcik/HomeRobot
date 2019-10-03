@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using RobotControl.Command;
+using RobotControl.Simulation;
 using RobotControl.Simulation.Robot;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace Tests
     }
 
     [Test]
-    public void OdometryCounterTest()
+    public void OdometryTest()
     {
       var signals = new List<IEncoderCommand>();
 
@@ -53,7 +54,16 @@ namespace Tests
       signals.Add(new EncoderCommand() { Index = 1, Distance = 4, Milis = 450 });
       signals.Add(new EncoderCommand() { Index = 1, Distance = 5, Milis = 550 });
       
-      var result = OdometryCounter.Calculate(550, signals);
+      var result = OdometryHelper.Calculate(550, signals);
+    }
+
+    [Test]
+    public void RobotMoveTest()
+    {
+      var startPoint = new SimulationPoint(0.0, 0.0, -90.0);
+      var movement1 = RobotHelper.CalculateMovement(startPoint, 2.0, 2.0);
+      var movement2 = RobotHelper.CalculateMovement(startPoint, 1.999999999, 2.0);
+
     }
   }
 }
