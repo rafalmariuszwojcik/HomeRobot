@@ -61,9 +61,25 @@ namespace Tests
     public void RobotMoveTest()
     {
       var startPoint = new SimulationPoint(0.0, 0.0, -90.0);
-      var movement1 = RobotHelper.CalculateMovement(startPoint, 2.0, 2.0);
-      var movement2 = RobotHelper.CalculateMovement(startPoint, 1.999999999, 2.0);
+      var geometry = new RobotGeometry(124.0, 66.4 / 2.0, 20);
 
+      var m0 = RobotHelper.CalculateMovement(new SimulationPoint(0.0, 0.0, 0.0), 2.0, 2.0, geometry);
+
+      var m1 = RobotHelper.CalculateMovement(new SimulationPoint(0.0, 0.0, 90.0), 2.0, 2.0, geometry);
+      var m2 = RobotHelper.CalculateMovement(new SimulationPoint(0.0, 0.0, 180.0), 2.0, 2.0, geometry);
+      var m3 = RobotHelper.CalculateMovement(new SimulationPoint(0.0, 0.0, 270.0), 2.0, 2.0, geometry);
+
+      var m4 = RobotHelper.CalculateMovement(new SimulationPoint(0.0, 0.0, -90.0), 2.0, 2.0, geometry);
+      var m5 = RobotHelper.CalculateMovement(new SimulationPoint(0.0, 0.0, -180.0), 2.0, 2.0, geometry);
+      var m6 = RobotHelper.CalculateMovement(new SimulationPoint(0.0, 0.0, -270.0), 2.0, 2.0, geometry);
+
+      var m7 = RobotHelper.CalculateMovement(new SimulationPoint(0.0, 0.0, 45.0), 2.0, 2.0, geometry);
+      var m8 = RobotHelper.CalculateMovement(new SimulationPoint(0.0, 0.0, -45.0), 2.0, 2.0, geometry);
+
+
+      var movementEx1 = RobotHelper.CalculateMovement(startPoint, 2.0, 2.0, geometry);
+      var movementEx2 = RobotHelper.CalculateMovement(startPoint, 1.999999, 2.0, geometry);
+      var movementEx3 = RobotHelper.CalculateMovement(startPoint, 2.0, 1.999999, geometry);
     }
   }
 }

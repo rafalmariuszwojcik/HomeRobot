@@ -4,45 +4,18 @@ namespace RobotControl.Simulation.Robot
 {
   public static class RobotHelper
   {
-    public static SimulationPoint CalculateMovement(SimulationPoint startPoint, double leftWheel, double rightWheel)
+    public static SimulationPoint CalculateMovement(SimulationPoint startPoint, double leftEncoder, double rightEncoder, IRobotGeometry geometry)
     {
-      var angleInRadians = (leftWheel - rightWheel) / (RobotCalculator.RobotRadius * 2F);
-      var centerDistance = (leftWheel + rightWheel) / 2.0;
+      var teta0 = SimulationHelper.DegreesToRadians(startPoint.Angle - 90.0);
+      var leftDistance = leftEncoder * geometry.OnePointDistance;
+      var rightDistance = rightEncoder * geometry.OnePointDistance;
+                  
+      var s = (rightDistance + leftDistance) / 2.0;
+      var teta = ((rightDistance - leftDistance) / geometry.Width) + teta0;
+      var x = s * Math.Cos(teta) + startPoint.X;
+      var y = s * Math.Sin(teta) + startPoint.Y;
 
-      double vector;
-      double vectorAngle;
-      if (angleInRadians != 0.0 && centerDistance != 0.0)
-      {
-        var r = centerDistance / angleInRadians;
-        var vectorX = r - (r * Math.Cos(angleInRadians));
-        var vectorY = r * Math.Sin(angleInRadians);
-        vector = Math.Sqrt(Math.Pow(vectorX, 2) + Math.Pow(vectorY, 2));
-        vectorAngle = (Math.Atan(vectorY / vectorX));
-      }
-      else
-      {
-        vector = centerDistance;
-        vectorAngle = SimulationHelper.DegreesToRadians(90.0);
-      }
-
-      vectorAngle -= SimulationHelper.DegreesToRadians(startPoint.Angle);
-      var deltaX = vector * Math.Cos(vectorAngle);
-      var deltaY = vector * Math.Sin(vectorAngle);
-
-      var result = new SimulationPoint(startPoint.X, startPoint.Y, startPoint.Angle + SimulationHelper.RadiansToDegrees(angleInRadians));
-
-      if (angleInRadians * centerDistance >= 0.0)
-      {
-        result.Y -= deltaY;
-        result.X += deltaX;
-      }
-      else
-      {
-        result.Y += deltaY;
-        result.X -= deltaX;
-      }
-
-      return result;
+      return new SimulationPoint(x, y, SimulationHelper.RadiansToDegrees(teta) + 90.0);
     }
   }
 }

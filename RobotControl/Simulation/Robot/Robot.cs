@@ -84,7 +84,9 @@ namespace RobotControl.Simulation.Robot
       }
       */
 
-      var newPoint = CalculateMovement(startPoint, (double)leftDifference * oneHoleDistance, (double)rightDifference * oneHoleDistance);
+      //var newPoint = CalculateMovement(startPoint, (double)leftDifference * oneHoleDistance, (double)rightDifference * oneHoleDistance);
+      var geometry = new RobotGeometry(124.0, 66.4 / 2.0, 20);
+      var newPoint = RobotHelper.CalculateMovement(startPoint, leftDifference, rightDifference, geometry);
 
       if (newPoint.X > position.X)
       {

@@ -6,12 +6,12 @@ namespace RobotControl.Simulation
   {
     public static double RadiansToDegrees(double radians)
     {
-      return (radians * 180) / (Math.PI);
+      return (radians * 180.0) / (Math.PI);
     }
 
     public static double DegreesToRadians(double degrees)
     {
-      return (degrees * Math.PI) / 180;
+      return (degrees * Math.PI) / 180.0;
     }
   }
 }

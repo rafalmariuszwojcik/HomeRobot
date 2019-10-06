@@ -10,6 +10,12 @@ namespace RobotControl.Simulation.Robot
       WheelRadius = wheelRadius;
       WheelWidth = wheelWidth;
       EncoderPoints = encoderPoints;
+      OnePointDistance = WheelRadius * 2.0 * Math.PI / EncoderPoints;
+    }
+
+    public RobotGeometry(double robotWidth, double wheelRadius, int encoderPoints)
+      : this(robotWidth, wheelRadius, 0.0, encoderPoints)
+    {
     }
 
     public double Radius
@@ -24,6 +30,8 @@ namespace RobotControl.Simulation.Robot
     public double Width { get; }
 
     public int EncoderPoints { get; }
+
+    public double OnePointDistance { get; }
 
     public MovementCalculation CalculateMovement(double distance, double angle)
     {

@@ -7,5 +7,6 @@
     double WheelRadius { get; }
     double WheelWidth { get; }
     int EncoderPoints { get; }
+    double OnePointDistance { get; }
   }
 }
