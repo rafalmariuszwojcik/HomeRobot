@@ -17,6 +17,8 @@ namespace RobotControl.Fake.FakeRobot
     public FakeRobot()
     {
       task = new Task(() => Loop(cts.Token));
+      leftEngine.Speed = 10;
+      
     }
 
     public void Start()
@@ -49,7 +51,7 @@ namespace RobotControl.Fake.FakeRobot
     {
       while (!token.IsCancellationRequested)
       {
-        //Task.Delay(10);
+        Thread.Sleep(1000);
       }
     }
   }

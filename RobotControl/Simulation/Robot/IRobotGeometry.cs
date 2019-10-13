@@ -2,11 +2,11 @@
 {
   public interface IRobotGeometry : IGeometry
   {
-    double Radius { get; }
     double Width { get; }
     double WheelRadius { get; }
-    double WheelWidth { get; }
     int EncoderPoints { get; }
     double OnePointDistance { get; }
+    double WheelWidth { get; }
+    double Radius { get; }
   }
 }

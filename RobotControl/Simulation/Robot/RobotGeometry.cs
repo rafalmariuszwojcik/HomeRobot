@@ -18,11 +18,6 @@ namespace RobotControl.Simulation.Robot
     {
     }
 
-    public double Radius
-    {
-      get { return Width / 2.0; }
-    }
-
     public double WheelRadius { get; }
 
     public double WheelWidth { get; }
@@ -32,6 +27,8 @@ namespace RobotControl.Simulation.Robot
     public int EncoderPoints { get; }
 
     public double OnePointDistance { get; }
+
+    public double Radius => Width / 2.0;
 
     public MovementCalculation CalculateMovement(double distance, double angle)
     {

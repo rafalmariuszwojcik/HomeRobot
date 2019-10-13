@@ -83,6 +83,7 @@
     <Compile Include="Core\DigitalFilter.cs" />
     <Compile Include="Core\IManager.cs" />
     <Compile Include="Core\ListenerBase.cs" />
+    <Compile Include="Drawing\IRobotDrawGeometry.cs" />
     <Compile Include="Messages\MessageListener.cs" />
     <Compile Include="Simulation\Robot\Odometry.cs" />
     <Compile Include="Simulation\Robot\OdometryCounter.cs" />
