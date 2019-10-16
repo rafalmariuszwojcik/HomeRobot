@@ -39,13 +39,10 @@ namespace RobotControl.Simulation.Robot
       var totalMilliseconds = (long)new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
       var result = OdometryHelper.Calculate(totalMilliseconds, data);
 
-      if (result.Dl > 0.1 && result.Dr > 0.1)
+      if (result.Dl > 0.1 || result.Dr > 0.1)
       {
         action?.Invoke(result.Dl, result.Dr);
       }
-      
-      
-
     }
   }
 }

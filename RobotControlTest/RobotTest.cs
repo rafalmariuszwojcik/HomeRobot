@@ -76,7 +76,8 @@ namespace Tests
       var m7 = RobotHelper.CalculateMovement(new SimulationPoint(0.0, 0.0, 45.0), 2.0, 2.0, geometry);
       var m8 = RobotHelper.CalculateMovement(new SimulationPoint(0.0, 0.0, -45.0), 2.0, 2.0, geometry);
 
-
+      var m9 = RobotHelper.CalculateMovement(new SimulationPoint(0.0, 0.0, -90.0), 0.0, 2.0, geometry);
+      
       var movementEx1 = RobotHelper.CalculateMovement(startPoint, 2.0, 2.0, geometry);
       var movementEx2 = RobotHelper.CalculateMovement(startPoint, 1.999999, 2.0, geometry);
       var movementEx3 = RobotHelper.CalculateMovement(startPoint, 2.0, 1.999999, geometry);

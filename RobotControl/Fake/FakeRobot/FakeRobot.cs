@@ -18,7 +18,8 @@ namespace RobotControl.Fake.FakeRobot
     {
       task = new Task(() => Loop(cts.Token));
       leftEngine.Speed = 10;
-      
+      //rightEngine.Speed = 9;
+
     }
 
     public void Start()

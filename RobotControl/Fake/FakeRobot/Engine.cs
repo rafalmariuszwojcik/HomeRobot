@@ -1,6 +1,7 @@
 ﻿using RobotControl.Core;
 using RobotControl.Messages;
 using System;
+using System.Diagnostics;
 using System.Threading;
 
 namespace RobotControl.Fake.FakeRobot
@@ -10,12 +11,20 @@ namespace RobotControl.Fake.FakeRobot
   public class Engine : DisposableBase
   {
     private const int MAX_SPEED = 100;
-    //private readonly Thread work;
-    //private readonly Stopwatch stopwatch = new Stopwatch();
-    //private CancellationTokenSource cts = new CancellationTokenSource();
+    private const int ONE_SECOND = 1000;
+
+    private static readonly Stopwatch stopwatch = new Stopwatch();
     private readonly Timer timer;
     private int speed;
-    
+    private int distance;
+    private long? lastSignalMilis;
+    private long? oneSignalMilis;
+    private double currentSpeed;
+
+    static Engine() 
+    {
+      stopwatch.Start();
+    }    
     
     public Engine()
     {
@@ -77,15 +86,33 @@ namespace RobotControl.Fake.FakeRobot
     }
 
 
-    private int distance = 0;
+    
 
     private void TimerProc(object state)
     {
+      var currentMilis = stopwatch.ElapsedMilliseconds;
+      if (lastSignalMilis.HasValue) 
+      {
+        var timeDelta = currentMilis - lastSignalMilis.Value;
+        currentSpeed = ONE_SECOND / (double)timeDelta;
+        oneSignalMilis = timeDelta;
+      }
+
+      lastSignalMilis = currentMilis;
+
+
+
       var t = (Timer)state;
-      var totalMilliseconds = (long)new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
-      MessageManager.Instance.DataReceived(this, new[] { $"ENC,1,{distance},{totalMilliseconds},2;{Environment.NewLine}" });
-      MessageManager.Instance.DataReceived(this, new[] { $"ENC,0,{distance},{totalMilliseconds},2;{Environment.NewLine}" });
-      distance++;
+      
+      
+      //stopwatch.ElapsedMilliseconds
+
+
+
+      //var totalMilliseconds = (long)new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
+      //MessageManager.Instance.DataReceived(this, new[] { $"ENC,1,{distance},{totalMilliseconds},2;{Environment.NewLine}" });
+      //MessageManager.Instance.DataReceived(this, new[] { $"ENC,0,{distance},{totalMilliseconds},2;{Environment.NewLine}" });
+      //distance++;
     }
 
     private void ChangeSpeed(int newSpeed)

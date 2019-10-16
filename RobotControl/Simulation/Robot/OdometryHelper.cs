@@ -34,23 +34,34 @@ namespace RobotControl.Simulation.Robot
       var timeR = 0L;
       var speedR = 0.0;
 
-      if (leftSignals.Skip(1).Any())
+      if (leftSignals.Count > 1)
       {
         dl = leftSignals.First().Distance - leftSignals.Skip(1).Select(x => x.Distance).First();
         timeL = leftSignals.First().Milis - leftSignals.Skip(1).Select(x => x.Milis).First();
-        speedL = (double)dl / (double)timeL;
+        speedL = timeL != 0 ? (double)dl / (double)timeL : 0.0;
       }
 
-      if (rightSignals.Skip(1).Any())
+      if (rightSignals.Count > 1)
       {
         dr = rightSignals.First().Distance - rightSignals.Skip(1).Select(x => x.Distance).First();
         timeR = rightSignals.First().Milis - rightSignals.Skip(1).Select(x => x.Milis).First();
-        speedR = (double)dr / (double)timeR;
+        speedR = timeR != 0 ? (double)dr / (double)timeR : 0.0;
       }
 
-      var deltaL = (double)leftDistance + (speedL * (currentMilis - leftSignals.First().Milis));
-      var deltaR = (double)rightDistance + (speedR * (currentMilis - rightSignals.First().Milis));
-                    
+      var deltaL = (double)leftDistance + (leftSignals.Any() ? (speedL * (currentMilis - leftSignals.First().Milis)) : 0.0);
+      var deltaR = (double)rightDistance + (rightSignals.Any() ? (speedR * (currentMilis - rightSignals.First().Milis)) : 0.0);
+
+      if (double.IsInfinity(deltaL)) 
+      {
+        var a1 = 1;
+      }
+
+      if (double.IsInfinity(deltaR))
+      {
+        var a1 = 1;
+      }
+
+
       return new OdometryResult(deltaL, deltaR);
     }  
   }
