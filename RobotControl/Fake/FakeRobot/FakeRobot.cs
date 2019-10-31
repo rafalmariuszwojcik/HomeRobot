@@ -48,12 +48,27 @@ namespace RobotControl.Fake.FakeRobot
       }
     }
 
+    /// <summary>
+    /// Fake robot main thread loop.
+    /// </summary>
+    /// <param name="token">The cancelation token.</param>
     private void Loop(CancellationToken token)
     {
       var waitHandles = new[] { leftEngine.SignalEvent, rightEngine.SignalEvent };
       while (true) 
       {
-        WaitHandle.WaitAny(waitHandles, 100);
+        var index = WaitHandle.WaitAny(waitHandles, 100);
+        if (index != WaitHandle.WaitTimeout) 
+        {
+          switch (index) 
+          {
+            case 0:
+              break;
+
+            case 1:
+              break;
+          }
+        }
 
         if (token.IsCancellationRequested)
         {
