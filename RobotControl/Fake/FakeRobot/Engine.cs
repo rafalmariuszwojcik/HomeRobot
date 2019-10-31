@@ -1,20 +1,28 @@
 ﻿using RobotControl.Core;
-using RobotControl.Messages;
 using System;
 using System.Diagnostics;
 using System.Threading;
 
 namespace RobotControl.Fake.FakeRobot
 {
-  public enum EngineState { UNKNOWN = 0, STOP = 1, FORWARD = 2, BACKWARD = 3 };
-
+  /// <summary>Fake engine class.</summary>
+  /// <remarks>Used to simulate robot's engine.</remarks>
+  /// <seealso cref="RobotControl.Core.DisposableBase" />
   public class Engine : DisposableBase
   {
+    /// <summary>The maximum speed in encoder signals per second.</summary>
     private const int MAX_SPEED = 100;
+
+    /// <summary>The one second. Indicates number of internal engine signals per one second.</summary>
     private const int ONE_SECOND = 1000;
 
+    /// <summary>The internal time counter.</summary>
     private static readonly Stopwatch stopwatch = new Stopwatch();
+
+    /// <summary>The timer.</summary>
+    /// <remarks>Generates fake engine's encoder signals.</remarks>
     private readonly Timer timer;
+
     private int speed;
     private int distance;
     private long? lastSignalMilis;
@@ -34,6 +42,9 @@ namespace RobotControl.Fake.FakeRobot
       timer = new Timer(TimerProc);
     }
 
+
+    /// <summary>Gets or sets the speed.</summary>
+    /// <value>The speed.</value>
     public int Speed
     {
       get => speed;
@@ -42,8 +53,10 @@ namespace RobotControl.Fake.FakeRobot
       {
         if (speed != value)
         {
+          value = value <= MAX_SPEED ? value : MAX_SPEED;
+          value = value >= -MAX_SPEED ? value : -MAX_SPEED;
           speed = value;
-          ChangeSpeed(speed);
+          ChangeSpeed(Math.Abs(speed));
         }
       }
     }
@@ -52,6 +65,7 @@ namespace RobotControl.Fake.FakeRobot
     {
       if (disposing)
       {
+        timer?.Dispose();
         //Stop();
         /*
         if (cts != null)
@@ -90,6 +104,7 @@ namespace RobotControl.Fake.FakeRobot
 
     private void TimerProc(object state)
     {
+      Signal();
       var currentMilis = stopwatch.ElapsedMilliseconds;
       if (lastSignalMilis.HasValue) 
       {
@@ -115,6 +130,20 @@ namespace RobotControl.Fake.FakeRobot
       //distance++;
     }
 
+    /// <summary>Calculate engine current speed.</summary>
+    private void Signal() 
+    {
+      var currentMilis = stopwatch.ElapsedMilliseconds;
+      if (lastSignalMilis.HasValue) 
+      { 
+      }
+
+      lastSignalMilis = currentMilis;
+    }
+    
+    /// <summary>Changes the speed.</summary>
+    /// <remarks>Updates timer freqency.</remarks>
+    /// <param name="newSpeed">The new speed in encoder signals per second.</param>
     private void ChangeSpeed(int newSpeed)
     {
       var period = newSpeed > 0 ? Convert.ToInt32(Math.Round(1000.0 / newSpeed)) : Timeout.Infinite;
