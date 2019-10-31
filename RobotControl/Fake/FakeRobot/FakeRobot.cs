@@ -50,9 +50,15 @@ namespace RobotControl.Fake.FakeRobot
 
     private void Loop(CancellationToken token)
     {
-      while (!token.IsCancellationRequested)
+      var waitHandles = new[] { leftEngine.SignalEvent, rightEngine.SignalEvent };
+      while (true) 
       {
-        Thread.Sleep(1000);
+        WaitHandle.WaitAny(waitHandles, 100);
+
+        if (token.IsCancellationRequested)
+        {
+          return;
+        }
       }
     }
   }

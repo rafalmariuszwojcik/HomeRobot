@@ -23,6 +23,11 @@ namespace RobotControl.Fake.FakeRobot
     /// <remarks>Generates fake engine's encoder signals.</remarks>
     private readonly Timer timer;
 
+    /// <summary>
+    /// The encoder signal event.
+    /// </summary>
+    private readonly AutoResetEvent signalEvent;
+
     private int speed;
     private int distance;
     private long? lastSignalMilis;
@@ -40,8 +45,17 @@ namespace RobotControl.Fake.FakeRobot
       //work = new Thread(new ParameterizedThreadStart(DoWork));
       //work.Start(cts.Token);
       timer = new Timer(TimerProc);
+      signalEvent = new AutoResetEvent(true);
     }
 
+    /// <summary>
+    /// Gets the signal event.
+    /// </summary>
+    /// <remarks>Signals engine encoder event.</remarks>
+    /// <value>
+    /// The signal event.
+    /// </value>
+    public EventWaitHandle SignalEvent => signalEvent;
 
     /// <summary>Gets or sets the speed.</summary>
     /// <value>The speed.</value>
@@ -100,11 +114,22 @@ namespace RobotControl.Fake.FakeRobot
     }
 
 
-    
 
+
+    /// <summary>
+    /// Timer procedure.
+    /// </summary>
+    /// <param name="state">
+    /// The state object.
+    /// </param>
     private void TimerProc(object state)
     {
       Signal();
+    }
+
+    /// <summary>Calculate engine current speed.</summary>
+    private void Signal() 
+    {
       var currentMilis = stopwatch.ElapsedMilliseconds;
       if (lastSignalMilis.HasValue) 
       {
@@ -114,31 +139,7 @@ namespace RobotControl.Fake.FakeRobot
       }
 
       lastSignalMilis = currentMilis;
-
-
-
-      var t = (Timer)state;
-      
-      
-      //stopwatch.ElapsedMilliseconds
-
-
-
-      //var totalMilliseconds = (long)new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
-      //MessageManager.Instance.DataReceived(this, new[] { $"ENC,1,{distance},{totalMilliseconds},2;{Environment.NewLine}" });
-      //MessageManager.Instance.DataReceived(this, new[] { $"ENC,0,{distance},{totalMilliseconds},2;{Environment.NewLine}" });
-      //distance++;
-    }
-
-    /// <summary>Calculate engine current speed.</summary>
-    private void Signal() 
-    {
-      var currentMilis = stopwatch.ElapsedMilliseconds;
-      if (lastSignalMilis.HasValue) 
-      { 
-      }
-
-      lastSignalMilis = currentMilis;
+      signalEvent.Set();
     }
     
     /// <summary>Changes the speed.</summary>
