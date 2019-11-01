@@ -1,5 +1,6 @@
 ﻿using RobotControl.Core;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 
@@ -45,6 +46,8 @@ namespace RobotControl.Fake.FakeRobot
     private long? lastSignalMilis;
     private long? oneSignalMilis;
     private double currentSpeed;
+
+    private IList<long> deltas = new List<long>();
 
     /// <summary>
     /// Initializes the <see cref="Engine"/> class.
@@ -132,6 +135,7 @@ namespace RobotControl.Fake.FakeRobot
         var timeDelta = currentMilis - lastSignalMilis.Value;
         currentSpeed = ONE_SECOND / (double)timeDelta;
         oneSignalMilis = timeDelta;
+        //deltas.Add(timeDelta);
       }
 
       lastSignalMilis = currentMilis;
@@ -143,8 +147,17 @@ namespace RobotControl.Fake.FakeRobot
     /// <param name="newSpeed">The new speed in encoder signals per second.</param>
     private void ChangeSpeed(int newSpeed)
     {
+      for (var i = 0; i <= 100; i++) 
+      {
+        var currentMilis = stopwatch.ElapsedMilliseconds;
+        Thread.Sleep(100);
+        var timeDelta = stopwatch.ElapsedMilliseconds - currentMilis;
+        deltas.Add(timeDelta);
+      }
+      
+      
       var period = newSpeed > 0 ? Convert.ToInt32(Math.Round(1000.0 / newSpeed)) : Timeout.Infinite;
-      timer.Change(0, period);
+      timer.Change(period, period);
     }
   }
 }
