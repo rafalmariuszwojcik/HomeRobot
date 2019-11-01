@@ -34,16 +34,20 @@ namespace RobotControl.Fake.FakeRobot
     private long? oneSignalMilis;
     private double currentSpeed;
 
+    /// <summary>
+    /// Initializes the <see cref="Engine"/> class.
+    /// </summary>
+    /// <remarks>Start static timer for all <c>Engine</c> instances.</remarks>
     static Engine() 
     {
       stopwatch.Start();
-    }    
-    
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Engine"/> class.
+    /// </summary>
     public Engine()
     {
-      //stopwatch.Start();
-      //work = new Thread(new ParameterizedThreadStart(DoWork));
-      //work.Start(cts.Token);
       timer = new Timer(TimerProc);
       signalEvent = new AutoResetEvent(true);
     }
@@ -75,46 +79,18 @@ namespace RobotControl.Fake.FakeRobot
       }
     }
 
+    /// <summary>
+    /// Releases unmanaged and - optionally - managed resources.
+    /// </summary>
+    /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
     protected override void Dispose(bool disposing)
     {
       if (disposing)
       {
         timer?.Dispose();
-        //Stop();
-        /*
-        if (cts != null)
-        {
-          cts.Dispose();
-          cts = null;
-        }
-        */
+        signalEvent?.Dispose();
       }
     }
-
-    private void DoWork(object obj)
-    {
-      CancellationToken ct = (CancellationToken)obj;
-      while (!ct.IsCancellationRequested)
-      {
-        //Thread.SpinWait(50000);
-        Thread.Sleep(10);
-      }
-    }
-
-    private void Stop()
-    {
-      /*
-      stopwatch.Stop();
-      if (cts != null && work != null)
-      {
-        cts.Cancel();
-        work.Join();
-      }
-      */
-    }
-
-
-
 
     /// <summary>
     /// Timer procedure.
