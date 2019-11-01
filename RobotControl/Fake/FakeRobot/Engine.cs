@@ -5,6 +5,13 @@ using System.Threading;
 
 namespace RobotControl.Fake.FakeRobot
 {
+  /// <summary>
+  /// Fake engine current information.
+  /// </summary>
+  public struct EngineInfo 
+  { 
+  }
+  
   /// <summary>Fake engine class.</summary>
   /// <remarks>Used to simulate robot's engine.</remarks>
   /// <seealso cref="RobotControl.Core.DisposableBase" />
@@ -18,6 +25,11 @@ namespace RobotControl.Fake.FakeRobot
 
     /// <summary>The internal time counter.</summary>
     private static readonly Stopwatch stopwatch = new Stopwatch();
+
+    /// <summary>
+    /// Synchronization object.
+    /// </summary>
+    private readonly object lockData = new object();
 
     /// <summary>The timer.</summary>
     /// <remarks>Generates fake engine's encoder signals.</remarks>
@@ -49,7 +61,7 @@ namespace RobotControl.Fake.FakeRobot
     public Engine()
     {
       timer = new Timer(TimerProc);
-      signalEvent = new AutoResetEvent(true);
+      signalEvent = new AutoResetEvent(false);
     }
 
     /// <summary>
@@ -79,6 +91,11 @@ namespace RobotControl.Fake.FakeRobot
       }
     }
 
+    public double CurrentSpeed 
+    {
+      get { return currentSpeed; }
+    }
+
     /// <summary>
     /// Releases unmanaged and - optionally - managed resources.
     /// </summary>
@@ -87,8 +104,11 @@ namespace RobotControl.Fake.FakeRobot
     {
       if (disposing)
       {
-        timer?.Dispose();
-        signalEvent?.Dispose();
+        lock (lockData) 
+        {
+          timer?.Dispose();
+          signalEvent?.Dispose();
+        }
       }
     }
 
