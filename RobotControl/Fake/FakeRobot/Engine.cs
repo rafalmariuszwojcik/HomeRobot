@@ -42,7 +42,7 @@ namespace RobotControl.Fake.FakeRobot
     private readonly AutoResetEvent signalEvent;
 
     private int speed;
-    private int distance;
+    //private int distance;
     private long? lastSignalMilis;
     private long? oneSignalMilis;
     private double currentSpeed;
@@ -89,9 +89,23 @@ namespace RobotControl.Fake.FakeRobot
           value = value <= MAX_SPEED ? value : MAX_SPEED;
           value = value >= -MAX_SPEED ? value : -MAX_SPEED;
           speed = value;
-          ChangeSpeed(Math.Abs(speed));
+          //ChangeSpeed(Math.Abs(speed));
         }
       }
+    }
+
+    public double GetDistance() 
+    {
+      var distance = 0.0;
+      var currentMilis = stopwatch.ElapsedMilliseconds;
+      if (lastSignalMilis.HasValue) 
+      {
+        var timeDelta = (double)(currentMilis - lastSignalMilis.Value) / ONE_SECOND;
+        distance = speed * timeDelta;
+      }
+
+      lastSignalMilis = currentMilis;
+      return distance;
     }
 
     public double CurrentSpeed 
@@ -123,7 +137,7 @@ namespace RobotControl.Fake.FakeRobot
     /// </param>
     private void TimerProc(object state)
     {
-      Signal();
+      //Signal();
     }
 
     /// <summary>Calculate engine current speed.</summary>
