@@ -54,7 +54,8 @@ namespace RobotControl.Fake.FakeRobot
     /// <param name="token">The cancelation token.</param>
     private void Loop(CancellationToken token)
     {
-      var waitHandles = new[] { leftEngine.SignalEvent, rightEngine.SignalEvent };
+    /*  
+    var waitHandles = new[] { leftEngine.SignalEvent, rightEngine.SignalEvent };
       while (true) 
       {
         var index = WaitHandle.WaitAny(waitHandles, 100);
@@ -74,7 +75,7 @@ namespace RobotControl.Fake.FakeRobot
         {
           return;
         }
-      }
+      }*/
     }
   }
 }

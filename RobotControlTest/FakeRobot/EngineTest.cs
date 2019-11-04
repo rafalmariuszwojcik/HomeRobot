@@ -28,8 +28,9 @@ namespace RobotControlTest.FakeRobot
     public void StartEngine() 
     {
       const int SPEED = 10;
-      using (var engine = new Engine()) 
-      {
+      var engine = new Engine();
+      //using (var engine = new Engine()) 
+      //{
         engine.Speed = SPEED;
         
         var d = engine.GetDistance();
@@ -46,7 +47,7 @@ namespace RobotControlTest.FakeRobot
         //Assert.IsTrue(Math.Abs(engine.CurrentSpeed - SPEED) <= (SPEED * 0.2));
         //}
         //}
-      }
+      //}
     }
   }
 }
