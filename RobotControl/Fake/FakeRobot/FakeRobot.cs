@@ -9,31 +9,41 @@ namespace RobotControl.Fake.FakeRobot
   {
     private readonly Engine leftEngine = new Engine();
     private readonly Engine rightEngine = new Engine();
-    private readonly Task task;
-    private readonly ConcurrentQueue<int> inputQueue = new ConcurrentQueue<int>();
-    private readonly ConcurrentQueue<int> outputQueue = new ConcurrentQueue<int>();
+    private readonly Thread worker;
+    //private readonly Task task;
+    //private readonly ConcurrentQueue<int> inputQueue = new ConcurrentQueue<int>();
+    //private readonly ConcurrentQueue<int> outputQueue = new ConcurrentQueue<int>();
     private CancellationTokenSource cts = new CancellationTokenSource();
 
     public FakeRobot()
     {
-      task = new Task(() => Loop(cts.Token));
+      worker = new Thread(new ParameterizedThreadStart(myMethod));
+      //worker.Start()
+      //task = new Task(() => Loop(cts.Token));
       leftEngine.Speed = 10;
       //rightEngine.Speed = 9;
 
     }
 
+    private void myMethod(object sync) 
+    {
+      Thread.Sleep(100);
+    }
+    
     public void Start()
     {
-      task.Start();
+      //task.Start();
     }
 
     public void Stop()
     {
-      if (cts != null)
+      worker.Join();
+    /*  
+    if (cts != null)
       {
         cts.Cancel();
         task.Wait();
-      }
+      }*/
     }
 
     protected override void Dispose(bool disposing)
