@@ -40,16 +40,24 @@ namespace RobotControl.Fake.FakeRobot
       Start();
     }
 
-    private void myMethod(object sync) 
+    /// <summary>
+    /// Releases unmanaged and - optionally - managed resources.
+    /// </summary>
+    /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+    protected override void Dispose(bool disposing)
     {
-      Thread.Sleep(100);
+      if (disposing)
+      {
+        Stop();
+        DisposeHelper.Dispose(signal);
+      }
     }
 
     /// <summary>
     /// Starts fake robot instance.
     /// </summary>
     /// <remarks>Start executing simulated behaviours.</remarks>
-    public void Start()
+    private void Start()
     {
       if (!worker.IsAlive) 
       {
@@ -60,26 +68,25 @@ namespace RobotControl.Fake.FakeRobot
     public void Stop()
     {
       worker.Join();
-    /*  
-    if (cts != null)
-      {
-        cts.Cancel();
-        task.Wait();
-      }*/
+      /*  
+      if (cts != null)
+        {
+          cts.Cancel();
+          task.Wait();
+        }*/
     }
 
-    /// <summary>
-    /// Releases unmanaged and - optionally - managed resources.
-    /// </summary>
-    /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-    protected override void Dispose(bool disposing)
+    private void myMethod(object sync)
     {
-      if (disposing)
+      while (true) 
       {
-        Stop();
-        DisposeHelper.Dispose(signal); 
+        if (signal.WaitOne(100)) 
+        {
+          break;
+        }
       }
     }
+
 
     /// <summary>
     /// Fake robot main thread loop.
