@@ -1,4 +1,6 @@
 ﻿using RobotControl.Core;
+using RobotControl.Messages;
+using System;
 using System.Threading;
 
 namespace RobotControl.Fake.FakeRobot
@@ -9,6 +11,11 @@ namespace RobotControl.Fake.FakeRobot
   /// <remarks>Double wheel robot simulation.</remarks>
   public class FakeRobot : DisposableBase
   {
+    /// <summary>
+    /// The simulation timeout.
+    /// </summary>
+    private const int SIMULATION_TIMEOUT = 25;
+    
     /// <summary>
     /// The left engine.
     /// </summary>
@@ -36,7 +43,7 @@ namespace RobotControl.Fake.FakeRobot
     /// </summary>
     public FakeRobot()
     {
-      worker = new Thread(new ParameterizedThreadStart(myMethod));
+      worker = new Thread(Simulation);
       Start();
     }
 
@@ -61,61 +68,44 @@ namespace RobotControl.Fake.FakeRobot
     {
       if (!worker.IsAlive) 
       {
-        worker.Start(null);
+        worker.Start();
       } 
     }
 
-    public void Stop()
+    /// <summary>
+    /// Stops fake robot instance.
+    /// </summary>
+    /// <remarks>Stops simulation.</remarks>
+    private void Stop()
     {
-      worker.Join();
-      /*  
-      if (cts != null)
-        {
-          cts.Cancel();
-          task.Wait();
-        }*/
-    }
-
-    private void myMethod(object sync)
-    {
-      while (true) 
+      if (worker.IsAlive) 
       {
-        if (signal.WaitOne(100)) 
-        {
-          break;
-        }
+        signal.Set();
+        worker.Join();
       }
     }
 
-
+    int i = 0;
+    
     /// <summary>
-    /// Fake robot main thread loop.
+    /// Simulation execution loop.
     /// </summary>
-    /// <param name="token">The cancelation token.</param>
-    private void Loop(CancellationToken token)
+    /// <param name="sync">The synchronize.</param>
+    private void Simulation()
     {
-    /*  
-    var waitHandles = new[] { leftEngine.SignalEvent, rightEngine.SignalEvent };
       while (true) 
       {
-        var index = WaitHandle.WaitAny(waitHandles, 100);
-        if (index != WaitHandle.WaitTimeout) 
+        if (signal.WaitOne(SIMULATION_TIMEOUT)) 
         {
-          switch (index) 
-          {
-            case 0:
-              break;
-
-            case 1:
-              break;
-          }
+          break;
         }
 
-        if (token.IsCancellationRequested)
-        {
-          return;
-        }
-      }*/
+        var leftDistance = leftEngine.GetDistance();
+        var rightDistance = rightEngine.GetDistance();
+
+        MessageManager.Instance.DataReceived(this, new[] { $"ENC,1,{i},{0},2;{Environment.NewLine}" });
+        i++;
+      }
     }
   }
 }

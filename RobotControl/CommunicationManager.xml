@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CommunicationManagerConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Configurations>
+    <ConfigurationBase xsi:type="SerialConfiguration">
+      <BaudRate>115200</BaudRate>
+    </ConfigurationBase>
+    <ConfigurationBase xsi:type="SerialConfiguration">
+      <BaudRate>115200</BaudRate>
+    </ConfigurationBase>
+    <ConfigurationBase xsi:type="SerialConfiguration">
+      <BaudRate>115200</BaudRate>
+    </ConfigurationBase>
+    <ConfigurationBase xsi:type="SerialConfiguration">
+      <BaudRate>115200</BaudRate>
+    </ConfigurationBase>
+    <ConfigurationBase xsi:type="FakeConfiguration">
+    </ConfigurationBase>
+  </Configurations>
+</CommunicationManagerConfiguration>
