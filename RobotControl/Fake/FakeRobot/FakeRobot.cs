@@ -1,38 +1,60 @@
 ﻿using RobotControl.Core;
-using System.Collections.Concurrent;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace RobotControl.Fake.FakeRobot
 {
+  /// <summary>
+  /// The fake robot object to simulate behaviours.
+  /// </summary>
+  /// <remarks>Double wheel robot simulation.</remarks>
   public class FakeRobot : DisposableBase
   {
+    /// <summary>
+    /// The left engine.
+    /// </summary>
     private readonly Engine leftEngine = new Engine();
-    private readonly Engine rightEngine = new Engine();
-    private readonly Thread worker;
-    //private readonly Task task;
-    //private readonly ConcurrentQueue<int> inputQueue = new ConcurrentQueue<int>();
-    //private readonly ConcurrentQueue<int> outputQueue = new ConcurrentQueue<int>();
-    private CancellationTokenSource cts = new CancellationTokenSource();
 
+    /// <summary>
+    /// The right engine.
+    /// </summary>
+    private readonly Engine rightEngine = new Engine();
+
+    /// <summary>
+    /// The signal event.
+    /// </summary>
+    /// <remarks>Used to control (terminate) worker thread.</remarks>
+    private readonly AutoResetEvent signal = new AutoResetEvent(false);
+
+    /// <summary>
+    /// The worker thread.
+    /// </summary>
+    /// <remarks>Executes robot's behaviours.</remarks>
+    private readonly Thread worker;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FakeRobot"/> class.
+    /// </summary>
     public FakeRobot()
     {
       worker = new Thread(new ParameterizedThreadStart(myMethod));
-      //worker.Start()
-      //task = new Task(() => Loop(cts.Token));
-      leftEngine.Speed = 10;
-      //rightEngine.Speed = 9;
-
+      Start();
     }
 
     private void myMethod(object sync) 
     {
       Thread.Sleep(100);
     }
-    
+
+    /// <summary>
+    /// Starts fake robot instance.
+    /// </summary>
+    /// <remarks>Start executing simulated behaviours.</remarks>
     public void Start()
     {
-      //task.Start();
+      if (!worker.IsAlive) 
+      {
+        worker.Start(null);
+      } 
     }
 
     public void Stop()
@@ -46,15 +68,16 @@ namespace RobotControl.Fake.FakeRobot
       }*/
     }
 
+    /// <summary>
+    /// Releases unmanaged and - optionally - managed resources.
+    /// </summary>
+    /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
     protected override void Dispose(bool disposing)
     {
       if (disposing)
       {
-        if (cts != null)
-        {
-          cts.Dispose();
-          cts = null;
-        }
+        Stop();
+        DisposeHelper.Dispose(signal); 
       }
     }
 
