@@ -1,17 +1,21 @@
 ﻿namespace RobotControl.Command
 {
+  /// <summary>
+  /// Double wheel differential Robot move command.
+  /// </summary>
+  /// <seealso cref="RobotControl.Command.ICommand" />
   public struct RobotMoveCommand : ICommand
   {
+    /// <summary>
+    /// Gets or sets the left wheel distance.
+    /// </summary>
     [CommandParameter(0)]
-    public int LeftDirection { get; set; }
-
-    [CommandParameter(1)]
     public double LeftDistance { get; set; }
 
-    [CommandParameter(2)]
-    public int RightDirection { get; set; }
-
-    [CommandParameter(3)]
+    /// <summary>
+    /// Gets or sets the right wheel distance.
+    /// </summary>
+    [CommandParameter(1)]
     public double RightDistance { get; set; }
   }
 }

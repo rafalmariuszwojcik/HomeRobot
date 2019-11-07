@@ -84,7 +84,13 @@ namespace RobotControl.Communication
       InternalSend(channel, data);
     }
 
+    /// <summary>
+    /// Internal open communication chanel method.
+    /// </summary>
+    /// <param name="configuration">The configuration.</param>
+    /// <returns>Reference to communication object.</returns>
     protected abstract T InternalOpen(U configuration);
+
     protected abstract void InternalClose(T channel);
     public abstract void InternalSend(T channel, ICommand[] commands);
     public abstract void InternalSend(T channel, string data);

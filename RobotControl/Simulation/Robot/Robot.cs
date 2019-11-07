@@ -212,6 +212,11 @@ namespace RobotControl.Simulation.Robot
     {
       if (command is RobotMoveCommand cmd)
       {
+        var list = new List<IEncoderCommand>();
+        list.Add(new EncoderCommand { Index = 0, Distance = (int)cmd.LeftDistance });
+        list.Add(new EncoderCommand { Index = 1, Distance = (int)cmd.RightDistance });
+        odometry.Enqueue(list);
+        
         //MessageReceived(cmd.LeftDirection, (int)cmd.LeftDistance, cmd.RightDirection, (int)cmd.RightDistance);
       }
       else if (command is IEncoderCommand encoderCommand)

@@ -6,6 +6,33 @@ using System.Threading;
 namespace RobotControl.Fake.FakeRobot
 {
   /// <summary>
+  /// Fake robot state structure.
+  /// </summary>
+  public struct FakeRobotState 
+  {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FakeRobotState"/> struct.
+    /// </summary>
+    /// <param name="leftEngineState">State of the left engine.</param>
+    /// <param name="rightEngineState">State of the right engine.</param>
+    public FakeRobotState(EngineState leftEngineState, EngineState rightEngineState) 
+    {
+      LeftEngineState = leftEngineState;
+      RightEngineState = rightEngineState;
+    }
+
+    /// <summary>
+    /// Gets the state of the left engine.
+    /// </summary>
+    public EngineState LeftEngineState { get; private set; }
+
+    /// <summary>
+    /// Gets the state of the right engine.
+    /// </summary>
+    public EngineState RightEngineState { get; private set; }
+  }
+
+  /// <summary>
   /// The fake robot object to simulate behaviours.
   /// </summary>
   /// <remarks>Double wheel robot simulation.</remarks>
@@ -44,8 +71,14 @@ namespace RobotControl.Fake.FakeRobot
     public FakeRobot()
     {
       worker = new Thread(Simulation);
+      leftEngine.Speed = 12;
       Start();
     }
+
+    /// <summary>
+    /// Occurs when robot state changed.
+    /// </summary>
+    public event EventHandler<FakeRobotState> OnRobotState;
 
     /// <summary>
     /// Releases unmanaged and - optionally - managed resources.
@@ -85,8 +118,6 @@ namespace RobotControl.Fake.FakeRobot
       }
     }
 
-    int i = 0;
-    
     /// <summary>
     /// Simulation execution loop.
     /// </summary>
@@ -102,12 +133,12 @@ namespace RobotControl.Fake.FakeRobot
 
         try
         {
-          var leftEngineInfo = leftEngine.GetEngineState();
-          var rightEngineInfo = rightEngine.GetEngineState();
-
-          MessageManager.Instance.DataReceived(this, new[] { $"ENC,1,{i},{0},2;{Environment.NewLine}" });
-          i++;
-
+          var leftEngineState = leftEngine.GetEngineState();
+          var rightEngineState = rightEngine.GetEngineState();
+          if (leftEngineState.Signaled || rightEngineState.Signaled) 
+          {
+            OnRobotState?.Invoke(this, new FakeRobotState(leftEngineState, rightEngineState));
+          }
         }
         catch (Exception)
         {
