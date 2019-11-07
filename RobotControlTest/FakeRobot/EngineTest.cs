@@ -33,10 +33,10 @@ namespace RobotControlTest.FakeRobot
       //{
         engine.Speed = SPEED;
         
-        var d = engine.GetDistance();
-        var x = d;
-        Thread.Sleep(500);
-        var e = engine.GetDistance();
+        //var d = engine.GetDistance();
+        //var x = d;
+        //Thread.Sleep(500);
+        //var e = engine.GetDistance();
 
         //for (var i = 0; i < 100; i++) 
         //{

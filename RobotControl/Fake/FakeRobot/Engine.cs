@@ -2,6 +2,33 @@
 
 namespace RobotControl.Fake.FakeRobot
 {
+  /// <summary>
+  /// Engine state structure.
+  /// </summary>
+  public struct EngineState 
+  {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="EngineState"/> struct.
+    /// </summary>
+    /// <param name="distance">The distance.</param>
+    /// <param name="signaled">if set to <c>true</c> state of the engine has been changed.</param>
+    public EngineState(double distance, bool signaled) 
+    {
+      Distance = distance;
+      Signaled = signaled;
+    }
+
+    /// <summary>
+    /// Gets the distance.
+    /// </summary>
+    public double Distance { get; private set; }
+
+    /// <summary>
+    /// Gets a value indicating whether this <see cref="EngineState"/> is signaled (state of the engine has been changed).
+    /// </summary>
+    public bool Signaled { get; private set; }
+  }
+
   /// <summary>Fake engine class.</summary>
   /// <remarks>Used to simulate robot's engine.</remarks>
   public class Engine
@@ -14,6 +41,11 @@ namespace RobotControl.Fake.FakeRobot
 
     /// <summary>The internal time counter.</summary>
     private static readonly Stopwatch stopwatch = new Stopwatch();
+
+    /// <summary>
+    /// The synchronization object.
+    /// </summary>
+    private readonly object lockData = new object();
 
     /// <summary>
     /// The current speed in encoder signals per second.
@@ -51,45 +83,57 @@ namespace RobotControl.Fake.FakeRobot
     /// <value>The speed.</value>
     public int Speed
     {
-      get => speed;
+      get
+      {
+        lock (lockData) 
+        {
+          return speed;
+        }
+      }
 
       set
       {
-        if (speed != value)
+        lock (lockData) 
         {
-          value = value <= MAX_SPEED ? value : MAX_SPEED;
-          value = value >= -MAX_SPEED ? value : -MAX_SPEED;
-          speed = value;
-          CalculateDistance();
+          if (speed != value)
+          {
+            value = value <= MAX_SPEED ? value : MAX_SPEED;
+            value = value >= -MAX_SPEED ? value : -MAX_SPEED;
+            speed = value;
+            CalculateDistance();
+          }
         }
       }
     }
 
     /// <summary>
-    /// Gets the current distance of engine.
+    /// Gets the current state of engine.
     /// </summary>
     /// <returns></returns>
-    public double GetDistance() 
+    public EngineState GetEngineState() 
     {
-      CalculateDistance();
-      return distance;
+      return CalculateDistance();
     }
     
     /// <summary>
     /// Calculates the current full distance of the engine.
     /// </summary>
-    private void CalculateDistance()
+    private EngineState CalculateDistance()
     {
-      var leg = 0.0;
-      var currentMilis = stopwatch.ElapsedMilliseconds;
-      if (lastSignalMilis.HasValue)
+      lock (lockData) 
       {
-        var timeDelta = (double)(currentMilis - lastSignalMilis.Value) / ONE_SECOND;
-        leg = speed * timeDelta;
-      }
+        var leg = 0.0;
+        var currentMilis = stopwatch.ElapsedMilliseconds;
+        if (lastSignalMilis.HasValue)
+        {
+          var timeDelta = (double)(currentMilis - lastSignalMilis.Value) / ONE_SECOND;
+          leg = speed * timeDelta;
+        }
 
-      lastSignalMilis = currentMilis;
-      distance += leg;
+        lastSignalMilis = currentMilis;
+        distance += leg;
+        return new EngineState(distance, leg > 0.0 || leg < 0.0);
+      }
     }
   }
 }

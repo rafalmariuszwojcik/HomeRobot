@@ -100,11 +100,19 @@ namespace RobotControl.Fake.FakeRobot
           break;
         }
 
-        var leftDistance = leftEngine.GetDistance();
-        var rightDistance = rightEngine.GetDistance();
+        try
+        {
+          var leftEngineInfo = leftEngine.GetEngineState();
+          var rightEngineInfo = rightEngine.GetEngineState();
 
-        MessageManager.Instance.DataReceived(this, new[] { $"ENC,1,{i},{0},2;{Environment.NewLine}" });
-        i++;
+          MessageManager.Instance.DataReceived(this, new[] { $"ENC,1,{i},{0},2;{Environment.NewLine}" });
+          i++;
+
+        }
+        catch (Exception)
+        {
+          ;
+        }
       }
     }
   }
