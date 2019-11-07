@@ -97,7 +97,7 @@ namespace RobotControl.Windows.Controls
       {
         e.Graphics.PageUnit = GraphicsUnit.Millimeter;
         e.Graphics.ScaleTransform(DrawScale, DrawScale);
-        e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;// .HighQuality;
+        e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
         e.Graphics.TranslateTransform((float)Origin.X, (float)Origin.Y);
         DrawGrid(e.Graphics);
         DrawOrigin(e.Graphics);

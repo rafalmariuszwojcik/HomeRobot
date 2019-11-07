@@ -6,7 +6,7 @@
     public int Index { get; set; }
 
     [CommandParameter(1)]
-    public int Distance { get; set; }
+    public double Distance { get; set; }
 
     [CommandParameter(2)]
     public long Milis { get; set; }

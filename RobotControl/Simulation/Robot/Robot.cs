@@ -61,7 +61,8 @@ namespace RobotControl.Simulation.Robot
     {
       if (startPoint == null)
       {
-        startPoint = new MovementStartPoint(position.X, position.Y, position.Angle, leftDistance, rightDistance);
+        startPoint = new MovementStartPoint(position.X, position.Y, position.Angle, 0.0, 0.0);
+        //startPoint = new MovementStartPoint(position.X, position.Y, position.Angle, leftDistance, rightDistance);
       }
 
       double oneHoleDistance = (RobotCalculator.WheelRadius * 2.0 * Math.PI) / (double)RobotCalculator.EncoderHoles;
@@ -213,8 +214,8 @@ namespace RobotControl.Simulation.Robot
       if (command is RobotMoveCommand cmd)
       {
         var list = new List<IEncoderCommand>();
-        list.Add(new EncoderCommand { Index = 0, Distance = (int)cmd.LeftDistance });
-        list.Add(new EncoderCommand { Index = 1, Distance = (int)cmd.RightDistance });
+        list.Add(new EncoderCommand { Index = 0, Distance = cmd.LeftDistance });
+        list.Add(new EncoderCommand { Index = 1, Distance = cmd.RightDistance });
         odometry.Enqueue(list);
         
         //MessageReceived(cmd.LeftDirection, (int)cmd.LeftDistance, cmd.RightDirection, (int)cmd.RightDistance);

@@ -23,9 +23,10 @@ namespace RobotControl.Simulation.Robot
       var leftSignals = data.Where(x => x.Index == 0).OrderByDescending(x => x.Distance).ToList();
       var rightSignals = data.Where(x => x.Index == 1).OrderByDescending(x => x.Distance).ToList();
 
-      var leftDistance = leftSignals.Any() ? leftSignals.First().Distance : 0;
-      var rightDistance = rightSignals.Any() ? rightSignals.First().Distance : 0;
+      var leftDistance = leftSignals.Any() ? leftSignals.First().Distance : 0.0;
+      var rightDistance = rightSignals.Any() ? rightSignals.First().Distance : 0.0;
 
+      /*
       var dl = 0;
       var timeL = 0L;
       var speedL = 0.0;
@@ -59,10 +60,11 @@ namespace RobotControl.Simulation.Robot
       if (double.IsInfinity(deltaR))
       {
         var a1 = 1;
-      }
+      }*/
 
 
-      return new OdometryResult(deltaL, deltaR);
+      //return new OdometryResult(deltaL, deltaR);
+      return new OdometryResult(leftDistance, rightDistance);
     }  
   }
 }

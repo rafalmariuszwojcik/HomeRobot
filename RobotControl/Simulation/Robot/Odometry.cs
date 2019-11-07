@@ -33,16 +33,17 @@ namespace RobotControl.Simulation.Robot
 
       var dlItems = data.Where(x => x.Index == 0);//.FirstOrDefault();//?.Max(x => x.Distance);
       var drItems = data.Where(x => x.Index == 1);//.FirstOrDefault();//?.Max(x => x.Distance);
-      var dl = dlItems.Any() ? dlItems.Max(x => x.Distance) : 0;
-      var dr = drItems.Any() ? drItems.Max(x => x.Distance) : 0;
+      var dl = dlItems.Any() ? dlItems.Max(x => x.Distance) : 0.0;
+      var dr = drItems.Any() ? drItems.Max(x => x.Distance) : 0.0;
 
-      var totalMilliseconds = (long)new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
-      var result = OdometryHelper.Calculate(totalMilliseconds, data);
+      //var totalMilliseconds = (long)new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
+      //var result = OdometryHelper.Calculate(totalMilliseconds, data);
 
-      if (result.Dl > 0.1 || result.Dr > 0.1)
-      {
-        action?.Invoke(result.Dl, result.Dr);
-      }
+      //if (result.Dl > 0.1 || result.Dr > 0.1)
+      //{
+      //  action?.Invoke(result.Dl, result.Dr);
+      //}
+      action?.Invoke(dl, dr);
     }
   }
 }

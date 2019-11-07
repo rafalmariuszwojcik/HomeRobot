@@ -3,7 +3,7 @@
   public interface IEncoderCommand : ICommand
   {
     int Index { get; set; }
-    int Distance { get; set; }
+    double Distance { get; set; }
     long Milis { get; set; }
     int EngineState { get; set; }
   }
