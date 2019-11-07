@@ -71,7 +71,7 @@ namespace RobotControl.Fake.FakeRobot
     public FakeRobot()
     {
       worker = new Thread(Simulation);
-      leftEngine.Speed = 30;
+      leftEngine.Speed = 50;
       //rightEngine.Speed = 5;
       Start();
     }
