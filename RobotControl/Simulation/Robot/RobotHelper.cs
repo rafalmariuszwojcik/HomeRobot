@@ -4,6 +4,16 @@ namespace RobotControl.Simulation.Robot
 {
   public static class RobotHelper
   {
+    /// <summary>
+    /// Calculates the movement.
+    /// </summary>
+    /// <remarks>Low precision method, can be used only if wheel movements are wery small (close to zero).</remarks>
+    /// <remarks>In this case <see cref="s"/> variable can be considered as straight line in calculation triangle (sin, cos).</remarks>
+    /// <param name="startPoint">The start point.</param>
+    /// <param name="leftEncoder">The left encoder.</param>
+    /// <param name="rightEncoder">The right encoder.</param>
+    /// <param name="geometry">The geometry.</param>
+    /// <returns></returns>
     public static SimulationPoint CalculateMovement(SimulationPoint startPoint, double leftEncoder, double rightEncoder, IRobotGeometry geometry)
     {
       var teta0 = SimulationHelper.DegreesToRadians(startPoint.Angle - 90.0);
