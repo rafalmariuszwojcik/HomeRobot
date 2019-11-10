@@ -291,7 +291,7 @@ namespace RobotControl
       controller.Update();
       //this.Text = controller.leftThumb.X.ToString();
       var cmd = new List<ICommand>();
-      cmd.Add(new ThumbCommand { X = controller.leftThumb.X , Y = controller.leftThumb.Y });
+      cmd.Add(new ThumbCommand { X = controller.leftThumb.X , Y = controller.leftThumb.Y, RX = controller.rightThumb.X });
       CommandManager.Instance.DataReceived(this, cmd);
     }
   }

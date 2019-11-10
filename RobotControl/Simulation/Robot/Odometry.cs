@@ -12,7 +12,7 @@ namespace RobotControl.Simulation.Robot
     private IList<Tuple<int, IList<long>>> list = new List<Tuple<int, IList<long>>>();
 
     public Odometry(Action<double, double> action)
-      : base((s, d) => ((Odometry)s).PostData(d), 200)
+      : base((s, d) => ((Odometry)s).PostData(d), 100)
     {
       this.action = action;
     }

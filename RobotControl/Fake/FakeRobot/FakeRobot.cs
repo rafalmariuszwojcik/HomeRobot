@@ -166,10 +166,9 @@ namespace RobotControl.Fake.FakeRobot
       { 
         if (cmd is ThumbCommand thumbCommand)
         {
-
-
+          
           leftEngine.Speed = (int)(thumbCommand.Y / 10);
-          rightEngine.Speed = (int)(thumbCommand.Y / 10);
+          rightEngine.Speed = (int)((thumbCommand.Y / 10) - (thumbCommand.RX / 10));
 
         }
       }

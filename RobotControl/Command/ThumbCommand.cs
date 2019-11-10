@@ -10,5 +10,9 @@ namespace RobotControl.Command
   {
     public float X { get; set; }
     public float Y { get; set; }
+
+    public float RX { get; set; }
+    public float RY { get; set; }
+
   }
 }
