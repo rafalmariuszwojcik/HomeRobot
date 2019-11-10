@@ -149,3 +149,8 @@ RobotControl/.vs/RobotControl/DesignTimeBuild/.dtbcache
 RobotControl/.vs/RobotControl/v16/TestStore/1/000-0000.testlog
 RobotControl/.vs/RobotControl/v16/TestStore/1/testlog.manifest
 RobotControl/.vs/RobotControl/DesignTimeBuild/.dtbcache
+RobotControlTest/bin/Debug/netcoreapp2.1/SharpDX.dll
+RobotControlTest/bin/Debug/netcoreapp2.1/SharpDX.pdb
+RobotControlTest/bin/Debug/netcoreapp2.1/SharpDX.XInput.dll
+RobotControlTest/bin/Debug/netcoreapp2.1/SharpDX.XInput.pdb
+RobotControlTest/bin/Debug/netcoreapp2.1/SharpDX.XInput.xml

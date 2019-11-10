@@ -1,6 +1,8 @@
-﻿using RobotControl.Core;
+﻿using RobotControl.Command;
+using RobotControl.Core;
 using RobotControl.Messages;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace RobotControl.Fake.FakeRobot
@@ -36,7 +38,7 @@ namespace RobotControl.Fake.FakeRobot
   /// The fake robot object to simulate behaviours.
   /// </summary>
   /// <remarks>Double wheel robot simulation.</remarks>
-  public class FakeRobot : DisposableBase
+  public class FakeRobot : CommandListener
   {
     /// <summary>
     /// The simulation timeout.
@@ -46,12 +48,12 @@ namespace RobotControl.Fake.FakeRobot
     /// <summary>
     /// The left engine.
     /// </summary>
-    private readonly Engine leftEngine = new Engine();
+    private static readonly Engine leftEngine = new Engine();
 
     /// <summary>
     /// The right engine.
     /// </summary>
-    private readonly Engine rightEngine = new Engine();
+    private static readonly Engine rightEngine = new Engine();
 
     /// <summary>
     /// The signal event.
@@ -68,11 +70,9 @@ namespace RobotControl.Fake.FakeRobot
     /// <summary>
     /// Initializes a new instance of the <see cref="FakeRobot"/> class.
     /// </summary>
-    public FakeRobot()
+    public FakeRobot() : base(Act)
     {
       worker = new Thread(Simulation);
-      leftEngine.Speed = -20;
-      //rightEngine.Speed = 5;
       Start();
     }
 
@@ -144,6 +144,21 @@ namespace RobotControl.Fake.FakeRobot
         catch (Exception)
         {
           ;
+        }
+      }
+    }
+
+    private static void Act(IEnumerable<ICommand> commands) 
+    {
+      foreach (var cmd in commands) 
+      { 
+        if (cmd is ThumbCommand thumbCommand)
+        {
+
+
+          FakeRobot.leftEngine.Speed = (int)(thumbCommand.Y / 10);
+          FakeRobot.rightEngine.Speed = (int)(thumbCommand.Y / 10);
+
         }
       }
     }

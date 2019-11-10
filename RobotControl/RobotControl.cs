@@ -11,6 +11,7 @@ using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
+using RobotControl.Command;
 
 namespace RobotControl
 {
@@ -19,11 +20,20 @@ namespace RobotControl
     private PropertyGrid OptionsPropertyGrid;
    // private DockPanel s;
 
+      private XInputController controller = new XInputController();
+
 
 
     public formRobotControl()
     {
       InitializeComponent();
+
+      
+      
+
+      
+
+
       OptionsPropertyGrid = new PropertyGrid();
       OptionsPropertyGrid.Size = new Size(175, 250);
 
@@ -274,6 +284,15 @@ namespace RobotControl
     {
       var dockOutput = new EngineChartView();
       dockOutput.Show(this.dockPanel1, DockState.Document);
+    }
+
+    private void timer1_Tick(object sender, EventArgs e)
+    {
+      controller.Update();
+      //this.Text = controller.leftThumb.X.ToString();
+      var cmd = new List<ICommand>();
+      cmd.Add(new ThumbCommand { X = controller.leftThumb.X , Y = controller.leftThumb.Y });
+      CommandManager.Instance.DataReceived(this, cmd);
     }
   }
 }

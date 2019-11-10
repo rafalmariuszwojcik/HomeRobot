@@ -47,6 +47,7 @@
       this.dockPanel1 = new WeifenLuo.WinFormsUI.Docking.DockPanel();
       this.vS2005Theme1 = new WeifenLuo.WinFormsUI.Docking.VS2005Theme();
       this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+      this.timer1 = new System.Windows.Forms.Timer(this.components);
       this.toolStrip1.SuspendLayout();
       this.menuStrip1.SuspendLayout();
       this.SuspendLayout();
@@ -150,6 +151,12 @@
       // 
       this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
       // 
+      // timer1
+      // 
+      this.timer1.Enabled = true;
+      this.timer1.Interval = 10;
+      this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+      // 
       // formRobotControl
       // 
       resources.ApplyResources(this, "$this");
@@ -188,6 +195,7 @@
     private System.Windows.Forms.ToolStripButton toolStripButton6;
     private System.ComponentModel.BackgroundWorker backgroundWorker1;
     private System.Windows.Forms.ToolStripButton toolStripButton7;
+    private System.Windows.Forms.Timer timer1;
   }
 }
 

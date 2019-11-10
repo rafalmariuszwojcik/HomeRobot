@@ -73,6 +73,7 @@
     <Compile Include="Command\IEncoderCommand.cs" />
     <Compile Include="Command\IEngineCommand.cs" />
     <Compile Include="Command\RobotMoveCommand.cs" />
+    <Compile Include="Command\ThumbCommand.cs" />
     <Compile Include="Communication\ChannelBase.cs" />
     <Compile Include="Communication\CommunicationManager.cs" />
     <Compile Include="Communication\ConfigurationBase.cs" />
@@ -218,6 +219,7 @@
     <Compile Include="Windows\Views\OutputView.Designer.cs">
       <DependentUpon>OutputView.cs</DependentUpon>
     </Compile>
+    <Compile Include="XInputController.cs" />
     <EmbeddedResource Include="Windows\Controls\AreaViewControl.resx">
       <DependentUpon>AreaViewControl.cs</DependentUpon>
     </EmbeddedResource>
