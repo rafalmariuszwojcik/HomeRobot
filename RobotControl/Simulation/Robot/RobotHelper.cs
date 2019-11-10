@@ -16,16 +16,17 @@ namespace RobotControl.Simulation.Robot
     /// <returns></returns>
     public static SimulationPoint CalculateMovement(SimulationPoint startPoint, double leftEncoder, double rightEncoder, IRobotGeometry geometry)
     {
-      var teta0 = SimulationHelper.DegreesToRadians(startPoint.Angle - 90.0);
+      const double ZERO_ANGLE = 90.0;
+      var teta0 = SimulationHelper.DegreesToRadians(startPoint.Angle - ZERO_ANGLE);
       var leftDistance = leftEncoder * geometry.OnePointDistance;
       var rightDistance = rightEncoder * geometry.OnePointDistance;
                   
-      var s = (rightDistance + leftDistance) / 2.0;
-      var teta = ((rightDistance - leftDistance) / geometry.Width) + teta0;
+      var s = (leftDistance + rightDistance) / 2.0;
+      var teta = ((leftDistance - rightDistance) / geometry.Width) + teta0;
       var x = s * Math.Cos(teta) + startPoint.X;
       var y = s * Math.Sin(teta) + startPoint.Y;
 
-      return new SimulationPoint(x, y, SimulationHelper.RadiansToDegrees(teta) + 90.0);
+      return new SimulationPoint(x, y, SimulationHelper.RadiansToDegrees(teta) + ZERO_ANGLE);
     }
   }
 }

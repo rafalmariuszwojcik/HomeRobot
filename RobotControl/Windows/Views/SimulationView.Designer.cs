@@ -40,7 +40,7 @@
       this.areaViewControl1.Controls.Add(this.trackBar1);
       resources.ApplyResources(this.areaViewControl1, "areaViewControl1");
       this.areaViewControl1.Name = "areaViewControl1";
-      this.areaViewControl1.Zoom = 25;
+      this.areaViewControl1.Zoom = 50;
       // 
       // trackBar1
       // 

@@ -12,7 +12,7 @@ namespace RobotControl.Simulation.Robot
     private IList<Tuple<int, IList<long>>> list = new List<Tuple<int, IList<long>>>();
 
     public Odometry(Action<double, double> action)
-      : base((s, d) => ((Odometry)s).PostData(d), 100)
+      : base((s, d) => ((Odometry)s).PostData(d), 200)
     {
       this.action = action;
     }
@@ -33,8 +33,11 @@ namespace RobotControl.Simulation.Robot
 
       var dlItems = data.Where(x => x.Index == 0);//.FirstOrDefault();//?.Max(x => x.Distance);
       var drItems = data.Where(x => x.Index == 1);//.FirstOrDefault();//?.Max(x => x.Distance);
-      var dl = dlItems.Any() ? dlItems.Max(x => x.Distance) : 0.0;
-      var dr = drItems.Any() ? drItems.Max(x => x.Distance) : 0.0;
+      //var dl = dlItems.Any() ? dlItems.Max(x => Math.Abs(x.Distance)) : 0.0;
+      //var dr = drItems.Any() ? drItems.Max(x => Math.Abs(x.Distance)) : 0.0;
+
+      var dl = dlItems.Any() ? dlItems.Last().Distance : 0.0;
+      var dr = drItems.Any() ? drItems.Last().Distance : 0.0;
 
       //var totalMilliseconds = (long)new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
       //var result = OdometryHelper.Calculate(totalMilliseconds, data);
