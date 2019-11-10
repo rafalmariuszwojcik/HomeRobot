@@ -1,6 +1,5 @@
 ﻿using RobotControl.Command;
 using RobotControl.Core;
-using RobotControl.Messages;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -38,22 +37,22 @@ namespace RobotControl.Fake.FakeRobot
   /// The fake robot object to simulate behaviours.
   /// </summary>
   /// <remarks>Double wheel robot simulation.</remarks>
-  public class FakeRobot : CommandListener
+  public class FakeRobot : DisposableBase
   {
     /// <summary>
     /// The simulation timeout.
     /// </summary>
-    private const int SIMULATION_TIMEOUT = 25;
+    private const int SIMULATION_TIMEOUT = 10;
     
     /// <summary>
     /// The left engine.
     /// </summary>
-    private static readonly Engine leftEngine = new Engine();
+    private readonly Engine leftEngine = new Engine();
 
     /// <summary>
     /// The right engine.
     /// </summary>
-    private static readonly Engine rightEngine = new Engine();
+    private readonly Engine rightEngine = new Engine();
 
     /// <summary>
     /// The signal event.
@@ -61,6 +60,12 @@ namespace RobotControl.Fake.FakeRobot
     /// <remarks>Used to control (terminate) worker thread.</remarks>
     private readonly AutoResetEvent signal = new AutoResetEvent(false);
 
+    /// <summary>
+    /// The command listener.
+    /// </summary>
+    /// <remarks>Process incoming commands.</remarks>
+    private readonly CommandListener commandListener;
+    
     /// <summary>
     /// The worker thread.
     /// </summary>
@@ -70,8 +75,9 @@ namespace RobotControl.Fake.FakeRobot
     /// <summary>
     /// Initializes a new instance of the <see cref="FakeRobot"/> class.
     /// </summary>
-    public FakeRobot() : base(Act)
+    public FakeRobot()
     {
+      commandListener = new CommandListener(x => ProcessCommands(x));
       worker = new Thread(Simulation);
       Start();
     }
@@ -90,6 +96,7 @@ namespace RobotControl.Fake.FakeRobot
       if (disposing)
       {
         Stop();
+        DisposeHelper.Dispose(commandListener);
         DisposeHelper.Dispose(signal);
       }
     }
@@ -148,7 +155,12 @@ namespace RobotControl.Fake.FakeRobot
       }
     }
 
-    private static void Act(IEnumerable<ICommand> commands) 
+    /// <summary>
+    /// Processes the commands.
+    /// </summary>
+    /// <remarks>Execute incoming commands on <see cref=""/>FakeRobot</see> instance.</remarks>
+    /// <param name="commands">The commands.</param>
+    private void ProcessCommands(IEnumerable<ICommand> commands) 
     {
       foreach (var cmd in commands) 
       { 
@@ -156,8 +168,8 @@ namespace RobotControl.Fake.FakeRobot
         {
 
 
-          FakeRobot.leftEngine.Speed = (int)(thumbCommand.Y / 10);
-          FakeRobot.rightEngine.Speed = (int)(thumbCommand.Y / 10);
+          leftEngine.Speed = (int)(thumbCommand.Y / 10);
+          rightEngine.Speed = (int)(thumbCommand.Y / 10);
 
         }
       }

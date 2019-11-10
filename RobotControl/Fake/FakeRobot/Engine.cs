@@ -41,7 +41,7 @@ namespace RobotControl.Fake.FakeRobot
   public class Engine
   {
     /// <summary>The maximum speed in encoder signals per second.</summary>
-    private const int MAX_SPEED = 100;
+    private const int MAX_SPEED = 70;
 
     /// <summary>The one second. Indicates number of internal engine signals per one second.</summary>
     private const int ONE_SECOND = 1000;
