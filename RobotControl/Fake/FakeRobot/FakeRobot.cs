@@ -38,7 +38,7 @@ namespace RobotControl.Fake.FakeRobot
   /// The fake robot object to simulate behaviours.
   /// </summary>
   /// <remarks>Double wheel robot simulation.</remarks>
-  public class FakeRobot : DisposableBase
+  public class FakeRobot : WorkerBase
   {
     /// <summary>
     /// The simulation timeout.
@@ -56,31 +56,17 @@ namespace RobotControl.Fake.FakeRobot
     private readonly Engine rightEngine = new Engine();
 
     /// <summary>
-    /// The signal event.
-    /// </summary>
-    /// <remarks>Used to control (terminate) worker thread.</remarks>
-    private readonly AutoResetEvent signal = new AutoResetEvent(false);
-
-    /// <summary>
     /// The command listener.
     /// </summary>
     /// <remarks>Process incoming commands.</remarks>
     private readonly CommandListener commandListener;
     
     /// <summary>
-    /// The worker thread.
-    /// </summary>
-    /// <remarks>Executes robot's behaviours.</remarks>
-    private readonly Thread worker;
-
-    /// <summary>
     /// Initializes a new instance of the <see cref="FakeRobot"/> class.
     /// </summary>
-    public FakeRobot()
+    public FakeRobot() : base(SIMULATION_TIMEOUT)
     {
       commandListener = new CommandListener(x => ProcessCommands(x));
-      worker = new Thread(Simulation);
-      Start();
     }
 
     /// <summary>
@@ -94,64 +80,23 @@ namespace RobotControl.Fake.FakeRobot
     /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
     protected override void Dispose(bool disposing)
     {
+      base.Dispose(disposing);
       if (disposing)
       {
-        Stop();
         DisposeHelper.Dispose(commandListener);
-        DisposeHelper.Dispose(signal);
       }
     }
 
     /// <summary>
-    /// Starts fake robot instance.
+    /// Simulate robot moving.
     /// </summary>
-    /// <remarks>Start executing simulated behaviours.</remarks>
-    private void Start()
+    protected override void WorkInternal()
     {
-      if (!worker.IsAlive) 
+      var leftEngineState = leftEngine.GetEngineState();
+      var rightEngineState = rightEngine.GetEngineState();
+      if (leftEngineState.Signaled || rightEngineState.Signaled)
       {
-        worker.Start();
-      } 
-    }
-
-    /// <summary>
-    /// Stops fake robot instance.
-    /// </summary>
-    /// <remarks>Stops simulation.</remarks>
-    private void Stop()
-    {
-      if (worker.IsAlive) 
-      {
-        signal.Set();
-        worker.Join();
-      }
-    }
-
-    /// <summary>
-    /// Simulation execution loop.
-    /// </summary>
-    private void Simulation()
-    {
-      while (true) 
-      {
-        if (signal.WaitOne(SIMULATION_TIMEOUT)) 
-        {
-          break;
-        }
-
-        try
-        {
-          var leftEngineState = leftEngine.GetEngineState();
-          var rightEngineState = rightEngine.GetEngineState();
-          if (leftEngineState.Signaled || rightEngineState.Signaled) 
-          {
-            OnRobotState?.Invoke(this, new FakeRobotState(leftEngineState, rightEngineState));
-          }
-        }
-        catch (Exception)
-        {
-          ;
-        }
+        OnRobotState?.Invoke(this, new FakeRobotState(leftEngineState, rightEngineState));
       }
     }
 

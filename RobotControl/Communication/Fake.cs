@@ -48,6 +48,7 @@ namespace RobotControl.Communication
     private void OnRobotState(object sender, FakeRobotState e)
     {
       var commands = new List<ICommand>() { new RobotMoveCommand { LeftDistance = e.LeftEngineState.Distance, RightDistance = e.RightEngineState.Distance} };
+      commands.Add(new EngineSpeedCommand() { Index = 0, AvgSpeed = 30 });
       CommandManager.Instance.DataReceived(this, commands);
     }
   }
