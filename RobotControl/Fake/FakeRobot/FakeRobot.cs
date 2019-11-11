@@ -4,6 +4,7 @@ using RobotControl.Messages;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace RobotControl.Fake.FakeRobot
 {
@@ -107,54 +108,44 @@ namespace RobotControl.Fake.FakeRobot
     /// <param name="commands">The commands.</param>
     private void ProcessCommands(IEnumerable<ICommand> commands) 
     {
-      foreach (var cmd in commands) 
-      { 
-        if (cmd is ThumbCommand thumbCommand)
+      Parallel.ForEach(commands, x =>
         {
-          /*
-          var rx = thumbCommand.RX > 0.0 ? -thumbCommand.RX / 10 : 0.0;
-          var lx = thumbCommand.RX < 0.0 ? thumbCommand.RX / 10 : 0.0;
-          */
-
-          var rx = thumbCommand.X > 0.0 ? -thumbCommand.X : 0.0;
-          var lx = thumbCommand.X < 0.0 ? thumbCommand.X : 0.0;
-
-
-          if (thumbCommand.Y > 0)
+          if (x is ThumbCommand thumbCommand) 
           {
-            leftEngine.Power = (int)((thumbCommand.Y) + lx);
-            rightEngine.Power = (int)((thumbCommand.Y) + rx);
-          }
-          else if (thumbCommand.Y < 0)
-          {
-            leftEngine.Power = (int)((thumbCommand.Y) - lx);
-            rightEngine.Power = (int)((thumbCommand.Y) - rx);
-          }
-          else
-          {
-            if (thumbCommand.X < 0)
-            {
-              leftEngine.Power = (int)(thumbCommand.X);
-              rightEngine.Power = (int)(-thumbCommand.X);
-            }
-            else if (thumbCommand.X > 0)
-            {
-              leftEngine.Power = (int)(thumbCommand.X);
-              rightEngine.Power = (int)(-thumbCommand.X);
-            }
-            else 
-            {
-              leftEngine.Power = 0;
-              rightEngine.Power = 0;
-            }
-          }
-
-          if (leftEngine.Speed == 0) 
-          { 
-            //MessageManager.Instance.
+            SetPower(thumbCommand);
           }
         }
+      );
+    }
+
+    /// <summary>
+    /// Sets engine's power.
+    /// </summary>
+    /// <param name="thumbCommand">The thumb command.</param>
+    private void SetPower(ThumbCommand thumbCommand) 
+    {
+      var powerL = Math.Abs(thumbCommand.Y);
+      var directionL = Math.Sign(thumbCommand.Y);
+      var powerR = powerL;
+      var directionR = directionL;
+
+      var turn = thumbCommand.X;
+
+      powerR -= (turn > 0.0 ? turn : 0.0F);
+      powerR = powerR < 0.0 ? 0.0F : powerR;
+
+      powerL -= (turn < 0.0 ? -turn : 0.0F);
+      powerL = powerL < 0.0 ? 0.0F : powerL;
+
+      if (!(powerL > 0.0 || powerR > 0.0))
+      {
+        powerL = powerR = Math.Abs(turn);
+        directionL = Math.Sign(turn);
+        directionR = Math.Sign(-turn);
       }
+
+      leftEngine.Power = powerL * directionL;
+      rightEngine.Power = powerR * directionR;
     }
   }
 }
