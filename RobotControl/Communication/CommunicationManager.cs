@@ -22,6 +22,15 @@ namespace RobotControl.Communication
     {
     }
 
+    protected override void TearDown()
+    {
+      base.TearDown();
+      foreach (var item in items) 
+      {
+        item.Close();
+      }
+    }
+
     public void Add(IChannel channel)
     {
       if (!items.Contains(channel))

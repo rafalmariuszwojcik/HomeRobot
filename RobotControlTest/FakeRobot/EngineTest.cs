@@ -31,7 +31,7 @@ namespace RobotControlTest.FakeRobot
       var engine = new Engine();
       //using (var engine = new Engine()) 
       //{
-        engine.Speed = SPEED;
+        //engine.Speed = SPEED;
         
         //var d = engine.GetDistance();
         //var x = d;

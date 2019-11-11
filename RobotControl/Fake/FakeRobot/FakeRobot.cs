@@ -1,5 +1,6 @@
 ﻿using RobotControl.Command;
 using RobotControl.Core;
+using RobotControl.Messages;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -166,14 +167,48 @@ namespace RobotControl.Fake.FakeRobot
       { 
         if (cmd is ThumbCommand thumbCommand)
         {
+          /*
           var rx = thumbCommand.RX > 0.0 ? -thumbCommand.RX / 10 : 0.0;
           var lx = thumbCommand.RX < 0.0 ? thumbCommand.RX / 10 : 0.0;
+          */
+
+          var rx = thumbCommand.X > 0.0 ? -thumbCommand.X : 0.0;
+          var lx = thumbCommand.X < 0.0 ? thumbCommand.X : 0.0;
 
 
+          if (thumbCommand.Y > 0)
+          {
+            leftEngine.Power = (int)((thumbCommand.Y) + lx);
+            rightEngine.Power = (int)((thumbCommand.Y) + rx);
+          }
+          else if (thumbCommand.Y < 0)
+          {
+            leftEngine.Power = (int)((thumbCommand.Y) - lx);
+            rightEngine.Power = (int)((thumbCommand.Y) - rx);
+          }
+          else
+          {
+            if (thumbCommand.X < 0)
+            {
+              leftEngine.Power = (int)(thumbCommand.X);
+              rightEngine.Power = (int)(-thumbCommand.X);
+            }
+            else if (thumbCommand.X > 0)
+            {
+              leftEngine.Power = (int)(thumbCommand.X);
+              rightEngine.Power = (int)(-thumbCommand.X);
+            }
+            else 
+            {
+              leftEngine.Power = 0;
+              rightEngine.Power = 0;
+            }
+          }
 
-          leftEngine.Speed = (int)((thumbCommand.Y / 10) + lx);
-          rightEngine.Speed = (int)((thumbCommand.Y / 10) + rx);
-
+          if (leftEngine.Speed == 0) 
+          { 
+            //MessageManager.Instance.
+          }
         }
       }
     }

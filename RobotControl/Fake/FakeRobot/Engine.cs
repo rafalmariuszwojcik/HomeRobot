@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace RobotControl.Fake.FakeRobot
 {
@@ -41,7 +42,7 @@ namespace RobotControl.Fake.FakeRobot
   public class Engine
   {
     /// <summary>The maximum speed in encoder signals per second.</summary>
-    private const int MAX_SPEED = 70;
+    private const int MAX_SPEED = 60;
 
     /// <summary>The one second. Indicates number of internal engine signals per one second.</summary>
     private const int ONE_SECOND = 1000;
@@ -98,7 +99,7 @@ namespace RobotControl.Fake.FakeRobot
         }
       }
 
-      set
+      private set
       {
         lock (lockData) 
         {
@@ -110,6 +111,22 @@ namespace RobotControl.Fake.FakeRobot
             CalculateDistance();
           }
         }
+      }
+    }
+
+    /// <summary>
+    /// Sets the engine power in percent (-100;100).
+    /// </summary>
+    /// <remarks>-100: max power, backward rotation.</remarks>
+    /// <remarks>0: stop.</remarks>
+    /// <remarks>100: max power, forward rotation.</remarks>
+    public double Power 
+    {
+      set 
+      {
+        value = value > 100.0 ? 100.0 : value;
+        value = value < -100.0 ? -100.0 : value;
+        Speed = Convert.ToInt32(Math.Round(value * MAX_SPEED / 100.0));
       }
     }
 
