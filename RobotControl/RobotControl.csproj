@@ -91,6 +91,7 @@
     <Compile Include="Core\DisposeHelper.cs" />
     <Compile Include="Core\IManager.cs" />
     <Compile Include="Core\ListenerBase.cs" />
+    <Compile Include="Core\WorkerBase.cs" />
     <Compile Include="Drawing\IRobotDrawGeometry.cs" />
     <Compile Include="Messages\MessageListener.cs" />
     <Compile Include="Simulation\Robot\Odometry.cs" />

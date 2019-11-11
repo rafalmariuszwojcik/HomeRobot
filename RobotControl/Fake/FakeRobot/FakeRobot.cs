@@ -130,7 +130,6 @@ namespace RobotControl.Fake.FakeRobot
     /// <summary>
     /// Simulation execution loop.
     /// </summary>
-    /// <param name="sync">The synchronize.</param>
     private void Simulation()
     {
       while (true) 
