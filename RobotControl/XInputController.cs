@@ -19,10 +19,10 @@ namespace RobotControl
     }
 
     // Call this method to update all class values
-    public void Update()
+    public bool Update()
     {
       if (!connected)
-        return;
+        return false;
 
       gamepad = controller.GetState().Gamepad;
 
@@ -35,6 +35,7 @@ namespace RobotControl
 
       leftTrigger = gamepad.LeftTrigger;
       rightTrigger = gamepad.RightTrigger;
+      return true;
     }
   }
 }

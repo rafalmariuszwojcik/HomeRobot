@@ -3,6 +3,7 @@ using RobotControl.Communication;
 using RobotControl.Core;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace RobotControl.Simulation.Robot
 {
@@ -210,8 +211,31 @@ namespace RobotControl.Simulation.Robot
       }
     }
 
+    
+
+    /// <summary>
+    /// Data received function.
+    /// </summary>
+    /// <param name="channel">The sender channel.</param>
+    /// <param name="data">The data.</param>
+    void IListener<ICommand>.DataReceived(IChannel channel, IEnumerable<ICommand> data)
+    {
+      Parallel.ForEach(data, x =>
+      {
+        ProcessCommand(x);
+      });
+    }
+
+    /// <summary>
+    /// Processes the incoming command.
+    /// </summary>
+    /// <param name="command">The command.</param>
     private void ProcessCommand(ICommand command)
     {
+      if (command is IControllerCommand controllerCommand) 
+      {
+        SetEnginesPower(controllerCommand);
+      }
       if (command is RobotMoveCommand cmd)
       {
         //var list = new List<IEncoderCommand>();
@@ -228,12 +252,34 @@ namespace RobotControl.Simulation.Robot
       }
     }
 
-    void IListener<ICommand>.DataReceived(IChannel channel, IEnumerable<ICommand> data)
+    /// <summary>
+    /// Sets engine's power.
+    /// </summary>
+    /// <param name="controllerCommand">The controller command.</param>
+    private void SetEnginesPower(IControllerCommand controllerCommand)
     {
-      foreach (var command in data)
+      var powerL = Math.Abs(controllerCommand.Y);
+      var directionL = Math.Sign(controllerCommand.Y);
+      var powerR = powerL;
+      var directionR = directionL;
+
+      var turn = controllerCommand.X;
+
+      powerR -= (turn > 0.0 ? turn : 0.0F);
+      powerR = powerR < 0.0 ? 0.0F : powerR;
+
+      powerL -= (turn < 0.0 ? -turn : 0.0F);
+      powerL = powerL < 0.0 ? 0.0F : powerL;
+
+      if (!(powerL > 0.0 || powerR > 0.0))
       {
-        ProcessCommand(command);
+        powerL = powerR = Math.Abs(turn);
+        directionL = Math.Sign(turn);
+        directionR = Math.Sign(-turn);
       }
+
+      //leftEngine.Power = powerL * directionL;
+      //rightEngine.Power = powerR * directionR;
     }
 
     /*

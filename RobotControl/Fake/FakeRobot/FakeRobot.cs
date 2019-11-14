@@ -110,9 +110,9 @@ namespace RobotControl.Fake.FakeRobot
     {
       Parallel.ForEach(commands, x =>
         {
-          if (x is ThumbCommand thumbCommand) 
+          if (x is ControllerCommand controllerCommand) 
           {
-            SetPower(thumbCommand);
+            SetPower(controllerCommand);
           }
         }
       );
@@ -121,15 +121,15 @@ namespace RobotControl.Fake.FakeRobot
     /// <summary>
     /// Sets engine's power.
     /// </summary>
-    /// <param name="thumbCommand">The thumb command.</param>
-    private void SetPower(ThumbCommand thumbCommand) 
+    /// <param name="controllerCommand">The controller command.</param>
+    private void SetPower(ControllerCommand controllerCommand) 
     {
-      var powerL = Math.Abs(thumbCommand.Y);
-      var directionL = Math.Sign(thumbCommand.Y);
+      var powerL = Math.Abs(controllerCommand.Y);
+      var directionL = Math.Sign(controllerCommand.Y);
       var powerR = powerL;
       var directionR = directionL;
 
-      var turn = thumbCommand.X;
+      var turn = controllerCommand.X;
 
       powerR -= (turn > 0.0 ? turn : 0.0F);
       powerR = powerR < 0.0 ? 0.0F : powerR;

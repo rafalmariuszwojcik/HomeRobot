@@ -70,10 +70,11 @@
     <Compile Include="Command\ICommand.cs" />
     <Compile Include="Command\ICommandListener.cs" />
     <Compile Include="Command\ICommandManager.cs" />
+    <Compile Include="Command\IControllerCommand.cs" />
     <Compile Include="Command\IEncoderCommand.cs" />
     <Compile Include="Command\IEngineCommand.cs" />
     <Compile Include="Command\RobotMoveCommand.cs" />
-    <Compile Include="Command\ThumbCommand.cs" />
+    <Compile Include="Command\ControllerCommand.cs" />
     <Compile Include="Communication\ChannelBase.cs" />
     <Compile Include="Communication\CommunicationManager.cs" />
     <Compile Include="Communication\ConfigurationBase.cs" />
