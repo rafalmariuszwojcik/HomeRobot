@@ -2,6 +2,7 @@
 using RobotControl.Core;
 using RobotControl.Messages;
 using System;
+using System.Collections.Generic;
 
 namespace RobotControl.Communication
 {
@@ -106,6 +107,18 @@ namespace RobotControl.Communication
       }
 
       InternalSend(channel, data);
+    }
+
+    /// <summary>
+    /// Sends data through the channel.
+    /// </summary>
+    /// <param name="data">The data.</param>
+    public void Send(IEnumerable<D> data) 
+    {
+      foreach (var item in data) 
+      {
+        Send(item);
+      }
     }
 
     /// <summary>

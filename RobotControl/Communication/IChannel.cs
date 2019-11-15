@@ -1,5 +1,6 @@
 ﻿using RobotControl.Command;
 using System;
+using System.Collections.Generic;
 
 namespace RobotControl.Communication
 {
@@ -37,10 +38,16 @@ namespace RobotControl.Communication
     void Close();
 
     /// <summary>
-    /// Sends data through the chanell.
+    /// Sends data through the channel.
     /// </summary>
     /// <param name="data">The data.</param>
     void Send(D data);
+
+    /// <summary>
+    /// Sends data through the channel.
+    /// </summary>
+    /// <param name="data">The data.</param>
+    void Send(IEnumerable<D> data);
 
     /// <summary>
     /// Occurs when incoming data received.
