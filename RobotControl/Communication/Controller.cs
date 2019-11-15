@@ -7,32 +7,19 @@ using System.Threading.Tasks;
 
 namespace RobotControl.Communication
 {
-  public class Controller : IChanell2<IControllerCommand, ConfigurationBase>
+  public class Controller : ChannelBaseEx<GamePad, IControllerCommand, ConfigurationBase>
   {
-    public bool Active { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-    public string Name => throw new NotImplementedException();
-
-    public ConfigurationBase Configuration => throw new NotImplementedException();
-
-    public event EventHandler<IDataReceivedEventArgs2<IControllerCommand>> DataReceived;
-
-    public void Close()
+    public override void InternalSend(GamePad channel, IControllerCommand data)
     {
       throw new NotImplementedException();
     }
 
-    public void Dispose()
+    protected override void InternalClose(GamePad channel)
     {
       throw new NotImplementedException();
     }
 
-    public void Open()
-    {
-      throw new NotImplementedException();
-    }
-
-    public void Send(IControllerCommand data)
+    protected override GamePad InternalOpen(ConfigurationBase configuration)
     {
       throw new NotImplementedException();
     }
