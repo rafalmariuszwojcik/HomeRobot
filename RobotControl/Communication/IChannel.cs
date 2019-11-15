@@ -3,6 +3,25 @@ using System;
 
 namespace RobotControl.Communication
 {
+  public interface IDataReceivedEventArgs2<T>
+    where T: class
+  {
+    T Data { get; }
+  }
+
+  public interface IChanell2<T, C> : IDisposable 
+    where T: class
+    where C: IConfiguration
+  {
+    void Open();
+    void Close();
+    void Send(T data);
+    event EventHandler<IDataReceivedEventArgs2<T>> DataReceived;
+    bool Active { get; set; }
+    string Name { get; }
+    C Configuration { get; }
+  }
+
   public interface IChannel : IDisposable
   {
     void Open();

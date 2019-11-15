@@ -78,6 +78,7 @@
     <Compile Include="Communication\ChannelBase.cs" />
     <Compile Include="Communication\CommunicationManager.cs" />
     <Compile Include="Communication\ConfigurationBase.cs" />
+    <Compile Include="Communication\Controller.cs" />
     <Compile Include="Communication\Fake.cs" />
     <Compile Include="Communication\FakeConfiguration.cs" />
     <Compile Include="Communication\IChannel.cs" />
