@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace RobotControl.Command
 {
-  [AttributeUsage(AttributeTargets.Property, AllowMultiple = false )]
+  [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
   public class CommandParameterAttribute : Attribute
   {
     public CommandParameterAttribute(int index)

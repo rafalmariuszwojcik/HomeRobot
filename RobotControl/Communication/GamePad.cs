@@ -9,7 +9,7 @@ namespace RobotControl.Communication
     /// </summary>
     public GamePad()
       : base(10)
-    { 
+    {
     }
 
     /// <summary>

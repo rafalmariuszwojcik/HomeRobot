@@ -15,7 +15,7 @@ namespace RobotControl.Core
     /// </summary>
     /// <param name="timeout">Counter update frequency (delay in miliseconds).</param>
     public Counter()
-      : base(null, UPDATE_FREQUENCY) 
+      : base(null, UPDATE_FREQUENCY)
     {
     }
 
@@ -28,13 +28,13 @@ namespace RobotControl.Core
     {
       get
       {
-        lock(lockSignal)
+        lock (lockSignal)
         {
           return signalsPerSecond;
         }
       }
     }
-    
+
     public void Signal()
     {
       lock (lockSignal)
@@ -57,7 +57,7 @@ namespace RobotControl.Core
         var sps = signals / (elapsed / 1000.0);
         zero = sps <= 0.1 && signalsPerSecond > 0.1;
         signalsPerSecond = sps;
-        signals = zero ? - 1: 0;
+        signals = zero ? -1 : 0;
       }
 
       if (zero)

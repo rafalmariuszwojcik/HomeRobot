@@ -6,7 +6,7 @@ namespace RobotControl.Fake.FakeRobot
   /// <summary>
   /// Engine state structure.
   /// </summary>
-  public struct EngineState 
+  public struct EngineState
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="EngineState" /> struct.
@@ -14,7 +14,7 @@ namespace RobotControl.Fake.FakeRobot
     /// <param name="distance">The distance.</param>
     /// <param name="signaled">if set to <c>true</c> state of the engine has been changed.</param>
     /// <param name="milis">The milis.</param>
-    public EngineState(double distance, bool signaled, long milis) 
+    public EngineState(double distance, bool signaled, long milis)
     {
       Distance = distance;
       Signaled = signaled;
@@ -74,7 +74,7 @@ namespace RobotControl.Fake.FakeRobot
     /// Initializes the <see cref="Engine"/> class.
     /// </summary>
     /// <remarks>Start static timer for all <c>Engine</c> instances.</remarks>
-    static Engine() 
+    static Engine()
     {
       stopwatch.Start();
     }
@@ -93,7 +93,7 @@ namespace RobotControl.Fake.FakeRobot
     {
       get
       {
-        lock (lockData) 
+        lock (lockData)
         {
           return speed;
         }
@@ -101,7 +101,7 @@ namespace RobotControl.Fake.FakeRobot
 
       private set
       {
-        lock (lockData) 
+        lock (lockData)
         {
           if (speed != value)
           {
@@ -120,9 +120,9 @@ namespace RobotControl.Fake.FakeRobot
     /// <remarks>-100: max power, backward rotation.</remarks>
     /// <remarks>0: stop.</remarks>
     /// <remarks>100: max power, forward rotation.</remarks>
-    public double Power 
+    public double Power
     {
-      set 
+      set
       {
         value = value > 100.0 ? 100.0 : value;
         value = value < -100.0 ? -100.0 : value;
@@ -134,17 +134,17 @@ namespace RobotControl.Fake.FakeRobot
     /// Gets the current state of engine.
     /// </summary>
     /// <returns></returns>
-    public EngineState GetEngineState() 
+    public EngineState GetEngineState()
     {
       return CalculateDistance();
     }
-    
+
     /// <summary>
     /// Calculates the current full distance of the engine.
     /// </summary>
     private EngineState CalculateDistance()
     {
-      lock (lockData) 
+      lock (lockData)
       {
         var leg = 0.0;
         var currentMilis = stopwatch.ElapsedMilliseconds;

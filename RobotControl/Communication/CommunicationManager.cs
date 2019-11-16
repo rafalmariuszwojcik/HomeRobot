@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using RobotControl.Core;
-using System.Xml.Serialization;
+﻿using RobotControl.Core;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System;
+using System.Xml.Serialization;
 
 namespace RobotControl.Communication
 {
@@ -14,7 +14,7 @@ namespace RobotControl.Communication
       { typeof(SerialConfiguration), new Func<ConfigurationBase, IChanellExBase>(x => new Serial((SerialConfiguration)x)) },
       { typeof(FakeConfiguration), new Func<ConfigurationBase, IChanellExBase>(x => new Fake((FakeConfiguration)x)) },
     };
-    
+
     private readonly IList<IChanellExBase> items = new List<IChanellExBase>();
     public IEnumerable<IChanellExBase> Items => items;
 
@@ -25,7 +25,7 @@ namespace RobotControl.Communication
     protected override void TearDown()
     {
       base.TearDown();
-      foreach (var item in items) 
+      foreach (var item in items)
       {
         item.Active = false;
       }

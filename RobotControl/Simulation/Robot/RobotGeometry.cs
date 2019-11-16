@@ -55,7 +55,7 @@ namespace RobotControl.Simulation.Robot
         dr = distance;
         vector = new Vector(0.0, distance);
       }
-      
+
       return new MovementCalculation(r, distance, dl, dr, (dl - dr) / Width, vector);
     }
   }

@@ -1,6 +1,4 @@
 ﻿using RobotControl.Command;
-using RobotControl.Communication;
-using RobotControl.Core;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace RobotControl.Windows.Views
@@ -8,7 +6,7 @@ namespace RobotControl.Windows.Views
   public class BaseView : DockContent
   {
     //private readonly ListenerControl listener;
-    
+
     public BaseView()
     {
       //listener = new ListenerControl(this);

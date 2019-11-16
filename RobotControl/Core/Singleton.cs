@@ -2,7 +2,7 @@
 
 namespace RobotControl.Core
 {
-  public abstract class Singleton<T> where T: Singleton<T>
+  public abstract class Singleton<T> where T : Singleton<T>
   {
     private static readonly object syncRoot = new object();
     private static volatile T instance;

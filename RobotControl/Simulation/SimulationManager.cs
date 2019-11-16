@@ -20,7 +20,7 @@ namespace RobotControl.Simulation
       {
         DataReceived(null, new[] { simulation });
       };
-      
+
       simulation.Add(robot);
       Add(simulation);
 

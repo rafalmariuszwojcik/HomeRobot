@@ -44,9 +44,9 @@ namespace RobotControl.Core
             }
             catch (Exception)
             {
-              #if DEBUG
+#if DEBUG
               throw;
-              #endif
+#endif
             }
           }
         });

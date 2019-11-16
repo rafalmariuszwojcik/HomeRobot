@@ -8,11 +8,11 @@ namespace RobotControl.Windows.Views
     {
       InitializeComponent();
       var items = CommunicationManager.Instance.Items;
-      
+
       //CommunicationManager.Instance.Save();
       CommunicationManager.Instance.Load();
 
-      
+
 
       dataGridView1.RowHeadersVisible = false;
       dataGridView1.ColumnHeadersVisible = false;

@@ -9,7 +9,7 @@ namespace RobotControl.Communication
   /// </summary>
   /// <typeparam name="T">Type of received data.</typeparam>
   public interface IDataReceivedEventArgsEx<D>
-    where D: class
+    where D : class
   {
     /// <summary>
     /// Gets the received data.
@@ -37,7 +37,7 @@ namespace RobotControl.Communication
     /// </summary>
     IConfiguration Configuration { get; }
   }
-  
+
   /// <summary>
   /// Communication chanell interface.
   /// </summary>
@@ -45,8 +45,8 @@ namespace RobotControl.Communication
   /// <typeparam name="C">Chanell's configuration type.</typeparam>
   /// <seealso cref="System.IDisposable" />
   public interface IChanellEx<D, C> : IChanellExBase
-    where D: class
-    where C: IConfiguration
+    where D : class
+    where C : IConfiguration
   {
     /// <summary>
     /// Gets the chanell's configuration.
@@ -83,7 +83,7 @@ namespace RobotControl.Communication
     IConfiguration Configuration { get; }
   }
 
-  public interface IChannel_old<U> : IChannel where U: ConfigurationBase
+  public interface IChannel_old<U> : IChannel where U : ConfigurationBase
   {
   }
 

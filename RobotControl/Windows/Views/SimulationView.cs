@@ -1,7 +1,4 @@
-﻿using RobotControl.Windows.Views;
-using WeifenLuo.WinFormsUI.Docking;
-
-namespace RobotControl.Windows.Views
+﻿namespace RobotControl.Windows.Views
 {
   public partial class SimulationView : BaseView
   {

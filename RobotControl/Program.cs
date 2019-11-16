@@ -16,10 +16,10 @@ namespace RobotControl
     {
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
-      #if DEBUG
+#if DEBUG
       // Add this; Change the Locales(En-US): Done.
       Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
-      #endif
+#endif
       Application.ApplicationExit += (sender, e) => SingletonTearDown.Instance.DoEvent();
       Application.Run(new formRobotControl());
     }

@@ -62,17 +62,17 @@ namespace RobotControl.Communication
     /// </value>
     public bool Active
     {
-      get 
+      get
       {
-        lock (lockData) 
+        lock (lockData)
         {
           return channel != null;
         }
       }
-      
+
       set
       {
-        lock (lockData) 
+        lock (lockData)
         {
           if (Active != value)
           {
@@ -95,7 +95,7 @@ namespace RobotControl.Communication
     /// <param name="data">The data.</param>
     public void Send(D data)
     {
-      lock (lockData) 
+      lock (lockData)
       {
         if (!Active)
         {
@@ -110,9 +110,9 @@ namespace RobotControl.Communication
     /// Sends data through the channel.
     /// </summary>
     /// <param name="data">The data.</param>
-    public void Send(IEnumerable<D> data) 
+    public void Send(IEnumerable<D> data)
     {
-      foreach (var item in data) 
+      foreach (var item in data)
       {
         Send(item);
       }
@@ -189,8 +189,8 @@ namespace RobotControl.Communication
 
 
   public abstract class ChannelBase_old<T, U> : DisposableBase, IChannel_old<U>
-    where T: IDisposable
-    where U: ConfigurationBase
+    where T : IDisposable
+    where U : ConfigurationBase
   {
     private T channel;
     private readonly U configuration;
@@ -277,7 +277,7 @@ namespace RobotControl.Communication
     protected abstract void InternalClose(T channel);
     public abstract void InternalSend(T channel, ICommand[] commands);
     public abstract void InternalSend(T channel, string data);
-    
+
     protected void OnDataReceived(string data)
     {
       DataReceived?.Invoke(this, new DataReceivedEventArgs(data));

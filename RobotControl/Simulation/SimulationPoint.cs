@@ -2,7 +2,7 @@
 {
   public class SimulationPoint
   {
-    public SimulationPoint(double x, double y, double angle) 
+    public SimulationPoint(double x, double y, double angle)
     {
       X = x;
       Y = y;

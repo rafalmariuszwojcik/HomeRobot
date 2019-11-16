@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace RobotControl.Simulation.Robot
 {
@@ -18,7 +15,7 @@ namespace RobotControl.Simulation.Robot
     private readonly int encoderPoints;
     private readonly double oneHoleDistance;
     private readonly SignalData[] encoders = new SignalData[(int)Encoder.Right + 1] { null, null };
-    
+
     public PositionCalculator(double robotWidth, double wheelRadius, int encoderPoints)
     {
       this.robotWidth = robotWidth;

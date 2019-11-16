@@ -18,7 +18,7 @@ namespace RobotControl.Simulation
     public bool State { get; private set; }
     public IEnumerable<ISimulationItem> Items => items;
     public ISimulationItem Parent => parent;
-    
+
     public void ResetState()
     {
       State = false;

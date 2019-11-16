@@ -65,6 +65,6 @@ namespace RobotControl.Simulation.Robot
 
       //return new OdometryResult(deltaL, deltaR);
       return new OdometryResult(leftDistance, rightDistance);
-    }  
+    }
   }
 }

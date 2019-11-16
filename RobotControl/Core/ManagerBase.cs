@@ -14,7 +14,7 @@ namespace RobotControl.Core
     private readonly object lockObject = new object();
     private readonly IList<T> listeners = new List<T>();
     private readonly DataProcessingQueue<M> messageQueue;
-    
+
     protected ManagerBase(int interval = 0)
     {
       messageQueue = new DataProcessingQueue<M>((s, x) => PostData(null, x), interval);
@@ -95,7 +95,7 @@ namespace RobotControl.Core
       }
 
       var actions = SendDataActions(listener, data);
-      Parallel.ForEach(actions, x => SendData(listener, x));      
+      Parallel.ForEach(actions, x => SendData(listener, x));
     }
   }
 }

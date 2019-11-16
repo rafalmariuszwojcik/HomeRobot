@@ -125,5 +125,5 @@ namespace RobotControl.Windows.Controls
         }
       }
     }
-  }    
+  }
 }

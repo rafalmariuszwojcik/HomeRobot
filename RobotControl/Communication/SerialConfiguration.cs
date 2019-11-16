@@ -1,6 +1,4 @@
-﻿using System.Xml.Serialization;
-
-namespace RobotControl.Communication
+﻿namespace RobotControl.Communication
 {
   public class SerialConfiguration : ConfigurationBase
   {

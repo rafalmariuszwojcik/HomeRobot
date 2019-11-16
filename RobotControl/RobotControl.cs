@@ -1,26 +1,25 @@
-﻿using RobotControl.Communication;
-using RobotControl.Windows.Forms;
+﻿using RobotControl.Command;
 using RobotControl.Messages;
+using RobotControl.Windows.Forms;
 using RobotControl.Windows.Views;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
-using System.IO;
-using System.Threading;
-using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
-using RobotControl.Command;
 
 namespace RobotControl
 {
   public partial class formRobotControl : BaseForm
   {
     private PropertyGrid OptionsPropertyGrid;
-   // private DockPanel s;
+    // private DockPanel s;
 
-      private XInputController controller = new XInputController();
+    private XInputController controller = new XInputController();
 
 
 
@@ -28,10 +27,10 @@ namespace RobotControl
     {
       InitializeComponent();
 
-      
-      
 
-      
+
+
+
 
 
       OptionsPropertyGrid = new PropertyGrid();
@@ -60,7 +59,7 @@ namespace RobotControl
       */
       //OptionsPropertyGrid.SelectedObject = new SerialConfiguration { Port = "COM3", BaudRate = 9600 };
 
-     // OptionsPropertyGrid.SelectedObject = areaViewControl1;
+      // OptionsPropertyGrid.SelectedObject = areaViewControl1;
 
       //OptionsPropertyGrid.PropertySort = PropertySort.NoSort;
       //OptionsPropertyGrid.ToolbarVisible = false;
@@ -84,7 +83,7 @@ namespace RobotControl
     {
       var dockContent = new CommunicationManagerView();
       dockContent.Show(this.dockPanel1, DockState.Float);
-      
+
     }
 
     int i = 0;
@@ -109,14 +108,14 @@ namespace RobotControl
 
       //var x = MessageManager.Instance;
       //var y = x;
-      Task.Factory.StartNew(new Action(() => 
+      Task.Factory.StartNew(new Action(() =>
       {
         var list = new List<long>();
         for (var i = 0; i < 90; i++)
         {
           var totalMilliseconds = (long)new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
           MessageManager.Instance.DataReceived(this, new[] { $"ENC,1,{i},{totalMilliseconds},2;{Environment.NewLine}" });
-          
+
           Thread.Sleep(30);
 
           totalMilliseconds = (long)new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
@@ -187,7 +186,7 @@ namespace RobotControl
         dockPanel1.LoadFromXml(@"c:\temp\layout.xml", m_deserializeDockContent);
       }
 
-     // backgroundWorker1.RunWorkerAsync();
+      // backgroundWorker1.RunWorkerAsync();
     }
 
     private IDockContent GetContentFromPersistString(string persistString)
@@ -220,7 +219,7 @@ namespace RobotControl
       {
         return null;
       }
-      
+
       /*
       if (persistString == typeof(DummySolutionExplorer).ToString())
         return m_solutionExplorer;
@@ -292,7 +291,7 @@ namespace RobotControl
       if (!controller.Update()) { return; }
       //this.Text = controller.leftThumb.X.ToString();
       var cmd = new List<ICommand>();
-      cmd.Add(new ControllerCommand { X = controller.leftThumb.X , Y = controller.leftThumb.Y, RX = controller.rightThumb.X });
+      cmd.Add(new ControllerCommand { X = controller.leftThumb.X, Y = controller.leftThumb.Y, RX = controller.rightThumb.X });
       CommandManager.Instance.DataReceived(this, cmd);
     }
   }

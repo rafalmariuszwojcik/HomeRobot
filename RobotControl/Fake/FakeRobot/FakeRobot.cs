@@ -1,9 +1,7 @@
 ﻿using RobotControl.Command;
 using RobotControl.Core;
-using RobotControl.Messages;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace RobotControl.Fake.FakeRobot
@@ -11,14 +9,14 @@ namespace RobotControl.Fake.FakeRobot
   /// <summary>
   /// Fake robot state structure.
   /// </summary>
-  public struct FakeRobotState 
+  public struct FakeRobotState
   {
     /// <summary>
     /// Initializes a new instance of the <see cref="FakeRobotState"/> struct.
     /// </summary>
     /// <param name="leftEngineState">State of the left engine.</param>
     /// <param name="rightEngineState">State of the right engine.</param>
-    public FakeRobotState(EngineState leftEngineState, EngineState rightEngineState) 
+    public FakeRobotState(EngineState leftEngineState, EngineState rightEngineState)
     {
       LeftEngineState = leftEngineState;
       RightEngineState = rightEngineState;
@@ -45,7 +43,7 @@ namespace RobotControl.Fake.FakeRobot
     /// The simulation timeout.
     /// </summary>
     private const int SIMULATION_TIMEOUT = 10;
-    
+
     /// <summary>
     /// The left engine.
     /// </summary>
@@ -61,7 +59,7 @@ namespace RobotControl.Fake.FakeRobot
     /// </summary>
     /// <remarks>Process incoming commands.</remarks>
     private readonly CommandListener commandListener;
-    
+
     /// <summary>
     /// Initializes a new instance of the <see cref="FakeRobot"/> class.
     /// </summary>
@@ -106,11 +104,11 @@ namespace RobotControl.Fake.FakeRobot
     /// </summary>
     /// <remarks>Execute incoming commands on <see cref=""/>FakeRobot</see> instance.</remarks>
     /// <param name="commands">The commands.</param>
-    private void ProcessCommands(IEnumerable<ICommand> commands) 
+    private void ProcessCommands(IEnumerable<ICommand> commands)
     {
       Parallel.ForEach(commands, x =>
         {
-          if (x is ControllerCommand controllerCommand) 
+          if (x is ControllerCommand controllerCommand)
           {
             SetPower(controllerCommand);
           }
@@ -122,7 +120,7 @@ namespace RobotControl.Fake.FakeRobot
     /// Sets engine's power.
     /// </summary>
     /// <param name="controllerCommand">The controller command.</param>
-    private void SetPower(ControllerCommand controllerCommand) 
+    private void SetPower(ControllerCommand controllerCommand)
     {
       var powerL = Math.Abs(controllerCommand.Y);
       var directionL = Math.Sign(controllerCommand.Y);

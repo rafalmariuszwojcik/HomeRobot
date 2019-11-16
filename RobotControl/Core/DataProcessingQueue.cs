@@ -13,7 +13,7 @@ namespace RobotControl.Core
     private readonly Queue<T> items = new Queue<T>();
     private readonly Stopwatch stopwatch = new Stopwatch();
 
-    public DataProcessingQueue(Action<object, IEnumerable<T>> action, int interval = 0) 
+    public DataProcessingQueue(Action<object, IEnumerable<T>> action, int interval = 0)
       : base()
     {
       this.action = action;

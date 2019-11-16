@@ -10,12 +10,12 @@ namespace RobotControl.Simulation
     private double rightWheelDistance;
     private double rotation;
     private Vector vector;
-    
+
     public MovementCalculation(
       double radius,
       double distance,
-      double leftWheelDistance, 
-      double rightWheelDistance, 
+      double leftWheelDistance,
+      double rightWheelDistance,
       double rotation,
       Vector vector)
     {

@@ -20,7 +20,7 @@ namespace RobotControl.Simulation.Robot
       var teta0 = SimulationHelper.DegreesToRadians(startPoint.Angle - ZERO_ANGLE);
       var leftDistance = leftEncoder * geometry.OnePointDistance;
       var rightDistance = rightEncoder * geometry.OnePointDistance;
-                  
+
       var s = (leftDistance + rightDistance) / 2.0;
       var teta = ((leftDistance - rightDistance) / geometry.Width) + teta0;
       var x = s * Math.Cos(teta) + startPoint.X;

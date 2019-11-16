@@ -26,7 +26,7 @@ namespace RobotControl.Simulation.Robot
       //}
 
       //list.Add(new Tuple<int, IList<long>>(data.Count(), copy));
-      
+
       //if (data.Any(x => x.Distance >= 99))
       //{
       //}

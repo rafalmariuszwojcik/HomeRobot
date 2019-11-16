@@ -21,7 +21,7 @@ namespace RobotControl.Simulation
     public const double WheelRadius = 66.4 / 2.0;
     public const double RobotRadius = 124.0 / 2.0;
     public const double WheelWidth = 25.0;
-    
+
     public static RobotCalculatorResult CalcWheelsDistances(int distance, int angle)
     {
       // left and right distance in milimeters.
@@ -48,7 +48,7 @@ namespace RobotControl.Simulation
       var result = new RobotCalculatorResult { r = r, dl = dl, dr = dr, distance = distance };
       result._dl = (int)(Math.Round(dl / oneHoleDistance));
       result._dr = (int)(Math.Round(dr / oneHoleDistance));
-      
+
       return result;
     }
   }

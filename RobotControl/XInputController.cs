@@ -1,5 +1,5 @@
-﻿using System;
-using SharpDX.XInput;
+﻿using SharpDX.XInput;
+using System;
 
 namespace RobotControl
 {
@@ -26,7 +26,7 @@ namespace RobotControl
 
       gamepad = controller.GetState().Gamepad;
 
-      
+
 
       leftThumb.X = (Math.Abs((float)gamepad.LeftThumbX) < deadband) ? 0 : (float)gamepad.LeftThumbX / short.MinValue * -100;
       leftThumb.Y = (Math.Abs((float)gamepad.LeftThumbY) < deadband) ? 0 : (float)gamepad.LeftThumbY / short.MaxValue * 100;

@@ -2,7 +2,6 @@
 using RobotControl.Core;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Channels;
 
 namespace RobotControl.Windows.Views
 {
@@ -17,7 +16,7 @@ namespace RobotControl.Windows.Views
     {
       chart1.Series.SuspendUpdates();
 
-      
+
 
       foreach (var x in data)
       {
@@ -44,7 +43,7 @@ namespace RobotControl.Windows.Views
           this.chart1.Series["PWM"].Points.AddXY(((EngineSpeedCommand)lastItem.Command).Distance, ((EngineSpeedCommand)lastItem.Command).PWM);
         }
       }
-      
+
 
       chart1.Series.ResumeUpdates();
 

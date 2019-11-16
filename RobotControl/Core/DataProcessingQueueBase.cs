@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RobotControl.Core
 {
-  public abstract class DataProcessingQueueBase<T> : DisposableBase 
+  public abstract class DataProcessingQueueBase<T> : DisposableBase
     where T : class
   {
     private readonly object lockData = new object();
@@ -34,7 +34,7 @@ namespace RobotControl.Core
           {
             data.Enqueue(item);
           }
-          
+
           signal.Set();
         }
       }

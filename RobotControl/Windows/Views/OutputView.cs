@@ -1,8 +1,6 @@
-﻿using RobotControl.Communication;
-using RobotControl.Core;
+﻿using RobotControl.Core;
 using System;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Channels;
 using System.Text;
 
 namespace RobotControl.Windows.Views

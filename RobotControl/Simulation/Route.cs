@@ -7,7 +7,7 @@
     private readonly SimulationPoint start;
     private readonly List<Movement> movements = new List<Movement>();
 
-    public Route(double x, double y, double angle) 
+    public Route(double x, double y, double angle)
     {
       start = new SimulationPoint(x, y, angle);
     }
@@ -17,7 +17,7 @@
       get { return start; }
     }
 
-    public IList<Movement> Movements 
+    public IList<Movement> Movements
     {
       get { return movements/*.AsReadOnly()*/; }
     }

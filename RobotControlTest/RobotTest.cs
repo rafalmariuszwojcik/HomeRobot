@@ -33,7 +33,7 @@ namespace Tests
         calculator.Signal(Encoder.Right, i, (long)(DateTime.Now - start).TotalMilliseconds);
         Task.Delay(90).Wait();
       }
-      
+
       Assert.Pass();
     }
 
@@ -53,7 +53,7 @@ namespace Tests
       signals.Add(new EncoderCommand() { Index = 1, Distance = 3, Milis = 350 });
       signals.Add(new EncoderCommand() { Index = 1, Distance = 4, Milis = 450 });
       signals.Add(new EncoderCommand() { Index = 1, Distance = 5, Milis = 550 });
-      
+
       var result = OdometryHelper.Calculate(550, signals);
     }
 
@@ -77,7 +77,7 @@ namespace Tests
       var m8 = RobotHelper.CalculateMovement(new SimulationPoint(0.0, 0.0, -45.0), 2.0, 2.0, geometry);
 
       var m9 = RobotHelper.CalculateMovement(new SimulationPoint(0.0, 0.0, -90.0), 0.0, 2.0, geometry);
-      
+
       var movementEx1 = RobotHelper.CalculateMovement(startPoint, 2.0, 2.0, geometry);
       var movementEx2 = RobotHelper.CalculateMovement(startPoint, 1.999999, 2.0, geometry);
       var movementEx3 = RobotHelper.CalculateMovement(startPoint, 2.0, 1.999999, geometry);

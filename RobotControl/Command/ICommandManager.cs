@@ -1,6 +1,4 @@
-﻿using RobotControl.Messages;
-
-namespace RobotControl.Command
+﻿namespace RobotControl.Command
 {
   public interface ICommandManager
   {

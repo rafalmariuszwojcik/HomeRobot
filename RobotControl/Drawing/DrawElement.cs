@@ -2,7 +2,7 @@
 
 namespace RobotControl.Drawing
 {
-  public abstract class DrawElement<T> : DrawElementBase where T: Simulation.ISimulationItem
+  public abstract class DrawElement<T> : DrawElementBase where T : Simulation.ISimulationItem
   {
     public DrawElement(T simulationItem) : base(simulationItem)
     {

@@ -21,17 +21,17 @@ namespace RobotControl.Simulation.Robot
     public int? leftEncoderPoints = null;
     public int? rightEncoderPoints = null;
     private MovementStartPoint startPoint;
-    
+
     public Robot()
       : this(0.0, 0.0, 0.0)
     {
     }
 
-    public Robot(double x, double y, double angle) 
+    public Robot(double x, double y, double angle)
       : base()
     {
       position = new SimulationPoint(x, y, angle);
-      odometry = new Odometry(new Action<double, double>((dl, dr) => 
+      odometry = new Odometry(new Action<double, double>((dl, dr) =>
         {
           MessageReceived(2, dl, 2, dr);
         }
@@ -48,9 +48,9 @@ namespace RobotControl.Simulation.Robot
 
     public IRobotGeometry Geometry => robotGeometry;
 
-    public void AddMovement(double distance, double angle) 
+    public void AddMovement(double distance, double angle)
     {
-      if (route == null) 
+      if (route == null)
       {
         route = new Route(position.X, position.Y, position.Angle);
       }
@@ -108,7 +108,7 @@ namespace RobotControl.Simulation.Robot
       SetState();
     }
 
-    private int CalcDifference(int oldValue, int newValue, int direction) 
+    private int CalcDifference(int oldValue, int newValue, int direction)
     {
       const int FORWARD = 2;
       const int BACKWARD = 3;
@@ -120,11 +120,11 @@ namespace RobotControl.Simulation.Robot
       {
         result = direction == FORWARD ? MAXVALUE + result + 1 : result - MAXVALUE - 1;
       }
-      
+
       return result;
     }
-    
-    public void WheelMove(double left, double right) 
+
+    public void WheelMove(double left, double right)
     {
       var angleInRadians = (left - right) / (RobotCalculator.RobotRadius * 2F);
       var centerDistance = (left + right) / 2.0;
@@ -139,7 +139,7 @@ namespace RobotControl.Simulation.Robot
         vector = Math.Sqrt(Math.Pow(vectorX, 2) + Math.Pow(vectorY, 2));
         vectorAngle = (Math.Atan(vectorY / vectorX));
       }
-      else 
+      else
       {
         vector = centerDistance;
         vectorAngle = DegreesToRadians(90.0);
@@ -148,7 +148,7 @@ namespace RobotControl.Simulation.Robot
       vectorAngle -= DegreesToRadians(position.Angle);
       var deltaX = vector * Math.Cos(vectorAngle);
       var deltaY = vector * Math.Sin(vectorAngle);
-          
+
       if (angleInRadians * centerDistance >= 0.0)
       {
         position.Y -= (float)deltaY;
@@ -189,7 +189,7 @@ namespace RobotControl.Simulation.Robot
       var deltaY = vector * Math.Sin(vectorAngle);
 
       var result = new SimulationPoint(startPoint.X, startPoint.Y, startPoint.Angle + RadiansToDegrees(angleInRadians));
-      
+
       if (angleInRadians * centerDistance >= 0.0)
       {
         result.Y -= deltaY;
@@ -211,7 +211,7 @@ namespace RobotControl.Simulation.Robot
       }
     }
 
-    
+
 
     /// <summary>
     /// Data received function.
@@ -232,7 +232,7 @@ namespace RobotControl.Simulation.Robot
     /// <param name="command">The command.</param>
     private void ProcessCommand(ICommand command)
     {
-      if (command is IControllerCommand controllerCommand) 
+      if (command is IControllerCommand controllerCommand)
       {
         SetEnginesPower(controllerCommand);
       }

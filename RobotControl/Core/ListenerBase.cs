@@ -1,6 +1,6 @@
-﻿using System;
+﻿using RobotControl.Communication;
+using System;
 using System.Collections.Generic;
-using RobotControl.Communication;
 
 namespace RobotControl.Core
 {
