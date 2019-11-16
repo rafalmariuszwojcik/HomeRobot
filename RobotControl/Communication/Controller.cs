@@ -9,7 +9,7 @@ namespace RobotControl.Communication
 {
   public class Controller : ChannelBaseEx<GamePad, IControllerCommand, ConfigurationBase>
   {
-    public override void InternalSend(GamePad channel, IControllerCommand data)
+    protected override void InternalSend(GamePad channel, IControllerCommand data)
     {
       throw new NotImplementedException();
     }

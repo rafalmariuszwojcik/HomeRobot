@@ -20,6 +20,11 @@ namespace RobotControl.Communication
     where C : IConfiguration
   {
     /// <summary>
+    /// The lock data object.
+    /// </summary>
+    private readonly object lockData = new object();
+
+    /// <summary>
     /// The channel object.
     /// </summary>
     private T channel;
@@ -47,51 +52,30 @@ namespace RobotControl.Communication
     /// </value>
     public bool Active
     {
-      get { return channel != null; }
+      get 
+      {
+        lock (lockData) 
+        {
+          return channel != null;
+        }
+      }
       
       set
       {
-        if (Active != value)
+        lock (lockData) 
         {
-          if (value)
+          if (Active != value)
           {
-            Open();
-          }
-          else
-          {
-            Close();
+            if (value)
+            {
+              Open();
+            }
+            else
+            {
+              Close();
+            }
           }
         }
-      }
-    }
-
-    /// <summary>
-    /// Opens the chanell.
-    /// </summary>
-    public void Open()
-    {
-      Close();
-      try
-      {
-        channel = InternalOpen(Configuration);
-      }
-      catch (Exception)
-      {
-        Close();
-        throw;
-      }
-    }
-
-    /// <summary>
-    /// Closes the chanell.
-    /// </summary>
-    public void Close()
-    {
-      if (channel != null)
-      {
-        InternalClose(channel);
-        channel.Dispose();
-        channel = default;
       }
     }
 
@@ -101,12 +85,15 @@ namespace RobotControl.Communication
     /// <param name="data">The data.</param>
     public void Send(D data)
     {
-      if (channel == null)
+      lock (lockData) 
       {
-        throw new NotImplementedException();
-      }
+        if (!Active)
+        {
+          throw new NotImplementedException();
+        }
 
-      InternalSend(channel, data);
+        InternalSend(channel, data);
+      }
     }
 
     /// <summary>
@@ -129,7 +116,7 @@ namespace RobotControl.Communication
     {
       if (disposing)
       {
-        Close();
+        Active = false;
       }
     }
 
@@ -151,7 +138,37 @@ namespace RobotControl.Communication
     /// </summary>
     /// <param name="channel">The channel.</param>
     /// <param name="commands">The commands.</param>
-    public abstract void InternalSend(T channel, D data);
+    protected abstract void InternalSend(T channel, D data);
+
+    /// <summary>
+    /// Opens the chanell.
+    /// </summary>
+    private void Open()
+    {
+      Close();
+      try
+      {
+        channel = InternalOpen(Configuration);
+      }
+      catch (Exception)
+      {
+        Close();
+        throw;
+      }
+    }
+
+    /// <summary>
+    /// Closes the chanell.
+    /// </summary>
+    private void Close()
+    {
+      if (channel != null)
+      {
+        InternalClose(channel);
+        channel.Dispose();
+        channel = default;
+      }
+    }
   }
 
 

@@ -28,14 +28,22 @@ namespace RobotControl.Communication
     where C: IConfiguration
   {
     /// <summary>
-    /// Opens the chanell.
+    /// Gets or sets a value indicating whether this <see cref="IChanellEx{T, C}"/> is active (opened).
     /// </summary>
-    void Open();
+    /// <value>
+    /// <c>true</c> if active; otherwise, <c>false</c>.
+    /// </value>
+    bool Active { get; set; }
 
     /// <summary>
-    /// Closes the chanell.
+    /// Gets name of the chanell.
     /// </summary>
-    void Close();
+    string Name { get; }
+
+    /// <summary>
+    /// Gets the chanell's configuration.
+    /// </summary>
+    C Configuration { get; }
 
     /// <summary>
     /// Sends data through the channel.
@@ -53,24 +61,6 @@ namespace RobotControl.Communication
     /// Occurs when incoming data received.
     /// </summary>
     event EventHandler<IDataReceivedEventArgsEx<D>> DataReceived;
-
-    /// <summary>
-    /// Gets or sets a value indicating whether this <see cref="IChanellEx{T, C}"/> is active (opened).
-    /// </summary>
-    /// <value>
-    /// <c>true</c> if active; otherwise, <c>false</c>.
-    /// </value>
-    bool Active { get; set; }
-
-    /// <summary>
-    /// Gets name of the chanell.
-    /// </summary>
-    string Name { get; }
-
-    /// <summary>
-    /// Gets the chanell's configuration.
-    /// </summary>
-    C Configuration { get; }
   }
 
   public interface IChannel : IDisposable
