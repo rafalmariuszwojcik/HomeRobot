@@ -9,14 +9,14 @@ namespace RobotControl.Communication
 {
   public class CommunicationManager : Singleton<CommunicationManager>, ICommunicationManager
   {
-    private readonly IDictionary<Type, Func<ConfigurationBase, IChannel>> channelFromConfiguration = new Dictionary<Type, Func<ConfigurationBase, IChannel>>()
+    private readonly IDictionary<Type, Func<ConfigurationBase, IChanellExBase>> channelFromConfiguration = new Dictionary<Type, Func<ConfigurationBase, IChanellExBase>>()
     {
-      { typeof(SerialConfiguration), new Func<ConfigurationBase, IChannel>(x => new Serial((SerialConfiguration)x)) },
-      { typeof(FakeConfiguration), new Func<ConfigurationBase, IChannel>(x => new Fake((FakeConfiguration)x)) },
+      { typeof(SerialConfiguration), new Func<ConfigurationBase, IChanellExBase>(x => new Serial((SerialConfiguration)x)) },
+      { typeof(FakeConfiguration), new Func<ConfigurationBase, IChanellExBase>(x => new Fake((FakeConfiguration)x)) },
     };
     
-    private readonly IList<IChannel> items = new List<IChannel>();
-    public IEnumerable<IChannel> Items => items;
+    private readonly IList<IChanellExBase> items = new List<IChanellExBase>();
+    public IEnumerable<IChanellExBase> Items => items;
 
     public CommunicationManager()
     {
@@ -27,11 +27,11 @@ namespace RobotControl.Communication
       base.TearDown();
       foreach (var item in items) 
       {
-        item.Close();
+        item.Active = false;
       }
     }
 
-    public void Add(IChannel channel)
+    public void Add(IChanellExBase channel)
     {
       if (!items.Contains(channel))
       {
@@ -39,11 +39,11 @@ namespace RobotControl.Communication
       }
     }
 
-    public void Remove(IChannel channel)
+    public void Remove(IChanellExBase channel)
     {
       if (items.Contains(channel))
       {
-        channel.Close();
+        channel.Active = false;
         items.Remove(channel);
       }
     }

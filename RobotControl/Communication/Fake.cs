@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace RobotControl.Communication
 {
-  public class Fake : ChannelBase<FakeRobot, FakeConfiguration>
+  public class Fake : ChannelBaseEx<FakeRobot, ICommand, FakeConfiguration>
   {
     public Fake(FakeConfiguration configuration) : base(configuration)
     {
@@ -29,16 +29,6 @@ namespace RobotControl.Communication
     {
     }
 
-    public override void InternalSend(FakeRobot channel, ICommand[] commands)
-    {
-      throw new NotImplementedException();
-    }
-
-    public override void InternalSend(FakeRobot channel, string data)
-    {
-      throw new NotImplementedException();
-    }
-
     /// <summary>
     /// Called when robot state changed.
     /// </summary>
@@ -49,6 +39,11 @@ namespace RobotControl.Communication
       var commands = new List<ICommand>() { new RobotMoveCommand { LeftDistance = e.LeftEngineState.Distance, RightDistance = e.RightEngineState.Distance} };
       commands.Add(new EngineSpeedCommand() { Index = 0, AvgSpeed = 30 });
       CommandManager.Instance.DataReceived(this, commands);
+    }
+
+    protected override void InternalSend(FakeRobot channel, ICommand data)
+    {
+      throw new NotImplementedException();
     }
   }
 }

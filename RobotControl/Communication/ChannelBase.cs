@@ -35,6 +35,15 @@ namespace RobotControl.Communication
     public event EventHandler<IDataReceivedEventArgsEx<D>> DataReceived;
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="ChannelBaseEx{T, D, C}"/> class.
+    /// </summary>
+    /// <param name="configuration">The configuration.</param>
+    public ChannelBaseEx(C configuration)
+    {
+      Configuration = configuration;
+    }
+
+    /// <summary>
     /// Gets name of the chanell.
     /// </summary>
     public string Name { get => GetType().Name; }
@@ -42,7 +51,8 @@ namespace RobotControl.Communication
     /// <summary>
     /// Gets the chanell's configuration.
     /// </summary>
-    public C Configuration { get; }
+    //public C Configuration { get; private set; }
+    public IConfiguration Configuration { get; private set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether this <see cref="T:RobotControl.Communication.IChanellEx`2" /> is active (opened).
@@ -120,6 +130,12 @@ namespace RobotControl.Communication
       }
     }
 
+    protected void OnDataReceived(D data)
+    {
+      DataReceived?.Invoke(this, new DataReceivedEventArgsEx<D>(data));
+      //MessageManager.Instance.DataReceived(this, new[] { data });
+    }
+
     /// <summary>
     /// Internal open communication chanell method.
     /// </summary>
@@ -148,7 +164,7 @@ namespace RobotControl.Communication
       Close();
       try
       {
-        channel = InternalOpen(Configuration);
+        channel = InternalOpen((C)Configuration);
       }
       catch (Exception)
       {
@@ -172,7 +188,7 @@ namespace RobotControl.Communication
   }
 
 
-  public abstract class ChannelBase<T, U> : DisposableBase, IChannel<U>
+  public abstract class ChannelBase_old<T, U> : DisposableBase, IChannel_old<U>
     where T: IDisposable
     where U: ConfigurationBase
   {
@@ -202,7 +218,7 @@ namespace RobotControl.Communication
 
     public event EventHandler<DataReceivedEventArgs> DataReceived;
 
-    public ChannelBase(U configuration)
+    public ChannelBase_old(U configuration)
     {
       this.configuration = configuration;
     }

@@ -15,7 +15,7 @@ namespace RobotControl.Windows.Views
       var port = CommunicationManager.Instance.Items.Where(x => x.Active).FirstOrDefault();
       if (port != null)
       {
-        port.Send(uxInputText.Text);
+        //port.Send(uxInputText.Text);
         uxInputText.Clear();
       }
     }

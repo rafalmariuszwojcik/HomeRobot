@@ -1,9 +1,8 @@
-﻿using RobotControl.Command;
-using System.IO.Ports;
+﻿using System.IO.Ports;
 
 namespace RobotControl.Communication
 {
-  public class Serial : ChannelBase<SerialPort, SerialConfiguration>
+  public class Serial : ChannelBaseEx<SerialPort, string, SerialConfiguration>
   {
     public Serial(SerialConfiguration configuration) : base(configuration)
     {
@@ -40,14 +39,19 @@ namespace RobotControl.Communication
       }
     }
 
-    public override void InternalSend(SerialPort channel, ICommand[] commands)
+    protected override void InternalSend(SerialPort channel, string data)
     {
-      //channel.Write(data);
+      throw new System.NotImplementedException();
     }
+    /*
+public override void InternalSend(SerialPort channel, ICommand[] commands)
+{
+ //channel.Write(data);
+}
 
-    public override void InternalSend(SerialPort channel, string data)
-    {
-      channel.Write(data);
-    }
+public override void InternalSend(SerialPort channel, string data)
+{
+ channel.Write(data);
+}*/
   }
 }
