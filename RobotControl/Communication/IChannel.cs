@@ -1,14 +1,24 @@
-﻿using RobotControl.Command;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace RobotControl.Communication
 {
   /// <summary>
+  /// Channel configuration interface.
+  /// </summary>
+  public interface IConfiguration
+  {
+    /// <summary>
+    /// Gets or sets configuration's name.
+    /// </summary>
+    string Name { get; set; }
+  }
+
+  /// <summary>
   /// Data received event argument.
   /// </summary>
   /// <typeparam name="T">Type of received data.</typeparam>
-  public interface IDataReceivedEventArgsEx<D>
+  public interface IDataReceivedEventArgs<D>
     where D : class
   {
     /// <summary>
@@ -17,7 +27,7 @@ namespace RobotControl.Communication
     D Data { get; }
   }
 
-  public interface IChanellExBase : IDisposable
+  public interface IChannel : IDisposable
   {
     /// <summary>
     /// Gets or sets a value indicating whether this <see cref="IChanellEx{T, C}"/> is active (opened).
@@ -44,7 +54,7 @@ namespace RobotControl.Communication
   /// <typeparam name="D">Type of chanell data.</typeparam>
   /// <typeparam name="C">Chanell's configuration type.</typeparam>
   /// <seealso cref="System.IDisposable" />
-  public interface IChanellEx<D, C> : IChanellExBase
+  public interface IChannel<D, C> : IChannel
     where D : class
     where C : IConfiguration
   {
@@ -68,53 +78,23 @@ namespace RobotControl.Communication
     /// <summary>
     /// Occurs when incoming data received.
     /// </summary>
-    event EventHandler<IDataReceivedEventArgsEx<D>> DataReceived;
+    event EventHandler<IDataReceivedEventArgs<D>> DataReceived;
   }
 
-  public interface IChannel : IDisposable
-  {
-    void Open();
-    void Close();
-    void Send(ICommand[] commands);
-    void Send(string data);
-    event EventHandler<DataReceivedEventArgs> DataReceived;
-    bool Active { get; set; }
-    string Name { get; }
-    IConfiguration Configuration { get; }
-  }
-
-  public interface IChannel_old<U> : IChannel where U : ConfigurationBase
-  {
-  }
-
-  public interface IDataReceivedEventArgs
-  {
-    string Data { get; }
-  }
-
-  public class DataReceivedEventArgs : EventArgs, IDataReceivedEventArgs
-  {
-    public DataReceivedEventArgs(string data)
-    {
-      Data = data;
-    }
-
-    public string Data { get; }
-  }
-
-  public class DataReceivedEventArgsEx<D> : EventArgs, IDataReceivedEventArgsEx<D>
+  /// <summary>
+  /// Data received event data.
+  /// </summary>
+  /// <typeparam name="D"></typeparam>
+  /// <seealso cref="System.EventArgs" />
+  /// <seealso cref="RobotControl.Communication.IDataReceivedEventArgs{D}" />
+  public class DataReceivedEventArgs<D> : EventArgs, IDataReceivedEventArgs<D>
     where D : class
   {
-    public DataReceivedEventArgsEx(D data)
+    public DataReceivedEventArgs(D data)
     {
       Data = data;
     }
 
     public D Data { get; }
-  }
-
-  public interface IConfiguration
-  {
-    string Name { get; set; }
   }
 }

@@ -1,6 +1,4 @@
-﻿using RobotControl.Command;
-using RobotControl.Core;
-using RobotControl.Messages;
+﻿using RobotControl.Core;
 using System;
 using System.Collections.Generic;
 
@@ -14,7 +12,7 @@ namespace RobotControl.Communication
   /// <typeparam name="C">Configuration type.</typeparam>
   /// <seealso cref="RobotControl.Core.DisposableBase" />
   /// <seealso cref="RobotControl.Communication.IChanellEx{D, C}" />
-  public abstract class ChannelBaseEx<T, D, C> : DisposableBase, IChanellEx<D, C>
+  public abstract class ChannelBase<T, D, C> : DisposableBase, IChannel<D, C>
     where T : IDisposable
     where D : class
     where C : IConfiguration
@@ -32,13 +30,13 @@ namespace RobotControl.Communication
     /// <summary>
     /// Occurs when incoming data received.
     /// </summary>
-    public event EventHandler<IDataReceivedEventArgsEx<D>> DataReceived;
+    public event EventHandler<IDataReceivedEventArgs<D>> DataReceived;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ChannelBaseEx{T, D, C}"/> class.
     /// </summary>
     /// <param name="configuration">The configuration.</param>
-    public ChannelBaseEx(C configuration)
+    public ChannelBase(C configuration)
     {
       Configuration = configuration;
     }
@@ -132,7 +130,7 @@ namespace RobotControl.Communication
 
     protected void OnDataReceived(D data)
     {
-      DataReceived?.Invoke(this, new DataReceivedEventArgsEx<D>(data));
+      DataReceived?.Invoke(this, new DataReceivedEventArgs<D>(data));
       //MessageManager.Instance.DataReceived(this, new[] { data });
     }
 
@@ -183,112 +181,6 @@ namespace RobotControl.Communication
         InternalClose(channel);
         channel.Dispose();
         channel = default;
-      }
-    }
-  }
-
-
-  public abstract class ChannelBase_old<T, U> : DisposableBase, IChannel_old<U>
-    where T : IDisposable
-    where U : ConfigurationBase
-  {
-    private T channel;
-    private readonly U configuration;
-    public string Name { get => GetType().Name; }
-    public IConfiguration Configuration => configuration;
-
-    public bool Active
-    {
-      get { return channel != null; }
-      set
-      {
-        if (Active != value)
-        {
-          if (value)
-          {
-            Open();
-          }
-          else
-          {
-            Close();
-          }
-        }
-      }
-    }
-
-    public event EventHandler<DataReceivedEventArgs> DataReceived;
-
-    public ChannelBase_old(U configuration)
-    {
-      this.configuration = configuration;
-    }
-
-    public void Open()
-    {
-      Close();
-      try
-      {
-        channel = InternalOpen(configuration);
-      }
-      catch (Exception)
-      {
-        Close();
-        throw;
-      }
-    }
-
-    public void Close()
-    {
-      if (channel != null)
-      {
-        InternalClose(channel);
-        channel.Dispose();
-        channel = default(T);
-      }
-    }
-
-    public void Send(ICommand[] commands)
-    {
-      if (channel == null)
-      {
-        throw new NotImplementedException();
-      }
-
-      InternalSend(channel, commands);
-    }
-
-    public void Send(string data)
-    {
-      if (channel == null)
-      {
-        throw new NotImplementedException();
-      }
-
-      InternalSend(channel, data);
-    }
-
-    /// <summary>
-    /// Internal open communication chanel method.
-    /// </summary>
-    /// <param name="configuration">The configuration.</param>
-    /// <returns>Reference to communication object.</returns>
-    protected abstract T InternalOpen(U configuration);
-
-    protected abstract void InternalClose(T channel);
-    public abstract void InternalSend(T channel, ICommand[] commands);
-    public abstract void InternalSend(T channel, string data);
-
-    protected void OnDataReceived(string data)
-    {
-      DataReceived?.Invoke(this, new DataReceivedEventArgs(data));
-      MessageManager.Instance.DataReceived(this, new[] { data });
-    }
-
-    protected override void Dispose(bool disposing)
-    {
-      if (disposing)
-      {
-        Close();
       }
     }
   }

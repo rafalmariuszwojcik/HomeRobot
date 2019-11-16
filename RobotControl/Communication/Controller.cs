@@ -3,7 +3,7 @@ using System;
 
 namespace RobotControl.Communication
 {
-  public class Controller : ChannelBaseEx<GamePad, IControllerCommand, ConfigurationBase>
+  public class Controller : ChannelBase<GamePad, IControllerCommand, ConfigurationBase>
   {
     public Controller(ConfigurationBase configuration) : base(configuration)
     {

@@ -9,14 +9,14 @@ namespace RobotControl.Communication
 {
   public class CommunicationManager : Singleton<CommunicationManager>, ICommunicationManager
   {
-    private readonly IDictionary<Type, Func<ConfigurationBase, IChanellExBase>> channelFromConfiguration = new Dictionary<Type, Func<ConfigurationBase, IChanellExBase>>()
+    private readonly IDictionary<Type, Func<ConfigurationBase, IChannel>> channelFromConfiguration = new Dictionary<Type, Func<ConfigurationBase, IChannel>>()
     {
-      { typeof(SerialConfiguration), new Func<ConfigurationBase, IChanellExBase>(x => new Serial((SerialConfiguration)x)) },
-      { typeof(FakeConfiguration), new Func<ConfigurationBase, IChanellExBase>(x => new Fake((FakeConfiguration)x)) },
+      { typeof(SerialConfiguration), new Func<ConfigurationBase, IChannel>(x => new Serial((SerialConfiguration)x)) },
+      { typeof(FakeConfiguration), new Func<ConfigurationBase, IChannel>(x => new Fake((FakeConfiguration)x)) },
     };
 
-    private readonly IList<IChanellExBase> items = new List<IChanellExBase>();
-    public IEnumerable<IChanellExBase> Items => items;
+    private readonly IList<IChannel> items = new List<IChannel>();
+    public IEnumerable<IChannel> Items => items;
 
     public CommunicationManager()
     {
@@ -31,7 +31,7 @@ namespace RobotControl.Communication
       }
     }
 
-    public void Add(IChanellExBase channel)
+    public void Add(IChannel channel)
     {
       if (!items.Contains(channel))
       {
@@ -39,7 +39,7 @@ namespace RobotControl.Communication
       }
     }
 
-    public void Remove(IChanellExBase channel)
+    public void Remove(IChannel channel)
     {
       if (items.Contains(channel))
       {

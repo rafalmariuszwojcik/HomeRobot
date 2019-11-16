@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace RobotControl.Communication
 {
-  public class Fake : ChannelBaseEx<FakeRobot, ICommand, FakeConfiguration>
+  public class Fake : ChannelBase<FakeRobot, ICommand, FakeConfiguration>
   {
     public Fake(FakeConfiguration configuration) : base(configuration)
     {

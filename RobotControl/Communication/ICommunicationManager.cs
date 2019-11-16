@@ -4,9 +4,9 @@ namespace RobotControl.Communication
 {
   public interface ICommunicationManager
   {
-    IEnumerable<IChanellExBase> Items { get; }
-    void Add(IChanellExBase channel);
-    void Remove(IChanellExBase channel);
+    IEnumerable<IChannel> Items { get; }
+    void Add(IChannel channel);
+    void Remove(IChannel channel);
     void Save();
   }
 }

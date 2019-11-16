@@ -2,7 +2,7 @@
 
 namespace RobotControl.Communication
 {
-  public class Serial : ChannelBaseEx<SerialPort, string, SerialConfiguration>
+  public class Serial : ChannelBase<SerialPort, string, SerialConfiguration>
   {
     public Serial(SerialConfiguration configuration) : base(configuration)
     {
