@@ -30,7 +30,7 @@ namespace RobotControl.Communication
   public interface IChannel : IDisposable
   {
     /// <summary>
-    /// Gets or sets a value indicating whether this <see cref="IChanellEx{T, C}"/> is active (opened).
+    /// Gets or sets a value indicating whether this <see cref="IChannel"/> is active (opened).
     /// </summary>
     /// <value>
     /// <c>true</c> if active; otherwise, <c>false</c>.
@@ -38,7 +38,7 @@ namespace RobotControl.Communication
     bool Active { get; set; }
 
     /// <summary>
-    /// Gets name of the chanell.
+    /// Gets name of the channel.
     /// </summary>
     string Name { get; }
 
@@ -49,20 +49,15 @@ namespace RobotControl.Communication
   }
 
   /// <summary>
-  /// Communication chanell interface.
+  /// Communication channel interface.
   /// </summary>
-  /// <typeparam name="D">Type of chanell data.</typeparam>
-  /// <typeparam name="C">Chanell's configuration type.</typeparam>
+  /// <typeparam name="D">Type of channel data.</typeparam>
+  /// <typeparam name="C">Channel's configuration type.</typeparam>
   /// <seealso cref="System.IDisposable" />
   public interface IChannel<D, C> : IChannel
     where D : class
     where C : IConfiguration
   {
-    /// <summary>
-    /// Gets the chanell's configuration.
-    /// </summary>
-    //C Configuration { get; }
-
     /// <summary>
     /// Sends data through the channel.
     /// </summary>

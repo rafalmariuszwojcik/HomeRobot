@@ -1,7 +1,7 @@
 ﻿using RobotControl.Command;
 using System;
 
-namespace RobotControl.Communication
+namespace RobotControl.Communication.Controller
 {
   public class Controller : ChannelBase<GamePad, IControllerCommand, ConfigurationBase>
   {

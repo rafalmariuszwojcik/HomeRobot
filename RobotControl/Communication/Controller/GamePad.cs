@@ -1,6 +1,6 @@
 ﻿using RobotControl.Core;
 
-namespace RobotControl.Communication
+namespace RobotControl.Communication.Controller
 {
   public class GamePad : WorkerBase
   {

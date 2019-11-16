@@ -7,11 +7,11 @@ namespace RobotControl.Communication
   /// <summary>
   /// Base class for communication changels.
   /// </summary>
-  /// <typeparam name="T">Chanell type.</typeparam>
-  /// <typeparam name="D">Chanlell's data type.</typeparam>
+  /// <typeparam name="T">Channel type.</typeparam>
+  /// <typeparam name="D">Channel's data type.</typeparam>
   /// <typeparam name="C">Configuration type.</typeparam>
   /// <seealso cref="RobotControl.Core.DisposableBase" />
-  /// <seealso cref="RobotControl.Communication.IChanellEx{D, C}" />
+  /// <seealso cref="RobotControl.Communication.IChannel{D, C}" />
   public abstract class ChannelBase<T, D, C> : DisposableBase, IChannel<D, C>
     where T : IDisposable
     where D : class
@@ -42,18 +42,18 @@ namespace RobotControl.Communication
     }
 
     /// <summary>
-    /// Gets name of the chanell.
+    /// Gets name of the channel.
     /// </summary>
     public string Name { get => GetType().Name; }
 
     /// <summary>
-    /// Gets the chanell's configuration.
+    /// Gets the channel's configuration.
     /// </summary>
     //public C Configuration { get; private set; }
     public IConfiguration Configuration { get; private set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether this <see cref="T:RobotControl.Communication.IChanellEx`2" /> is active (opened).
+    /// Gets or sets a value indicating whether this <see cref="T:RobotControl.Communication.IChannel" /> is active (opened).
     /// </summary>
     /// <value>
     /// <c>true</c> if active; otherwise, <c>false</c>.
@@ -88,7 +88,7 @@ namespace RobotControl.Communication
     }
 
     /// <summary>
-    /// Sends data through the chanell.
+    /// Sends data through the channel.
     /// </summary>
     /// <param name="data">The data.</param>
     public void Send(D data)
@@ -128,6 +128,10 @@ namespace RobotControl.Communication
       }
     }
 
+    /// <summary>
+    /// Called when data received from channel.
+    /// </summary>
+    /// <param name="data">The data.</param>
     protected void OnDataReceived(D data)
     {
       DataReceived?.Invoke(this, new DataReceivedEventArgs<D>(data));
@@ -135,27 +139,27 @@ namespace RobotControl.Communication
     }
 
     /// <summary>
-    /// Internal open communication chanell method.
+    /// Internal open communication channel method.
     /// </summary>
     /// <param name="configuration">The configuration.</param>
     /// <returns>Reference to communication object.</returns>
     protected abstract T InternalOpen(C configuration);
 
     /// <summary>
-    /// Internal close communication chanell.
+    /// Internal close communication channel.
     /// </summary>
     /// <param name="channel">The channel.</param>
     protected abstract void InternalClose(T channel);
 
     /// <summary>
-    /// Internal send data through the chanell.
+    /// Internal send data through the channel.
     /// </summary>
     /// <param name="channel">The channel.</param>
     /// <param name="commands">The commands.</param>
     protected abstract void InternalSend(T channel, D data);
 
     /// <summary>
-    /// Opens the chanell.
+    /// Opens the channel.
     /// </summary>
     private void Open()
     {
@@ -172,7 +176,7 @@ namespace RobotControl.Communication
     }
 
     /// <summary>
-    /// Closes the chanell.
+    /// Closes the channel.
     /// </summary>
     private void Close()
     {

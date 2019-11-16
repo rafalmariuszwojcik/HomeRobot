@@ -78,10 +78,10 @@
     <Compile Include="Communication\ChannelBase.cs" />
     <Compile Include="Communication\CommunicationManager.cs" />
     <Compile Include="Communication\ConfigurationBase.cs" />
-    <Compile Include="Communication\Controller.cs" />
+    <Compile Include="Communication\Controller\Controller.cs" />
     <Compile Include="Communication\Fake.cs" />
     <Compile Include="Communication\FakeConfiguration.cs" />
-    <Compile Include="Communication\GamePad.cs" />
+    <Compile Include="Communication\Controller\GamePad.cs" />
     <Compile Include="Communication\IChannel.cs" />
     <Compile Include="Communication\ICommunicationManager.cs" />
     <Compile Include="Communication\Serial.cs" />
