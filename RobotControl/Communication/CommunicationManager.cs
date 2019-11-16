@@ -1,4 +1,5 @@
-﻿using RobotControl.Core;
+﻿using RobotControl.Communication.Controller;
+using RobotControl.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,6 +14,7 @@ namespace RobotControl.Communication
     {
       { typeof(SerialConfiguration), new Func<ConfigurationBase, IChannel>(x => new Serial((SerialConfiguration)x)) },
       { typeof(FakeConfiguration), new Func<ConfigurationBase, IChannel>(x => new Fake((FakeConfiguration)x)) },
+      { typeof(ControllerConfiguration), new Func<ConfigurationBase, IChannel>(x => new RobotControl.Communication.Controller.Controller((ControllerConfiguration)x)) },
     };
 
     private readonly IList<IChannel> items = new List<IChannel>();

@@ -3,25 +3,25 @@ using System;
 
 namespace RobotControl.Communication.Controller
 {
-  public class Controller : ChannelBase<GamePad, IControllerCommand, ConfigurationBase>
+  public class Controller : ChannelBase<GamePad, IControllerCommand, ControllerConfiguration>
   {
-    public Controller(ConfigurationBase configuration) : base(configuration)
+    public Controller(ControllerConfiguration configuration) : base(configuration)
     {
     }
 
     protected override void InternalSend(GamePad channel, IControllerCommand data)
     {
-      throw new NotImplementedException();
+      ;
     }
 
     protected override void InternalClose(GamePad channel)
     {
-      throw new NotImplementedException();
+      ;
     }
 
-    protected override GamePad InternalOpen(ConfigurationBase configuration)
+    protected override GamePad InternalOpen(ControllerConfiguration configuration)
     {
-      throw new NotImplementedException();
+      return new GamePad();
     }
   }
 }
