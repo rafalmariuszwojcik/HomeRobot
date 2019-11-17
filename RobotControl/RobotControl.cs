@@ -288,11 +288,11 @@ namespace RobotControl
     private void timer1_Tick(object sender, EventArgs e)
     {
       //return;
-      if (!controller.Update()) { return; }
+      //if (!controller.Update()) { return; }
       //this.Text = controller.leftThumb.X.ToString();
-      var cmd = new List<ICommand>();
-      cmd.Add(new ControllerCommand { X = controller.leftThumb.X, Y = controller.leftThumb.Y, RX = controller.rightThumb.X });
-      CommandManager.Instance.DataReceived(this, cmd);
+      //var cmd = new List<ICommand>();
+      //cmd.Add(new ControllerCommand { X = controller.leftThumb.X, Y = controller.leftThumb.Y, RX = controller.rightThumb.X });
+      //CommandManager.Instance.DataReceived(this, cmd);
     }
   }
 }

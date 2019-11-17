@@ -2,8 +2,8 @@
 {
   public struct Point2D
   {
-    private Length x;
-    private Length y;
+    private readonly Length x;
+    private readonly Length y;
 
     public Point2D(double x, double y, MeasurementUnit unit = MeasurementUnit.Milimeter)
     {

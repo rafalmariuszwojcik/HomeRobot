@@ -36,7 +36,7 @@ namespace RobotControl.Communication
     /// Initializes a new instance of the <see cref="ChannelBaseEx{T, D, C}"/> class.
     /// </summary>
     /// <param name="configuration">The configuration.</param>
-    public ChannelBase(C configuration)
+    protected ChannelBase(C configuration)
     {
       Configuration = configuration;
     }
