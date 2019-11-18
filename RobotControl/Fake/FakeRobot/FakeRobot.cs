@@ -1,5 +1,6 @@
 ﻿using RobotControl.Command;
 using RobotControl.Command.Controller;
+using RobotControl.Command.Robot;
 using RobotControl.Core;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace RobotControl.Fake.FakeRobot
   /// <summary>
   /// Fake robot state structure.
   /// </summary>
+  [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "<Pending>")]
   public struct FakeRobotState
   {
     /// <summary>
@@ -111,7 +113,12 @@ namespace RobotControl.Fake.FakeRobot
         {
           if (x is ControllerStateCommand controllerCommand)
           {
-            SetPower(controllerCommand);
+            //SetPower(controllerCommand);
+          }
+          else if (x is IRobotEnginesPowerCommand enginesPowerCommand) 
+          {
+            leftEngine.Power = enginesPowerCommand.LeftEnginePower;
+            rightEngine.Power = enginesPowerCommand.RightEnginePower;
           }
         }
       );

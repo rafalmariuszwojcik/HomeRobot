@@ -1,5 +1,6 @@
 ﻿using RobotControl.Command;
 using RobotControl.Command.Controller;
+using RobotControl.Command.Robot;
 using RobotControl.Communication;
 using RobotControl.Core;
 using System;
@@ -279,8 +280,9 @@ namespace RobotControl.Simulation.Robot
         directionR = Math.Sign(-turn);
       }
 
-      //leftEngine.Power = powerL * directionL;
-      //rightEngine.Power = powerR * directionR;
+      var engineCommand = new RobotEnginesPowerCommand(powerL * directionL, powerR * directionR);
+      var controllerVibrationCommand = new ControllerVibrationCommand(powerL, powerR);
+      CommandManager.Instance.DataReceived(this, new List<ICommand> { engineCommand, controllerVibrationCommand });
     }
 
     void IListener<IControllerCommand>.DataReceived(IChannel channel, IEnumerable<IControllerCommand> data)

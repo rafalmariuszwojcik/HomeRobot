@@ -3,7 +3,7 @@
 namespace RobotControl.Command.Controller
 {
   /// <summary>
-  /// Manual controller command (GamePad).
+  /// Manual controller state command (GamePad).
   /// </summary>
   /// <seealso cref="RobotControl.Command.IControllerCommand" />
   [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "<Pending>")]

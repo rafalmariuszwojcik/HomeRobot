@@ -63,7 +63,9 @@
     <Compile Include="Command\CommandFactory.cs" />
     <Compile Include="Command\CommandListener.cs" />
     <Compile Include="Command\CommandManager.cs" />
+    <Compile Include="Command\Controller\ControllerVibrationCommand.cs" />
     <Compile Include="Command\Controller\IControllerStateCommand.cs" />
+    <Compile Include="Command\Controller\IControllerVibrationCommand.cs" />
     <Compile Include="Command\EncoderCommand.cs" />
     <Compile Include="Command\EngineAvgSpeedCommand.cs" />
     <Compile Include="Command\EnginePwmCommand.cs" />
@@ -77,6 +79,8 @@
     <Compile Include="Command\RobotMoveCommand.cs" />
     <Compile Include="Command\Controller\ControllerStateCommand.cs" />
     <Compile Include="Command\Robot\IRobotCommand.cs" />
+    <Compile Include="Command\Robot\IRobotEnginesPowerCommand.cs" />
+    <Compile Include="Command\Robot\RobotEnginesPowerCommand.cs" />
     <Compile Include="Communication\ChannelBase.cs" />
     <Compile Include="Communication\CommunicationManager.cs" />
     <Compile Include="Communication\ConfigurationBase.cs" />

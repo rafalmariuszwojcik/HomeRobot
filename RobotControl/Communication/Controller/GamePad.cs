@@ -131,6 +131,11 @@ namespace RobotControl.Communication.Controller
       if (signal) 
       {
         OnStateChanged();
+        /*
+        var vib = new Vibration();
+        vib.LeftMotorSpeed = 60000;
+        controller.SetVibration(vib);
+        */
       }
     }
 
