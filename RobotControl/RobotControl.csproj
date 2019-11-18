@@ -76,6 +76,7 @@
     <Compile Include="Command\IEngineCommand.cs" />
     <Compile Include="Command\RobotMoveCommand.cs" />
     <Compile Include="Command\Controller\ControllerStateCommand.cs" />
+    <Compile Include="Command\Robot\IRobotCommand.cs" />
     <Compile Include="Communication\ChannelBase.cs" />
     <Compile Include="Communication\CommunicationManager.cs" />
     <Compile Include="Communication\ConfigurationBase.cs" />
