@@ -1,4 +1,5 @@
 ﻿using RobotControl.Command;
+using RobotControl.Command.Controller;
 using RobotControl.Core;
 using System;
 using System.Collections.Generic;
@@ -108,7 +109,7 @@ namespace RobotControl.Fake.FakeRobot
     {
       Parallel.ForEach(commands, x =>
         {
-          if (x is ControllerCommand controllerCommand)
+          if (x is ControllerStateCommand controllerCommand)
           {
             SetPower(controllerCommand);
           }
@@ -120,22 +121,22 @@ namespace RobotControl.Fake.FakeRobot
     /// Sets engine's power.
     /// </summary>
     /// <param name="controllerCommand">The controller command.</param>
-    private void SetPower(ControllerCommand controllerCommand)
+    private void SetPower(IControllerStateCommand controllerCommand)
     {
-      var powerL = Math.Abs(controllerCommand.Y);
-      var directionL = Math.Sign(controllerCommand.Y);
+      var powerL = Math.Abs(controllerCommand.LeftThumb.Y);
+      var directionL = Math.Sign(controllerCommand.LeftThumb.Y);
       var powerR = powerL;
       var directionR = directionL;
 
-      var turn = controllerCommand.X;
+      var turn = controllerCommand.LeftThumb.X;
 
-      powerR -= (turn > 0.0 ? turn : 0.0F);
-      powerR = powerR < 0.0 ? 0.0F : powerR;
+      powerR -= (turn > 0 ? turn : 0);
+      powerR = powerR < 0 ? 0 : powerR;
 
-      powerL -= (turn < 0.0 ? -turn : 0.0F);
-      powerL = powerL < 0.0 ? 0.0F : powerL;
+      powerL -= (turn < 0 ? -turn : 0);
+      powerL = powerL < 0 ? 0 : powerL;
 
-      if (!(powerL > 0.0 || powerR > 0.0))
+      if (!(powerL > 0 || powerR > 0))
       {
         powerL = powerR = Math.Abs(turn);
         directionL = Math.Sign(turn);

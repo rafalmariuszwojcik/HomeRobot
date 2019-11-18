@@ -1,4 +1,5 @@
 ﻿using RobotControl.Command;
+using RobotControl.Command.Controller;
 using System;
 using System.Collections.Generic;
 
@@ -30,7 +31,7 @@ namespace RobotControl.Communication.Controller
     private void GamePad_StateChanged(object sender, IGamePadStateChangedEventArgs e)
     {
       var cmd = new List<ICommand>();
-      cmd.Add(new ControllerCommand { X = e.LeftThumb.X, Y = e.LeftThumb.Y, RX = e.RightThumb.X });
+      cmd.Add(new ControllerStateCommand(e.LeftThumb, e.RightThumb, e.LeftTrigger, e.RightTrigger));
       CommandManager.Instance.DataReceived(this, cmd);
     }
   }
