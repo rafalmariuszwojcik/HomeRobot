@@ -1,7 +1,9 @@
 ﻿using RobotControl.Command;
+using RobotControl.Command.Controller;
 using RobotControl.Communication;
 using RobotControl.Core;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RobotControl.Simulation
 {
@@ -19,6 +21,7 @@ namespace RobotControl.Simulation
       foreach (var item in Items)
       {
         (item as ICommandListener)?.DataReceived(channel, data);
+        (item as IListener<IControllerCommand>)?.DataReceived(channel, data.OfType<IControllerCommand>().ToList());
       }
     }
   }
