@@ -24,7 +24,7 @@ namespace RobotControl.Communication.Fake
     /// <param name="configuration">The configuration.</param>
     public FakeChannel(FakeConfiguration configuration) : base(configuration)
     {
-      commandListener = new CommandListener(x => ProcessCommands(x));
+      commandListener = new CommandListener(x => Send(x));
     }
 
     /// <summary>
@@ -72,6 +72,8 @@ namespace RobotControl.Communication.Fake
       var commands = new List<ICommand>() { new RobotMoveCommand { LeftDistance = e.LeftEngineState.Distance, RightDistance = e.RightEngineState.Distance } };
       commands.Add(new EngineSpeedCommand() { Index = 0, Speed = e.LeftEngineState.Speed, AvgSpeed = e.LeftEngineState.Speed });
       commands.Add(new EngineSpeedCommand() { Index = 1, Speed = e.RightEngineState.Speed, AvgSpeed = e.RightEngineState.Speed });
+      commands.Add(new RobotEngineStateCommand(EngineId.Left, e.LeftEngineState.Speed, 60));
+      commands.Add(new RobotEngineStateCommand(EngineId.Right, e.LeftEngineState.Speed, 60));
       CommandManager.Instance.BroadcastData(this, commands);
     }
 
@@ -87,16 +89,6 @@ namespace RobotControl.Communication.Fake
         channel.LeftEngine.Power = enginesPowerCommand.LeftEnginePower;
         channel.RightEngine.Power = enginesPowerCommand.RightEnginePower;
       }
-    }
-
-    /// <summary>
-    /// Processes the commands.
-    /// </summary>
-    /// <remarks>Execute incoming commands on <see cref=""/>FakeRobot</see> instance.</remarks>
-    /// <param name="commands">The commands.</param>
-    private void ProcessCommands(IEnumerable<ICommand> commands)
-    {
-      Send(commands);
     }
   }
 }

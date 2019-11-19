@@ -1,5 +1,6 @@
 ﻿using RobotControl.Command;
 using RobotControl.Command.Controller;
+using RobotControl.Command.Robot;
 using RobotControl.Core;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace RobotControl.Communication.Controller
   /// Manual controller communication channel. Supports robot controling by GamePad device.
   /// </summary>
   /// <seealso cref="RobotControl.Communication.ChannelBase{RobotControl.Communication.Controller.GamePad, RobotControl.Command.Controller.IControllerCommand, RobotControl.Communication.Controller.ControllerConfiguration}" />
-  public class ManualController : ChannelBase<GamePad, IControllerCommand, ControllerConfiguration>
+  public class ManualController : ChannelBase<GamePad, ICommand, ControllerConfiguration>
   {
     /// <summary>
     /// The command listener.
@@ -25,7 +26,7 @@ namespace RobotControl.Communication.Controller
     /// <param name="configuration">The configuration.</param>
     public ManualController(ControllerConfiguration configuration) : base(configuration)
     {
-      commandListener = new CommandListener(x => ProcessCommands(x));
+      commandListener = new CommandListener(x => Send(x));
     }
 
     /// <summary>
@@ -46,9 +47,12 @@ namespace RobotControl.Communication.Controller
     /// </summary>
     /// <param name="channel">The channel.</param>
     /// <param name="data"></param>
-    protected override void InternalSend(GamePad channel, IControllerCommand data)
+    protected override void InternalSend(GamePad channel, ICommand data)
     {
-      ;
+      if (data is IRobotEngineStateCommand robotEngineStateCommand) 
+      { 
+
+      }
     }
 
     /// <summary>
@@ -87,18 +91,6 @@ namespace RobotControl.Communication.Controller
       };
 
       CommandManager.Instance.BroadcastData(this, cmd);
-    }
-
-    /// <summary>
-    /// Processes the incoming commands.
-    /// </summary>
-    /// <param name="commands">The commands.</param>
-    private void ProcessCommands(IEnumerable<ICommand> commands)
-    {
-      Parallel.ForEach(commands, x =>
-      {
-        //if (x is )
-      });
     }
   }
 }
