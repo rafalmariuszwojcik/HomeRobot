@@ -95,10 +95,7 @@ namespace RobotControl.Communication.Fake
     /// <param name="commands">The commands.</param>
     private void ProcessCommands(IEnumerable<ICommand> commands)
     {
-      if (Active)  
-      {
-        Send(commands);
-      }
+      Send(commands);
     }
   }
 }

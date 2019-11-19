@@ -49,7 +49,6 @@ namespace RobotControl.Communication
     /// <summary>
     /// Gets the channel's configuration.
     /// </summary>
-    //public C Configuration { get; private set; }
     public IConfiguration Configuration { get; private set; }
 
     /// <summary>
@@ -91,16 +90,17 @@ namespace RobotControl.Communication
     /// Sends data through the channel.
     /// </summary>
     /// <param name="data">The data.</param>
-    public void Send(D data)
+    public bool Send(D data)
     {
       lock (lockData)
       {
-        if (!Active)
+        if (Active)
         {
-          throw new NotImplementedException();
+          InternalSend(channel, data);
+          return true;
         }
 
-        InternalSend(channel, data);
+        return false;
       }
     }
 
@@ -108,12 +108,17 @@ namespace RobotControl.Communication
     /// Sends data through the channel.
     /// </summary>
     /// <param name="data">The data.</param>
-    public void Send(IEnumerable<D> data)
+    public bool Send(IEnumerable<D> data)
     {
       foreach (var item in data)
       {
-        Send(item);
+        if (!Send(item)) 
+        {
+          return false;
+        }
       }
+
+      return true;
     }
 
     /// <summary>
@@ -135,7 +140,6 @@ namespace RobotControl.Communication
     protected void OnDataReceived(D data)
     {
       DataReceived?.Invoke(this, new DataReceivedEventArgs<D>(data));
-      //MessageManager.Instance.DataReceived(this, new[] { data });
     }
 
     /// <summary>

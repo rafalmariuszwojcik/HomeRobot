@@ -62,13 +62,13 @@ namespace RobotControl.Communication
     /// Sends data through the channel.
     /// </summary>
     /// <param name="data">The data.</param>
-    void Send(D data);
+    bool Send(D data);
 
     /// <summary>
     /// Sends data through the channel.
     /// </summary>
     /// <param name="data">The data.</param>
-    void Send(IEnumerable<D> data);
+    bool Send(IEnumerable<D> data);
 
     /// <summary>
     /// Occurs when incoming data received.
