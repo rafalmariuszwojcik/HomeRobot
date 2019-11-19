@@ -21,9 +21,9 @@ namespace RobotControl.Windows
     public ControlManager()
       : base(UPDATE_FREQUENCY)
     {
-      Disposables.Add(new MessageListener((s) => DataReceived(null, s.Select(x => new MessagePackage(x)))));
-      Disposables.Add(new CommandListener((s) => DataReceived(null, s.Select(x => new CommandPackage(x)))));
-      Disposables.Add(new SimulationListener((s) => DataReceived(null, s.Select(x => new SimulationPackage(x)))));
+      Disposables.Add(new MessageListener((s) => BroadcastData(null, s.Select(x => new MessagePackage(x)))));
+      Disposables.Add(new CommandListener((s) => BroadcastData(null, s.Select(x => new CommandPackage(x)))));
+      Disposables.Add(new SimulationListener((s) => BroadcastData(null, s.Select(x => new SimulationPackage(x)))));
     }
 
     protected override void SendData(Control listener, Action action)

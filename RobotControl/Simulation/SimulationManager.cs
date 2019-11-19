@@ -18,7 +18,7 @@ namespace RobotControl.Simulation
       var robot = new Robot.Robot(0, 0, 0);
       simulation.OnStateSet += (s, e) =>
       {
-        DataReceived(null, new[] { simulation });
+        BroadcastData(null, new[] { simulation });
       };
 
       simulation.Add(robot);

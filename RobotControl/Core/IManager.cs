@@ -8,6 +8,6 @@ namespace RobotControl.Core
   {
     void RegisterListener(T listener);
     void UnregisterListener(T listener);
-    void DataReceived(object sender, IEnumerable<M> data);
+    void BroadcastData(object sender, IEnumerable<M> data);
   }
 }

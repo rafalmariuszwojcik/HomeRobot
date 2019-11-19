@@ -114,12 +114,12 @@ namespace RobotControl
         for (var i = 0; i < 90; i++)
         {
           var totalMilliseconds = (long)new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
-          MessageManager.Instance.DataReceived(this, new[] { $"ENC,1,{i},{totalMilliseconds},2;{Environment.NewLine}" });
+          MessageManager.Instance.BroadcastData(this, new[] { $"ENC,1,{i},{totalMilliseconds},2;{Environment.NewLine}" });
 
           Thread.Sleep(30);
 
           totalMilliseconds = (long)new TimeSpan(DateTime.Now.Ticks).TotalMilliseconds;
-          MessageManager.Instance.DataReceived(this, new[] { $"ENC,0,{i},{totalMilliseconds},2;{Environment.NewLine}" });
+          MessageManager.Instance.BroadcastData(this, new[] { $"ENC,0,{i},{totalMilliseconds},2;{Environment.NewLine}" });
 
           list.Add(totalMilliseconds);
 
@@ -275,7 +275,7 @@ namespace RobotControl
       while (true)
       {
         Thread.Sleep(3);
-        MessageManager.Instance.DataReceived(null, new[] { $"Bolek i Lolek {cnt++}.{Environment.NewLine}" });
+        MessageManager.Instance.BroadcastData(null, new[] { $"Bolek i Lolek {cnt++}.{Environment.NewLine}" });
       }
     }
 

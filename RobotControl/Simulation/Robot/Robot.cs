@@ -282,7 +282,7 @@ namespace RobotControl.Simulation.Robot
 
       var engineCommand = new RobotEnginesPowerCommand(powerL * directionL, powerR * directionR);
       var controllerVibrationCommand = new ControllerVibrationCommand(powerL, powerR);
-      CommandManager.Instance.DataReceived(this, new List<ICommand> { engineCommand, controllerVibrationCommand });
+      CommandManager.Instance.BroadcastData(this, new List<ICommand> { engineCommand, controllerVibrationCommand });
     }
 
     void IListener<IControllerCommand>.DataReceived(IChannel channel, IEnumerable<IControllerCommand> data)

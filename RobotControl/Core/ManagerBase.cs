@@ -22,7 +22,7 @@ namespace RobotControl.Core
 
     protected IList<IDisposable> Disposables { get; } = new List<IDisposable>();
 
-    public void DataReceived(object sender, IEnumerable<M> data)
+    public void BroadcastData(object sender, IEnumerable<M> data)
     {
       messageQueue.Enqueue(data);
     }

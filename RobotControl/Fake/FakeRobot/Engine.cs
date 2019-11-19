@@ -14,11 +14,13 @@ namespace RobotControl.Fake.FakeRobot
     /// <param name="distance">The distance.</param>
     /// <param name="signaled">if set to <c>true</c> state of the engine has been changed.</param>
     /// <param name="milis">The milis.</param>
-    public EngineState(double distance, bool signaled, long milis)
+    /// <param name="speed">The speed.</param>
+    public EngineState(double distance, bool signaled, long milis, int speed)
     {
       Distance = distance;
       Signaled = signaled;
       Milis = milis;
+      Speed = speed;
     }
 
     /// <summary>
@@ -35,6 +37,12 @@ namespace RobotControl.Fake.FakeRobot
     /// Gets the last state timestamp in miliseconds.
     /// </summary>
     public long Milis { get; private set; }
+
+    /// <summary>
+    /// Gets or sets the speed.
+    /// </summary>
+    /// <remarks>range (-MAX; MAX)</remarks>
+    public int Speed { get; private set; }
   }
 
   /// <summary>Fake engine class.</summary>
@@ -156,7 +164,7 @@ namespace RobotControl.Fake.FakeRobot
 
         lastSignalMilis = currentMilis;
         distance += leg;
-        return new EngineState(distance, leg > 0.0 || leg < 0.0, currentMilis);
+        return new EngineState(distance, leg > 0.0 || leg < 0.0, currentMilis, speed);
       }
     }
   }

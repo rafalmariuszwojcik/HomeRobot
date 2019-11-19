@@ -70,8 +70,9 @@ namespace RobotControl.Communication.Fake
     private void OnRobotState(object sender, FakeRobotState e)
     {
       var commands = new List<ICommand>() { new RobotMoveCommand { LeftDistance = e.LeftEngineState.Distance, RightDistance = e.RightEngineState.Distance } };
-      commands.Add(new EngineSpeedCommand() { Index = 0, AvgSpeed = 30 });
-      CommandManager.Instance.DataReceived(this, commands);
+      commands.Add(new EngineSpeedCommand() { Index = 0, Speed = e.LeftEngineState.Speed, AvgSpeed = e.LeftEngineState.Speed });
+      commands.Add(new EngineSpeedCommand() { Index = 1, Speed = e.RightEngineState.Speed, AvgSpeed = e.RightEngineState.Speed });
+      CommandManager.Instance.BroadcastData(this, commands);
     }
 
     /// <summary>
