@@ -1,4 +1,5 @@
 ﻿using RobotControl.Communication.Controller;
+using RobotControl.Communication.Fake;
 using RobotControl.Core;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace RobotControl.Communication
     private readonly IDictionary<Type, Func<ConfigurationBase, IChannel>> channelFromConfiguration = new Dictionary<Type, Func<ConfigurationBase, IChannel>>()
     {
       { typeof(SerialConfiguration), new Func<ConfigurationBase, IChannel>(x => new Serial((SerialConfiguration)x)) },
-      { typeof(FakeConfiguration), new Func<ConfigurationBase, IChannel>(x => new Fake((FakeConfiguration)x)) },
+      { typeof(FakeConfiguration), new Func<ConfigurationBase, IChannel>(x => new FakeChannel((FakeConfiguration)x)) },
       { typeof(ControllerConfiguration), new Func<ConfigurationBase, IChannel>(x => new RobotControl.Communication.Controller.ManualController((ControllerConfiguration)x)) },
     };
 

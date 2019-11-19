@@ -1,10 +1,5 @@
-﻿using RobotControl.Command;
-using RobotControl.Command.Controller;
-using RobotControl.Command.Robot;
-using RobotControl.Core;
+﻿using RobotControl.Core;
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace RobotControl.Fake.FakeRobot
 {
@@ -48,28 +43,21 @@ namespace RobotControl.Fake.FakeRobot
     private const int SIMULATION_TIMEOUT = 10;
 
     /// <summary>
-    /// The left engine.
-    /// </summary>
-    private readonly Engine leftEngine = new Engine();
-
-    /// <summary>
-    /// The right engine.
-    /// </summary>
-    private readonly Engine rightEngine = new Engine();
-
-    /// <summary>
-    /// The command listener.
-    /// </summary>
-    /// <remarks>Process incoming commands.</remarks>
-    private readonly CommandListener commandListener;
-
-    /// <summary>
     /// Initializes a new instance of the <see cref="FakeRobot"/> class.
     /// </summary>
     public FakeRobot() : base(SIMULATION_TIMEOUT)
     {
-      commandListener = new CommandListener(x => ProcessCommands(x));
     }
+
+    /// <summary>
+    /// Gets the left engine.
+    /// </summary>
+    public Engine LeftEngine { get; } = new Engine();
+
+    /// <summary>
+    /// Gets the right engine.
+    /// </summary>
+    public Engine RightEngine { get; } = new Engine();
 
     /// <summary>
     /// Occurs when robot state changed.
@@ -77,81 +65,16 @@ namespace RobotControl.Fake.FakeRobot
     public event EventHandler<FakeRobotState> OnRobotState;
 
     /// <summary>
-    /// Releases unmanaged and - optionally - managed resources.
-    /// </summary>
-    /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-    protected override void Dispose(bool disposing)
-    {
-      base.Dispose(disposing);
-      if (disposing)
-      {
-        DisposeHelper.Dispose(commandListener);
-      }
-    }
-
-    /// <summary>
     /// Simulate robot moving.
     /// </summary>
     protected override void WorkInternal()
     {
-      var leftEngineState = leftEngine.GetEngineState();
-      var rightEngineState = rightEngine.GetEngineState();
+      var leftEngineState = LeftEngine.GetEngineState();
+      var rightEngineState = RightEngine.GetEngineState();
       if (leftEngineState.Signaled || rightEngineState.Signaled)
       {
         OnRobotState?.Invoke(this, new FakeRobotState(leftEngineState, rightEngineState));
       }
-    }
-
-    /// <summary>
-    /// Processes the commands.
-    /// </summary>
-    /// <remarks>Execute incoming commands on <see cref=""/>FakeRobot</see> instance.</remarks>
-    /// <param name="commands">The commands.</param>
-    private void ProcessCommands(IEnumerable<ICommand> commands)
-    {
-      Parallel.ForEach(commands, x =>
-        {
-          if (x is ControllerStateCommand controllerCommand)
-          {
-            //SetPower(controllerCommand);
-          }
-          else if (x is IRobotEnginesPowerCommand enginesPowerCommand) 
-          {
-            leftEngine.Power = enginesPowerCommand.LeftEnginePower;
-            rightEngine.Power = enginesPowerCommand.RightEnginePower;
-          }
-        }
-      );
-    }
-
-    /// <summary>
-    /// Sets engine's power.
-    /// </summary>
-    /// <param name="controllerCommand">The controller command.</param>
-    private void SetPower(IControllerStateCommand controllerCommand)
-    {
-      var powerL = Math.Abs(controllerCommand.LeftThumb.Y);
-      var directionL = Math.Sign(controllerCommand.LeftThumb.Y);
-      var powerR = powerL;
-      var directionR = directionL;
-
-      var turn = controllerCommand.LeftThumb.X;
-
-      powerR -= (turn > 0 ? turn : 0);
-      powerR = powerR < 0 ? 0 : powerR;
-
-      powerL -= (turn < 0 ? -turn : 0);
-      powerL = powerL < 0 ? 0 : powerL;
-
-      if (!(powerL > 0 || powerR > 0))
-      {
-        powerL = powerR = Math.Abs(turn);
-        directionL = Math.Sign(turn);
-        directionR = Math.Sign(-turn);
-      }
-
-      leftEngine.Power = powerL * directionL;
-      rightEngine.Power = powerR * directionR;
     }
   }
 }

@@ -1,4 +1,4 @@
-﻿namespace RobotControl.Communication
+﻿namespace RobotControl.Communication.Fake
 {
   public class FakeConfiguration : ConfigurationBase
   {
