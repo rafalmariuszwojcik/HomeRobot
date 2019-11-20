@@ -2,6 +2,7 @@
 using RobotControl.Command.Controller;
 using RobotControl.Command.Robot;
 using RobotControl.Core;
+using System;
 using System.Collections.Generic;
 
 namespace RobotControl.Communication.Controller
@@ -106,7 +107,7 @@ namespace RobotControl.Communication.Controller
         {
           Send(new ControllerVibrationCommand(
             robotEngineStateCommand.EngineId == EngineId.Left ? ControllerVibrationEngineId.Left : ControllerVibrationEngineId.Right, 
-            robotEngineStateCommand.Speed)
+            Convert.ToInt32(Math.Round(((double)robotEngineStateCommand.Speed / (double)robotEngineStateCommand.MaxSpeed) * 100.0)))
           );
         }
       }

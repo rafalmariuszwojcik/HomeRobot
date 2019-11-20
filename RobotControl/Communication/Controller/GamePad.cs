@@ -65,6 +65,8 @@ namespace RobotControl.Communication.Controller
     /// </summary>
     private readonly Vibration vibration = new Vibration();
 
+    private VibrationState vibr = new VibrationState() { l = 0, r = 0, signal = false };
+
     /// <summary>
     /// The left thumb and right thumb position.
     /// </summary>
@@ -93,11 +95,27 @@ namespace RobotControl.Communication.Controller
     /// <summary>
     /// Sets the vibration.
     /// </summary>
-    /// <remarks><c>Null</c> value means, no change.</remarks>
-    public void SetVibration(int? LeftMotorSpeed, int? RightMotorSpeed)
+    /// <param name="leftMotorSpeed">The left motor speed (0; 100).</param>
+    /// <param name="rightMotorSpeed">The right motor speed (0; 100).</param>
+    /// <remarks>
+    /// <c>Null</c> value means, no change.
+    /// </remarks>
+    public void SetVibration(int? leftMotorSpeed, int? rightMotorSpeed)
     {
       lock (lockVibration)
       {
+        if (leftMotorSpeed.HasValue) 
+        {
+          
+          vibr.l = (ushort)(leftMotorSpeed.Value * 100);
+          vibr.signal = true;
+        }
+
+        if (rightMotorSpeed.HasValue)
+        {
+          vibr.r = (ushort)(rightMotorSpeed.Value * 100);
+          vibr.signal = true;
+        }
       }
 
       //if ()
@@ -192,7 +210,27 @@ namespace RobotControl.Communication.Controller
     {
       lock (lockVibration)
       {
+        if (vibr.signal) 
+        {
+          try
+          {
+            controller.SetVibration(new Vibration() { LeftMotorSpeed = vibr.l, RightMotorSpeed = vibr.r });
+          }
+          finally
+          {
+            vibr.signal = false;
+          }
+        }
       }
+    }
+
+    internal struct VibrationState
+    {
+      //internal Vibration vibration { get; set; }
+      internal ushort l;
+      internal ushort r;
+
+      internal bool signal { get; set; }
     }
   }
 
