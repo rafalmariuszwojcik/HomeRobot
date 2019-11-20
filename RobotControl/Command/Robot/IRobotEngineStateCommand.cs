@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RobotControl.Command.Robot
+﻿namespace RobotControl.Command.Robot
 {
   /// <summary>
   /// Engine identifier.
   /// </summary>
-  public enum EngineId 
+  public enum EngineId
   {
     /// <summary>
     /// The left engine.
@@ -21,7 +15,7 @@ namespace RobotControl.Command.Robot
     /// </summary>
     Right,
   }
-  
+
   /// <summary>
   /// Robot engine state report command.
   /// </summary>

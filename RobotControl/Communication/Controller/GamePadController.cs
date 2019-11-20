@@ -2,9 +2,7 @@
 using RobotControl.Command.Controller;
 using RobotControl.Command.Robot;
 using RobotControl.Core;
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace RobotControl.Communication.Controller
 {
@@ -12,7 +10,7 @@ namespace RobotControl.Communication.Controller
   /// Manual controller communication channel. Supports robot controling by GamePad device.
   /// </summary>
   /// <seealso cref="RobotControl.Communication.ChannelBase{RobotControl.Communication.Controller.GamePad, RobotControl.Command.Controller.IControllerCommand, RobotControl.Communication.Controller.ControllerConfiguration}" />
-  public class ManualController : ChannelBase<GamePad, ICommand, ControllerConfiguration>
+  public class GamePadController : ChannelBase<GamePad, IControllerCommand, ControllerConfiguration>
   {
     /// <summary>
     /// The command listener.
@@ -21,12 +19,12 @@ namespace RobotControl.Communication.Controller
     private readonly CommandListener commandListener;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ManualController"/> class.
+    /// Initializes a new instance of the <see cref="GamePadController"/> class.
     /// </summary>
     /// <param name="configuration">The configuration.</param>
-    public ManualController(ControllerConfiguration configuration) : base(configuration)
+    public GamePadController(ControllerConfiguration configuration) : base(configuration)
     {
-      commandListener = new CommandListener(x => Send(x));
+      commandListener = new CommandListener(x => ProcessIncomingCommands(x));
     }
 
     /// <summary>
@@ -36,7 +34,7 @@ namespace RobotControl.Communication.Controller
     protected override void Dispose(bool disposing)
     {
       base.Dispose(disposing);
-      if (disposing) 
+      if (disposing)
       {
         DisposeHelper.Dispose(commandListener);
       }
@@ -47,11 +45,14 @@ namespace RobotControl.Communication.Controller
     /// </summary>
     /// <param name="channel">The channel.</param>
     /// <param name="data"></param>
-    protected override void InternalSend(GamePad channel, ICommand data)
+    protected override void InternalSend(GamePad channel, IControllerCommand data)
     {
-      if (data is IRobotEngineStateCommand robotEngineStateCommand) 
-      { 
-
+      if (data is IControllerVibrationCommand controllerVibrationCommand)
+      {
+        channel.SetVibration(
+          controllerVibrationCommand.EngineId == ControllerVibrationEngineId.Left ? controllerVibrationCommand.MotorSpeed : (int?)null, 
+          controllerVibrationCommand.EngineId == ControllerVibrationEngineId.Right ? controllerVibrationCommand.MotorSpeed : (int?)null
+        );
       }
     }
 
@@ -91,6 +92,24 @@ namespace RobotControl.Communication.Controller
       };
 
       CommandManager.Instance.BroadcastData(this, cmd);
+    }
+
+    /// <summary>
+    /// Processes the incoming commands.
+    /// </summary>
+    /// <param name="commands">The commands.</param>
+    private void ProcessIncomingCommands(IEnumerable<ICommand> commands)
+    {
+      foreach (var command in commands)
+      {
+        if (command is IRobotEngineStateCommand robotEngineStateCommand)
+        {
+          Send(new ControllerVibrationCommand(
+            robotEngineStateCommand.EngineId == EngineId.Left ? ControllerVibrationEngineId.Left : ControllerVibrationEngineId.Right, 
+            robotEngineStateCommand.Speed)
+          );
+        }
+      }
     }
   }
 }

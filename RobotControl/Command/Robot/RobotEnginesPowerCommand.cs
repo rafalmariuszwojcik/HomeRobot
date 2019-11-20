@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RobotControl.Command.Robot
 {
@@ -22,18 +18,18 @@ namespace RobotControl.Command.Robot
     /// The minimum power value.
     /// </summary>
     public const int MIN_POWER = -100;
-    
+
     /// <summary>
     /// Initializes a new instance of the <see cref="RobotEnginesPowerCommand"/> struct.
     /// </summary>
     /// <param name="leftEnginePower">The left engine power.</param>
     /// <param name="rightEnginePower">The right engine power.</param>
-    public RobotEnginesPowerCommand(int leftEnginePower, int rightEnginePower) 
+    public RobotEnginesPowerCommand(int leftEnginePower, int rightEnginePower)
     {
       LeftEnginePower = Math.Min(Math.Max(leftEnginePower, MIN_POWER), MAX_POWER);
       RightEnginePower = Math.Min(Math.Max(rightEnginePower, MIN_POWER), MAX_POWER);
     }
-    
+
     /// <summary>
     /// Gets the left engine power.
     /// </summary>

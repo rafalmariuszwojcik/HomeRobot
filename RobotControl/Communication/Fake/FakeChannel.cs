@@ -34,7 +34,7 @@ namespace RobotControl.Communication.Fake
     protected override void Dispose(bool disposing)
     {
       base.Dispose(disposing);
-      if (disposing) 
+      if (disposing)
       {
         DisposeHelper.Dispose(commandListener);
       }
@@ -84,7 +84,7 @@ namespace RobotControl.Communication.Fake
     /// <param name="data"></param>
     protected override void InternalSend(FakeRobot channel, ICommand data)
     {
-      if (data is IRobotEnginesPowerCommand enginesPowerCommand) 
+      if (data is IRobotEnginesPowerCommand enginesPowerCommand)
       {
         channel.LeftEngine.Power = enginesPowerCommand.LeftEnginePower;
         channel.RightEngine.Power = enginesPowerCommand.RightEnginePower;

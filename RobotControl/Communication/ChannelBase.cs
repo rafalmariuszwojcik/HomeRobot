@@ -112,7 +112,7 @@ namespace RobotControl.Communication
     {
       foreach (var item in data)
       {
-        if (!Send(item)) 
+        if (!Send(item))
         {
           return false;
         }

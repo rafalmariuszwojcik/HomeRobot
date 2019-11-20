@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RobotControl.Command.Robot
+﻿namespace RobotControl.Command.Robot
 {
   /// <summary>
   /// Robot's engine state command.
@@ -18,7 +12,7 @@ namespace RobotControl.Command.Robot
     /// <param name="engineId">The engine identifier.</param>
     /// <param name="speed">The speed.</param>
     /// <param name="maxSpeed">The maximum speed.</param>
-    public RobotEngineStateCommand(EngineId engineId, int speed, int maxSpeed) 
+    public RobotEngineStateCommand(EngineId engineId, int speed, int maxSpeed)
     {
       EngineId = engineId;
       Speed = speed;

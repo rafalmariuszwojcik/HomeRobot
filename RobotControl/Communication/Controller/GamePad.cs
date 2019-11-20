@@ -30,9 +30,15 @@ namespace RobotControl.Communication.Controller
     /// </summary>
     int RightTrigger { get; }
   }
-  
+
   public class GamePad : WorkerBase
   {
+    /// <summary>
+    /// The lock vibration variable.
+    /// </summary>
+    /// <remarks>Used in parallel processing.</remarks>
+    private readonly object lockVibration = new object();
+
     /// <summary>
     /// The simulation timeout.
     /// </summary>
@@ -53,6 +59,11 @@ namespace RobotControl.Communication.Controller
     /// Indicates, is the controller connected.
     /// </summary>
     private readonly bool connected = false;
+
+    /// <summary>
+    /// The current vibration. 
+    /// </summary>
+    private readonly Vibration vibration = new Vibration();
 
     /// <summary>
     /// The left thumb and right thumb position.
@@ -80,11 +91,41 @@ namespace RobotControl.Communication.Controller
     }
 
     /// <summary>
+    /// Sets the vibration.
+    /// </summary>
+    /// <remarks><c>Null</c> value means, no change.</remarks>
+    public void SetVibration(int? LeftMotorSpeed, int? RightMotorSpeed)
+    {
+      lock (lockVibration)
+      {
+      }
+
+      //if ()
+      //vibration.LeftMotorSpeed = 
+    }
+
+    /// <summary>
+    /// Releases unmanaged and - optionally - managed resources.
+    /// </summary>
+    /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+    protected override void Dispose(bool disposing)
+    {
+      base.Dispose(disposing);
+      if (disposing)
+      {
+        if (connected)
+        {
+          controller.SetVibration(new Vibration() { LeftMotorSpeed = 0, RightMotorSpeed = 0 });
+        }
+      }
+    }
+
+    /// <summary>
     /// Internal work code.
     /// </summary>
     protected override void WorkInternal()
     {
-      if (!connected) 
+      if (!connected)
       {
         return;
       }
@@ -98,7 +139,7 @@ namespace RobotControl.Communication.Controller
         Y = (Math.Abs((double)gamepad.LeftThumbY) < DEADBAND) ? 0 : Convert.ToInt32(Math.Round((double)gamepad.LeftThumbY / short.MaxValue * 100.0))
       };
 
-      if (!this.leftThumb.Equals(leftThumb)) 
+      if (!this.leftThumb.Equals(leftThumb))
       {
         this.leftThumb = leftThumb;
         signal = true;
@@ -116,26 +157,23 @@ namespace RobotControl.Communication.Controller
         signal = true;
       }
 
-      if (leftTrigger != gamepad.LeftTrigger) 
+      if (leftTrigger != gamepad.LeftTrigger)
       {
         leftTrigger = gamepad.LeftTrigger;
         signal = true;
       }
 
-      if (rightTrigger != gamepad.RightTrigger) 
+      if (rightTrigger != gamepad.RightTrigger)
       {
         rightTrigger = gamepad.RightTrigger;
         signal = true;
       }
 
-      if (signal) 
+      AssignVibration();
+      
+      if (signal)
       {
         OnStateChanged();
-        /*
-        var vib = new Vibration();
-        vib.LeftMotorSpeed = 60000;
-        controller.SetVibration(vib);
-        */
       }
     }
 
@@ -145,6 +183,16 @@ namespace RobotControl.Communication.Controller
     private void OnStateChanged()
     {
       StateChanged?.Invoke(this, new GamePadStateChangedEventArgs(leftThumb, rightThumb, leftTrigger, rightTrigger));
+    }
+
+    /// <summary>
+    /// Assigns the vibration.
+    /// </summary>
+    private void AssignVibration() 
+    {
+      lock (lockVibration)
+      {
+      }
     }
   }
 
@@ -162,7 +210,7 @@ namespace RobotControl.Communication.Controller
     /// <param name="rightThumb">The right thumb.</param>
     /// <param name="leftTrigger">The left trigger.</param>
     /// <param name="rightTrigger">The right trigger.</param>
-    public GamePadStateChangedEventArgs(Point leftThumb, Point rightThumb, int leftTrigger, int rightTrigger) 
+    public GamePadStateChangedEventArgs(Point leftThumb, Point rightThumb, int leftTrigger, int rightTrigger)
     {
       LeftThumb = new Point(leftThumb.X, leftThumb.Y);
       RightThumb = new Point(rightThumb.X, rightThumb.Y);

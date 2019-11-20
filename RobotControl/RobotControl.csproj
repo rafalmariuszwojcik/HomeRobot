@@ -86,7 +86,7 @@
     <Compile Include="Communication\ChannelBase.cs" />
     <Compile Include="Communication\CommunicationManager.cs" />
     <Compile Include="Communication\ConfigurationBase.cs" />
-    <Compile Include="Communication\Controller\ManualController.cs" />
+    <Compile Include="Communication\Controller\GamePadController.cs" />
     <Compile Include="Communication\Controller\ControllerConfiguration.cs" />
     <Compile Include="Communication\Fake\FakeChannel.cs" />
     <Compile Include="Communication\Fake\FakeConfiguration.cs" />

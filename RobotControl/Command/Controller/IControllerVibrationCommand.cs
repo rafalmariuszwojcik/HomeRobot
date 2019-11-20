@@ -1,11 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RobotControl.Command.Controller
+﻿namespace RobotControl.Command.Controller
 {
+  /// <summary>
+  /// Engine identifier type.
+  /// </summary>
+  public enum ControllerVibrationEngineId
+  {
+    /// <summary>
+    /// The left engine.
+    /// </summary>
+    Left,
+
+    /// <summary>
+    /// The right engine.
+    /// </summary>
+    Right,
+  }
+
   /// <summary>
   /// Manual controller vibration command interface.
   /// </summary>
@@ -13,15 +23,14 @@ namespace RobotControl.Command.Controller
   public interface IControllerVibrationCommand : IControllerCommand
   {
     /// <summary>
-    /// Gets the left motor speed.
+    /// Gets the engine identifier.
     /// </summary>
-    /// <remarks>In percentage (0; +100).</remarks>
-    int LeftMotorSpeed { get; }
+    ControllerVibrationEngineId EngineId { get; }
 
     /// <summary>
-    /// Gets the right motor speed.
+    /// Gets the motor speed.
     /// </summary>
     /// <remarks>In percentage (0; +100).</remarks>
-    int RightMotorSpeed { get; }
+    int MotorSpeed { get; }
   }
 }

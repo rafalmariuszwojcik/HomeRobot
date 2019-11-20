@@ -1,5 +1,4 @@
-﻿using RobotControl.Command;
-using RobotControl.Messages;
+﻿using RobotControl.Messages;
 using RobotControl.Windows.Forms;
 using RobotControl.Windows.Views;
 using System;

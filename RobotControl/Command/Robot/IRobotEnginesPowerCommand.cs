@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RobotControl.Command.Robot
+﻿namespace RobotControl.Command.Robot
 {
   /// <summary>
   /// Set robot's engines power command.

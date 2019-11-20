@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RobotControl.Command.Controller
 {
@@ -24,26 +20,25 @@ namespace RobotControl.Command.Controller
     public const int MIN_SPEED = 0;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ControllerVibrationCommand"/> struct.
+    /// Initializes a new instance of the <see cref="ControllerVibrationCommand" /> struct.
     /// </summary>
-    /// <param name="leftMotorSpeed">The left motor speed.</param>
-    /// <param name="rightMotorSpeed">The right motor speed.</param>
-    public ControllerVibrationCommand(int leftMotorSpeed, int rightMotorSpeed) 
+    /// <param name="engineId">The engine identifier.</param>
+    /// <param name="motorSpeed">The motor speed.</param>
+    public ControllerVibrationCommand(ControllerVibrationEngineId engineId, int motorSpeed)
     {
-      LeftMotorSpeed = Math.Min(Math.Max(leftMotorSpeed, MIN_SPEED), MAX_SPEED);
-      RightMotorSpeed = Math.Min(Math.Max(rightMotorSpeed, MIN_SPEED), MAX_SPEED);
+      EngineId = engineId;
+      MotorSpeed = Math.Min(Math.Max(motorSpeed, MIN_SPEED), MAX_SPEED);
     }
 
     /// <summary>
-    /// Gets the left motor speed.
+    /// Gets the vibration engine identifier.
     /// </summary>
-    /// <remarks>In percentage (0; +100).</remarks>
-    public int LeftMotorSpeed { get; private set; }
+    public ControllerVibrationEngineId EngineId { get; private set; }
 
     /// <summary>
-    /// Gets the right motor speed.
+    /// Gets the motor speed.
     /// </summary>
     /// <remarks>In percentage (0; +100).</remarks>
-    public int RightMotorSpeed { get; private set; }
+    public int MotorSpeed { get; private set; }
   }
 }

@@ -16,7 +16,7 @@ namespace RobotControl.Command.Controller
     /// <param name="rightThumb">The right thumb.</param>
     /// <param name="leftTrigger">The left trigger.</param>
     /// <param name="rightTrigger">The right trigger.</param>
-    public ControllerStateCommand(Point leftThumb, Point rightThumb, int leftTrigger, int rightTrigger) 
+    public ControllerStateCommand(Point leftThumb, Point rightThumb, int leftTrigger, int rightTrigger)
     {
       LeftThumb = leftThumb;
       RightThumb = rightThumb;
@@ -27,7 +27,7 @@ namespace RobotControl.Command.Controller
     /// <summary>
     /// Gets the left thumb.
     /// </summary>
-    public Point LeftThumb { get; private set;}
+    public Point LeftThumb { get; private set; }
 
     /// <summary>
     /// Gets the right thumb.
