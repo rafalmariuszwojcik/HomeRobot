@@ -73,7 +73,7 @@ namespace RobotControl.Communication.Fake
       commands.Add(new EngineSpeedCommand() { Index = 0, Speed = e.LeftEngineState.Speed, AvgSpeed = e.LeftEngineState.Speed });
       commands.Add(new EngineSpeedCommand() { Index = 1, Speed = e.RightEngineState.Speed, AvgSpeed = e.RightEngineState.Speed });
       commands.Add(new RobotEngineStateCommand(EngineId.Left, e.LeftEngineState.Speed, 60));
-      commands.Add(new RobotEngineStateCommand(EngineId.Right, e.LeftEngineState.Speed, 60));
+      commands.Add(new RobotEngineStateCommand(EngineId.Right, e.RightEngineState.Speed, 60));
       CommandManager.Instance.BroadcastData(this, commands);
     }
 

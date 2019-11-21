@@ -107,7 +107,7 @@ namespace RobotControl.Communication.Controller
         {
           Send(new ControllerVibrationCommand(
             robotEngineStateCommand.EngineId == EngineId.Left ? ControllerVibrationEngineId.Left : ControllerVibrationEngineId.Right, 
-            Convert.ToInt32(Math.Round(((double)robotEngineStateCommand.Speed / (double)robotEngineStateCommand.MaxSpeed) * 100.0)))
+            Math.Abs(Convert.ToInt32(Math.Round(((double)robotEngineStateCommand.Speed / (double)robotEngineStateCommand.MaxSpeed) * 100.0))))
           );
         }
       }
