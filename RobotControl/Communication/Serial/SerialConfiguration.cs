@@ -1,4 +1,4 @@
-﻿namespace RobotControl.Communication
+﻿namespace RobotControl.Communication.Serial
 {
   public class SerialConfiguration : ConfigurationBase
   {

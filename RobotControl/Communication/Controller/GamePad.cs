@@ -61,11 +61,9 @@ namespace RobotControl.Communication.Controller
     private readonly bool connected = false;
 
     /// <summary>
-    /// The current vibration. 
+    /// The vibration state used to control device's vibrations.
     /// </summary>
-    private readonly Vibration vibration = new Vibration();
-
-    private VibrationState vibr = new VibrationState() { l = 0, r = 0, signal = false };
+    private VibrationState vibrationState = new VibrationState() { LeftMotorSpeed = 0, RightMotorSpeed = 0, Signal = false };
 
     /// <summary>
     /// The left thumb and right thumb position.
@@ -106,20 +104,16 @@ namespace RobotControl.Communication.Controller
       {
         if (leftMotorSpeed.HasValue) 
         {
-          
-          vibr.l = (ushort)(leftMotorSpeed.Value * 100);
-          vibr.signal = true;
+          vibrationState.LeftMotorSpeed = Convert.ToUInt16(Math.Round(ushort.MaxValue * leftMotorSpeed.Value / 100.0));
+          vibrationState.Signal = true;
         }
 
         if (rightMotorSpeed.HasValue)
         {
-          vibr.r = (ushort)(rightMotorSpeed.Value * 100);
-          vibr.signal = true;
+          vibrationState.RightMotorSpeed = Convert.ToUInt16(Math.Round(ushort.MaxValue * rightMotorSpeed.Value / 100.0));
+          vibrationState.Signal = true;
         }
       }
-
-      //if ()
-      //vibration.LeftMotorSpeed = 
     }
 
     /// <summary>
@@ -210,27 +204,41 @@ namespace RobotControl.Communication.Controller
     {
       lock (lockVibration)
       {
-        if (vibr.signal) 
+        if (vibrationState.Signal) 
         {
           try
           {
-            controller.SetVibration(new Vibration() { LeftMotorSpeed = vibr.l, RightMotorSpeed = vibr.r });
+            controller.SetVibration(new Vibration() { LeftMotorSpeed = vibrationState.LeftMotorSpeed, RightMotorSpeed = vibrationState.RightMotorSpeed });
           }
           finally
           {
-            vibr.signal = false;
+            vibrationState.Signal = false;
           }
         }
       }
     }
 
+    /// <summary>
+    /// Current vibration state structure.
+    /// </summary>
+    /// <remarks>Used to controls vibrations.</remarks>
     internal struct VibrationState
     {
-      //internal Vibration vibration { get; set; }
-      internal ushort l;
-      internal ushort r;
+      /// <summary>
+      /// Gets or sets the left motor speed.
+      /// </summary>
+      internal ushort LeftMotorSpeed { get; set; }
 
-      internal bool signal { get; set; }
+      /// <summary>
+      /// Gets or sets the right motor speed.
+      /// </summary>
+      internal ushort RightMotorSpeed { get; set; }
+
+      /// <summary>
+      /// Gets or sets a value indicating whether this <see cref="VibrationState"/> is in signal state.
+      /// </summary>
+      /// <remarks>In in signal state, means vibration must be execute on game pad device.</remarks>
+      internal bool Signal { get; set; }
     }
   }
 

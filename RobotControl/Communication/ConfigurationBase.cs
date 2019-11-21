@@ -1,5 +1,6 @@
 ﻿using RobotControl.Communication.Controller;
 using RobotControl.Communication.Fake;
+using RobotControl.Communication.Serial;
 using System.ComponentModel;
 using System.Xml.Serialization;
 

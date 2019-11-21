@@ -1,14 +1,14 @@
 ﻿using System.IO.Ports;
 
-namespace RobotControl.Communication
+namespace RobotControl.Communication.Serial
 {
-  public class Serial : ChannelBase<SerialPort, string, SerialConfiguration>
+  public class SerialChannel : ChannelBase<SerialPort, string, SerialConfiguration>
   {
-    public Serial(SerialConfiguration configuration) : base(configuration)
+    public SerialChannel(SerialConfiguration configuration) : base(configuration)
     {
     }
 
-    public Serial() : base(new SerialConfiguration())
+    public SerialChannel() : base(new SerialConfiguration())
     {
     }
 
