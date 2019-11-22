@@ -204,7 +204,7 @@ namespace RobotControl.Communication.Controller
     {
       lock (lockVibration)
       {
-        if (vibrationState.Signal) 
+        if (vibrationState.Signal)
         {
           try
           {
@@ -215,6 +215,10 @@ namespace RobotControl.Communication.Controller
             vibrationState.Signal = false;
           }
         }
+        else 
+        {
+          ;
+        }
       }
     }
 
@@ -224,6 +228,11 @@ namespace RobotControl.Communication.Controller
     /// <remarks>Used to controls vibrations.</remarks>
     internal struct VibrationState
     {
+      /// <summary>
+      /// The signal.
+      /// </summary>
+      private bool signal;
+
       /// <summary>
       /// Gets or sets the left motor speed.
       /// </summary>
@@ -238,7 +247,25 @@ namespace RobotControl.Communication.Controller
       /// Gets or sets a value indicating whether this <see cref="VibrationState"/> is in signal state.
       /// </summary>
       /// <remarks>In in signal state, means vibration must be execute on game pad device.</remarks>
-      internal bool Signal { get; set; }
+      internal bool Signal 
+      {
+        get { return signal; }
+        
+        set 
+        {
+          if (signal)
+          {
+            LastSignalTimeStamp = DateTime.Now;
+          }
+          
+          signal = value;
+        }
+      }
+
+      /// <summary>
+      /// Gets or sets the last signal time stamp.
+      /// </summary>
+      internal DateTime? LastSignalTimeStamp { get; set; }
     }
   }
 
