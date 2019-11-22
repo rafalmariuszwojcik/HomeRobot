@@ -18,9 +18,9 @@ namespace RobotControl.Simulation.Robot.Controller
     public void CalculateEnginesPower(IControllerStateCommand controllerCommand, out int leftEnginePower, out int rightEnginePower)
     {
       var powerL = Math.Abs(GetY(controllerCommand));
-      var directionL = Math.Sign(powerL);
+      var directionL = Math.Sign(GetY(controllerCommand));
       var powerR = Math.Abs(GetY(controllerCommand));
-      var directionR = Math.Sign(powerR);
+      var directionR = Math.Sign(GetY(controllerCommand));
       var turn = GetX(controllerCommand);
 
       powerR -= (turn > 0 ? turn : 0);

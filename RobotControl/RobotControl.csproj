@@ -93,6 +93,7 @@
     <Compile Include="Communication\Controller\GamePad.cs" />
     <Compile Include="Communication\IChannel.cs" />
     <Compile Include="Communication\ICommunicationManager.cs" />
+    <Compile Include="Communication\RWcom\RWcomRobot.cs" />
     <Compile Include="Communication\Serial\SerialChannel.cs" />
     <Compile Include="Communication\Serial\SerialConfiguration.cs" />
     <Compile Include="Configuration\AppSettingsConfigurationRepository.cs" />
@@ -285,9 +286,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Communication\RWCom\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
