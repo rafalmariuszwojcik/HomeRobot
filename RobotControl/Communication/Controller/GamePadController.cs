@@ -51,7 +51,7 @@ namespace RobotControl.Communication.Controller
       if (data is IControllerVibrationCommand controllerVibrationCommand)
       {
         channel.SetVibration(
-          controllerVibrationCommand.EngineId == ControllerVibrationEngineId.Left ? controllerVibrationCommand.MotorSpeed : (int?)null, 
+          controllerVibrationCommand.EngineId == ControllerVibrationEngineId.Left ? controllerVibrationCommand.MotorSpeed : (int?)null,
           controllerVibrationCommand.EngineId == ControllerVibrationEngineId.Right ? controllerVibrationCommand.MotorSpeed : (int?)null
         );
       }
@@ -106,7 +106,7 @@ namespace RobotControl.Communication.Controller
         if (command is IRobotEngineStateCommand robotEngineStateCommand)
         {
           Send(new ControllerVibrationCommand(
-            robotEngineStateCommand.EngineId == EngineId.Left ? ControllerVibrationEngineId.Left : ControllerVibrationEngineId.Right, 
+            robotEngineStateCommand.EngineId == EngineId.Left ? ControllerVibrationEngineId.Left : ControllerVibrationEngineId.Right,
             Math.Abs(Convert.ToInt32(Math.Round(((double)robotEngineStateCommand.Speed / (double)robotEngineStateCommand.MaxSpeed) * 100.0))))
           );
         }

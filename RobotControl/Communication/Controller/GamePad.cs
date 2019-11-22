@@ -46,6 +46,11 @@ namespace RobotControl.Communication.Controller
     private const int UPDATE_TIMEOUT = 10;
 
     /// <summary>
+    /// Switch off vibrations if no signal during this time (in seconds).
+    /// </summary>
+    private const int VIBRATION_TIMEOUT = 10;
+
+    /// <summary>
     /// The deadband value.
     /// </summary>
     private const int DEADBAND = 2500;
@@ -102,7 +107,7 @@ namespace RobotControl.Communication.Controller
     {
       lock (lockVibration)
       {
-        if (leftMotorSpeed.HasValue) 
+        if (leftMotorSpeed.HasValue)
         {
           vibrationState.LeftMotorSpeed = Convert.ToUInt16(Math.Round(ushort.MaxValue * leftMotorSpeed.Value / 100.0));
           vibrationState.Signal = true;
@@ -182,7 +187,7 @@ namespace RobotControl.Communication.Controller
       }
 
       AssignVibration();
-      
+
       if (signal)
       {
         OnStateChanged();
@@ -200,7 +205,7 @@ namespace RobotControl.Communication.Controller
     /// <summary>
     /// Assigns the vibration.
     /// </summary>
-    private void AssignVibration() 
+    private void AssignVibration()
     {
       lock (lockVibration)
       {
@@ -215,9 +220,13 @@ namespace RobotControl.Communication.Controller
             vibrationState.Signal = false;
           }
         }
-        else 
+        else
         {
-          ;
+          if (vibrationState.LastSignalTimeStamp.HasValue && vibrationState.LastSignalTimeStamp.Value.AddSeconds(VIBRATION_TIMEOUT) > DateTime.Now)
+          {
+            controller.SetVibration(new Vibration() { LeftMotorSpeed = 0, RightMotorSpeed = 0 });
+            vibrationState.LastSignalTimeStamp = null;
+          }
         }
       }
     }
@@ -247,17 +256,17 @@ namespace RobotControl.Communication.Controller
       /// Gets or sets a value indicating whether this <see cref="VibrationState"/> is in signal state.
       /// </summary>
       /// <remarks>In in signal state, means vibration must be execute on game pad device.</remarks>
-      internal bool Signal 
+      internal bool Signal
       {
         get { return signal; }
-        
-        set 
+
+        set
         {
           if (signal)
           {
             LastSignalTimeStamp = DateTime.Now;
           }
-          
+
           signal = value;
         }
       }

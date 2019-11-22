@@ -106,6 +106,7 @@
     <Compile Include="Core\WorkerBase.cs" />
     <Compile Include="Drawing\IRobotDrawGeometry.cs" />
     <Compile Include="Messages\MessageListener.cs" />
+    <Compile Include="Simulation\Robot\Controller\ControllerProcessorBase.cs" />
     <Compile Include="Simulation\Robot\Controller\IControllerProcessor.cs" />
     <Compile Include="Simulation\Robot\Controller\LeftThumbControllerProcessor.cs" />
     <Compile Include="Simulation\Robot\Controller\TwoThumbsControllerProcessor.cs" />

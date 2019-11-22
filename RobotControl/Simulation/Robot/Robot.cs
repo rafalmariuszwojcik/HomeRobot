@@ -261,7 +261,7 @@ namespace RobotControl.Simulation.Robot
     /// <param name="controllerCommand">The controller command.</param>
     private void SetEnginesPower(IControllerStateCommand controllerCommand)
     {
-      var processor = new LeftThumbControllerProcessor();
+      var processor = new TwoThumbsControllerProcessor();
       processor.CalculateEnginesPower(controllerCommand, out int leftEnginePower, out int rightEnginePower);
       var engineCommand = new RobotEnginesPowerCommand(leftEnginePower, rightEnginePower);
       CommandManager.Instance.BroadcastData(this, new List<ICommand> { engineCommand });
