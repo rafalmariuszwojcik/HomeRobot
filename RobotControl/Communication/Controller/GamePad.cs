@@ -46,9 +46,9 @@ namespace RobotControl.Communication.Controller
     private const int UPDATE_TIMEOUT = 10;
 
     /// <summary>
-    /// Switch off vibrations if no signal during this time (in seconds).
+    /// Switch off vibrations if no signal during this time (in miliseconds).
     /// </summary>
-    private const int VIBRATION_TIMEOUT = 10;
+    private const int VIBRATION_TIMEOUT = 250;
 
     /// <summary>
     /// The deadband value.
@@ -222,7 +222,7 @@ namespace RobotControl.Communication.Controller
         }
         else
         {
-          if (vibrationState.LastSignalTimeStamp.HasValue && vibrationState.LastSignalTimeStamp.Value.AddSeconds(VIBRATION_TIMEOUT) > DateTime.Now)
+          if (vibrationState.LastSignalTimeStamp.HasValue && vibrationState.LastSignalTimeStamp.Value.AddMilliseconds(VIBRATION_TIMEOUT) <= DateTime.Now)
           {
             controller.SetVibration(new Vibration() { LeftMotorSpeed = 0, RightMotorSpeed = 0 });
             vibrationState.LastSignalTimeStamp = null;
