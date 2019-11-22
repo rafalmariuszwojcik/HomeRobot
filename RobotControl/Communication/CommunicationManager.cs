@@ -16,7 +16,7 @@ namespace RobotControl.Communication
     {
       { typeof(SerialConfiguration), new Func<ConfigurationBase, IChannel>(x => new SerialChannel((SerialConfiguration)x)) },
       { typeof(FakeConfiguration), new Func<ConfigurationBase, IChannel>(x => new FakeChannel((FakeConfiguration)x)) },
-      { typeof(ControllerConfiguration), new Func<ConfigurationBase, IChannel>(x => new RobotControl.Communication.Controller.GamePadController((ControllerConfiguration)x)) },
+      { typeof(ControllerConfiguration), new Func<ConfigurationBase, IChannel>(x => new GamePadController((ControllerConfiguration)x)) },
     };
 
     private readonly IList<IChannel> items = new List<IChannel>();

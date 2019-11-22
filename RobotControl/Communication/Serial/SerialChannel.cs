@@ -1,4 +1,5 @@
-﻿using System.IO.Ports;
+﻿using RobotControl.Messages;
+using System.IO.Ports;
 
 namespace RobotControl.Communication.Serial
 {
@@ -16,6 +17,7 @@ namespace RobotControl.Communication.Serial
     {
       SerialPort sp = (SerialPort)sender;
       var data = sp.ReadExisting();
+      //MessageManager.Instance.BroadcastData(new string[] { data });
       OnDataReceived(data);
     }
 
