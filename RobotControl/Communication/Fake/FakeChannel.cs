@@ -75,6 +75,8 @@ namespace RobotControl.Communication.Fake
       commands.Add(new RobotEngineStateCommand(EngineId.Left, e.LeftEngineState.Speed, 60));
       commands.Add(new RobotEngineStateCommand(EngineId.Right, e.RightEngineState.Speed, 60));
       CommandManager.Instance.BroadcastData(this, commands);
+
+      OnDataReceived(commands[0]);
     }
 
     /// <summary>

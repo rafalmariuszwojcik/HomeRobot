@@ -143,6 +143,18 @@ namespace RobotControl.Communication
     }
 
     /// <summary>
+    /// Called when data received from channel.
+    /// </summary>
+    /// <param name="data">The data.</param>
+    protected void OnDataReceived(IEnumerable<D> data)
+    {
+      foreach (var dataItem in data) 
+      {
+        OnDataReceived(dataItem);
+      }
+    }
+
+    /// <summary>
     /// Internal open communication channel method.
     /// </summary>
     /// <param name="configuration">The configuration.</param>
