@@ -4,6 +4,40 @@ using System.Collections.Generic;
 
 namespace RobotControl.Communication
 {
+  public abstract class ChannelBase2<T, D, C> : DisposableBase, IChannel2<D, C>
+    where T : IDisposable
+    where D : class
+    where C : IConfiguration
+  {
+    public bool Active { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    public string Name => throw new NotImplementedException();
+
+    public IConfiguration Configuration => throw new NotImplementedException();
+
+    public event EventHandler<IDataReceivedEventArgs> DataReceived;
+
+    public bool Send(IChannelMessage<D> data)
+    {
+      throw new NotImplementedException();
+    }
+
+    public bool Send(IEnumerable<IChannelMessage<D>> data)
+    {
+      throw new NotImplementedException();
+    }
+
+    public bool Send(IChannelMessage data)
+    {
+      throw new NotImplementedException();
+    }
+
+    public bool Send(IEnumerable<IChannelMessage> data)
+    {
+      throw new NotImplementedException();
+    }
+  }
+
   /// <summary>
   /// Base class for communication changels.
   /// </summary>
