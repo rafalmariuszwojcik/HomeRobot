@@ -40,6 +40,7 @@ namespace RobotControl.Communication
       if (!items.Contains(channel))
       {
         items.Add(channel);
+        //channel.on
       }
     }
 
@@ -48,6 +49,7 @@ namespace RobotControl.Communication
       if (items.Contains(channel))
       {
         channel.Active = false;
+        channel.Dispose();
         items.Remove(channel);
       }
     }

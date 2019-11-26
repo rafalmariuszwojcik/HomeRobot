@@ -14,11 +14,30 @@ namespace RobotControl.Communication
     string Name { get; set; }
   }
 
+  public interface IChannelMessage
+  {
+    IChannel Sender { get; }
+    IEnumerable<IChannel> Receivers { get; }
+  }
+
+  public interface IChannelMessage<D> : IChannelMessage
+    where D : class
+  {
+    D Data { get; }
+  }
+
+  public interface IDataReceivedEventArgs 
+  {
+    IChannelMessage Message { get; }
+  }
+
+  
+
   /// <summary>
   /// Data received event argument.
   /// </summary>
   /// <typeparam name="T">Type of received data.</typeparam>
-  public interface IDataReceivedEventArgs<D>
+  public interface IDataReceivedEventArgs<D>// : IDataReceivedEventArgs
     where D : class
   {
     /// <summary>
@@ -46,6 +65,24 @@ namespace RobotControl.Communication
     /// Gets the configuration.
     /// </summary>
     IConfiguration Configuration { get; }
+  }
+
+  public interface IChannel2 : IDisposable 
+  {
+    bool Active { get; set; }
+    string Name { get; }
+    IConfiguration Configuration { get; }
+    bool Send(IChannelMessage data);
+    bool Send(IEnumerable<IChannelMessage> data);
+    event EventHandler<IDataReceivedEventArgs> DataReceived;
+  }
+
+  public interface IChannel2<D, C> : IChannel2
+    where D : class
+    where C : IConfiguration
+  {
+    bool Send(IChannelMessage<D> data);
+    bool Send(IEnumerable<IChannelMessage<D>> data);
   }
 
   /// <summary>
