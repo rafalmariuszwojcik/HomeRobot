@@ -29,9 +29,9 @@ namespace RobotControl.Communication
     protected override void TearDown()
     {
       base.TearDown();
-      foreach (var item in items)
+      while (items.Any()) 
       {
-        item.Active = false;
+        Remove(items[0]);
       }
     }
 
