@@ -40,7 +40,7 @@ namespace RobotControl.Communication.Controller
     private readonly object lockVibration = new object();
 
     /// <summary>
-    /// The simulation timeout.
+    /// The update timeout.
     /// </summary>
     /// <remarks>Update controller state 100 times per one second.</remarks>
     private const int UPDATE_TIMEOUT = 10;

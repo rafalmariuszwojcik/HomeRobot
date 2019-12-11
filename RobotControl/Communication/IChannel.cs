@@ -65,6 +65,8 @@ namespace RobotControl.Communication
     /// Gets the configuration.
     /// </summary>
     IConfiguration Configuration { get; }
+
+    bool Send(IChannelMessage data);
   }
 
   public interface IChannel2 : IDisposable 

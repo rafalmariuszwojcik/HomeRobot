@@ -237,5 +237,10 @@ namespace RobotControl.Communication
         channel = default;
       }
     }
+
+    public bool Send(IChannelMessage data)
+    {
+      throw new NotImplementedException();
+    }
   }
 }
