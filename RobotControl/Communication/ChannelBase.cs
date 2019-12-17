@@ -75,6 +75,32 @@ namespace RobotControl.Communication
       Configuration = configuration;
     }
 
+    event EventHandler<IDataReceivedEventArgs<D>> IChannel<D, C>.DataReceived
+    {
+      add
+      {
+        throw new NotImplementedException();
+      }
+
+      remove
+      {
+        throw new NotImplementedException();
+      }
+    }
+
+    event EventHandler<IDataReceivedEventArgs> IChannel.DataReceived
+    {
+      add
+      {
+        //throw new NotImplementedException();
+      }
+
+      remove
+      {
+        //throw new NotImplementedException();
+      }
+    }
+
     /// <summary>
     /// Gets name of the channel.
     /// </summary>
@@ -119,6 +145,12 @@ namespace RobotControl.Communication
         }
       }
     }
+
+    bool IChannel.Active { get; set; }
+
+    string IChannel.Name => "sss";
+
+    IConfiguration IChannel.Configuration => throw new NotImplementedException();
 
     /// <summary>
     /// Sends data through the channel.
@@ -239,6 +271,21 @@ namespace RobotControl.Communication
     }
 
     public bool Send(IChannelMessage data)
+    {
+      throw new NotImplementedException();
+    }
+
+    bool IChannel<D, C>.Send(D data)
+    {
+      throw new NotImplementedException();
+    }
+
+    bool IChannel<D, C>.Send(IEnumerable<D> data)
+    {
+      throw new NotImplementedException();
+    }
+
+    bool IChannel.Send(IChannelMessage data)
     {
       throw new NotImplementedException();
     }

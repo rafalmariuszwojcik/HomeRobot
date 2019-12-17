@@ -67,6 +67,8 @@ namespace RobotControl.Communication
     IConfiguration Configuration { get; }
 
     bool Send(IChannelMessage data);
+
+    event EventHandler<IDataReceivedEventArgs> DataReceived;
   }
 
   public interface IChannel2 : IDisposable 

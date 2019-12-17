@@ -10,7 +10,9 @@ using System.Xml.Serialization;
 
 namespace RobotControl.Communication
 {
-  public class CommunicationManager : Singleton<CommunicationManager>, ICommunicationManager
+  //public class MessageManager : ManagerBase<MessageManager, IMessageListener, string>
+  //public class CommunicationManager : Singleton<CommunicationManager>, ICommunicationManager
+  public class CommunicationManager : ManagerBase<CommunicationManager, IListener<IChannelMessage>, IChannelMessage>, ICommunicationManager
   {
     private readonly IDictionary<Type, Func<ConfigurationBase, IChannel>> channelFromConfiguration = new Dictionary<Type, Func<ConfigurationBase, IChannel>>()
     {
@@ -19,8 +21,12 @@ namespace RobotControl.Communication
       { typeof(ControllerConfiguration), new Func<ConfigurationBase, IChannel>(x => new GamePadController((ControllerConfiguration)x)) },
     };
 
-    private readonly IList<IChannel> items = new List<IChannel>();
-    public IEnumerable<IChannel> Items => items;
+    /// <summary>
+    /// Internal list of channels.
+    /// </summary>
+    private readonly IList<IChannel> channels = new List<IChannel>();
+    
+    public IEnumerable<IChannel> Items => channels;
 
     public CommunicationManager()
     {
@@ -29,28 +35,35 @@ namespace RobotControl.Communication
     protected override void TearDown()
     {
       base.TearDown();
-      while (items.Any()) 
+      while (channels.Any()) 
       {
-        Remove(items[0]);
+        Remove(channels[0]);
       }
     }
 
     public void Add(IChannel channel)
     {
-      if (!items.Contains(channel))
+      if (!channels.Contains(channel))
       {
-        items.Add(channel);
-        //channel.on
+        channels.Add(channel);
+        channel.DataReceived += (s, e) =>
+        {
+          BroadcastData(this, null);
+        };
       }
     }
 
+    /// <summary>
+    /// Removes the specified channel.
+    /// </summary>
+    /// <param name="channel">The channel.</param>
     public void Remove(IChannel channel)
     {
-      if (items.Contains(channel))
+      if (channels.Contains(channel))
       {
         channel.Active = false;
         channel.Dispose();
-        items.Remove(channel);
+        channels.Remove(channel);
       }
     }
 
@@ -60,9 +73,9 @@ namespace RobotControl.Communication
       using (var reader = new StreamReader(@"c:\temp\CommunicationManager.xml"))
       {
         var configuration = (CommunicationManagerConfiguration)serializer.Deserialize(reader);
-        while (items.Any())
+        while (channels.Any())
         {
-          Remove(items[0]);
+          Remove(channels[0]);
         }
 
         foreach (var cfg in configuration.Configurations)
@@ -74,7 +87,7 @@ namespace RobotControl.Communication
 
     public void Save()
     {
-      var list = items.Select(x => x.Configuration).Cast<ConfigurationBase>().ToArray();
+      var list = channels.Select(x => x.Configuration).Cast<ConfigurationBase>().ToArray();
       //var ser = new XmlSerializer(typeof(ConfigurationBase[]));
 
 
