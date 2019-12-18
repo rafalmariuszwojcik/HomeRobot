@@ -92,7 +92,9 @@ namespace RobotControl.Communication.Controller
         new ControllerStateCommand(e.LeftThumb, e.RightThumb, e.LeftTrigger, e.RightTrigger)
       };
 
-      CommandManager.Instance.BroadcastData(this, cmd);
+      OnDataReceived(new ControllerStateCommand(e.LeftThumb, e.RightThumb, e.LeftTrigger, e.RightTrigger));
+
+      //CommandManager.Instance.BroadcastData(this, cmd);
     }
 
     /// <summary>

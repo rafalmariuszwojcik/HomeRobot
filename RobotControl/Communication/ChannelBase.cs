@@ -61,6 +61,8 @@ namespace RobotControl.Communication
     /// </summary>
     private T channel;
 
+    private C configuration;
+
     /// <summary>
     /// Occurs when incoming data received.
     /// </summary>
@@ -72,7 +74,7 @@ namespace RobotControl.Communication
     /// <param name="configuration">The configuration.</param>
     protected ChannelBase(C configuration)
     {
-      Configuration = configuration;
+      this.configuration = configuration;
     }
 
     event EventHandler<IDataReceivedEventArgs<D>> IChannel<D, C>.DataReceived
@@ -106,18 +108,11 @@ namespace RobotControl.Communication
     /// </summary>
     public string Name { get => GetType().Name; }
 
-    /// <summary>
-    /// Gets the channel's configuration.
-    /// </summary>
-    public IConfiguration Configuration { get; private set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether this <see cref="T:RobotControl.Communication.IChannel" /> is active (opened).
-    /// </summary>
+    /// <summary>Gets or sets a value indicating whether this <see cref="IChannel"/> is active (opened).</summary>
     /// <value>
     /// <c>true</c> if active; otherwise, <c>false</c>.
     /// </value>
-    public bool Active
+    bool IChannel.Active 
     {
       get
       {
@@ -131,7 +126,7 @@ namespace RobotControl.Communication
       {
         lock (lockData)
         {
-          if (Active != value)
+          if (((IChannel)this).Active != value)
           {
             if (value)
             {
@@ -146,11 +141,10 @@ namespace RobotControl.Communication
       }
     }
 
-    bool IChannel.Active { get; set; }
 
-    string IChannel.Name => "sss";
+    string IChannel.Name => GetType().Name;
 
-    IConfiguration IChannel.Configuration => throw new NotImplementedException();
+    IConfiguration IChannel.Configuration => configuration;
 
     /// <summary>
     /// Sends data through the channel.
@@ -160,7 +154,7 @@ namespace RobotControl.Communication
     {
       lock (lockData)
       {
-        if (Active)
+        if (((IChannel)this).Active)
         {
           InternalSend(channel, data);
           return true;
@@ -195,7 +189,7 @@ namespace RobotControl.Communication
     {
       if (disposing)
       {
-        Active = false;
+        ((IChannel)this).Active = false;
       }
     }
 
@@ -248,7 +242,7 @@ namespace RobotControl.Communication
       Close();
       try
       {
-        channel = InternalOpen((C)Configuration);
+        channel = InternalOpen((C)configuration);
       }
       catch (Exception)
       {
