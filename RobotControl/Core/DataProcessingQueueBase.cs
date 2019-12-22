@@ -40,6 +40,18 @@ namespace RobotControl.Core
       }
     }
 
+    public void Enqueue(T item)
+    {
+      lock (lockData)
+      {
+        if (item != null && !isDisposing)
+        {
+          data.Enqueue(item);
+          signal.Set();
+        }
+      }
+    }
+
     protected void Start()
     {
       worker = Task.Factory.StartNew(() => ProcessData(), token);

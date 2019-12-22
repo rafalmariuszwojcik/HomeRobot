@@ -27,6 +27,11 @@ namespace RobotControl.Core
       messageQueue.Enqueue(data);
     }
 
+    public void BroadcastData(object sender, M data)
+    {
+      messageQueue.Enqueue(data);
+    }
+
     public void RegisterListener(T listener)
     {
       lock (lockObject)

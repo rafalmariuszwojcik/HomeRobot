@@ -48,7 +48,7 @@ namespace RobotControl.Communication
         channels.Add(channel);
         channel.DataReceived += (s, e) =>
         {
-          BroadcastData(this, new[] { e.Message });
+          BroadcastData(this, e.Message);
         };
       }
     }
