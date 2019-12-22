@@ -25,7 +25,7 @@ namespace RobotControl.Communication
     /// Internal list of channels.
     /// </summary>
     private readonly IList<IChannel> channels = new List<IChannel>();
-    
+
     public IEnumerable<IChannel> Items => channels;
 
     public CommunicationManager()
@@ -35,7 +35,7 @@ namespace RobotControl.Communication
     protected override void TearDown()
     {
       base.TearDown();
-      while (channels.Any()) 
+      while (channels.Any())
       {
         Remove(channels[0]);
       }
@@ -46,10 +46,7 @@ namespace RobotControl.Communication
       if (!channels.Contains(channel))
       {
         channels.Add(channel);
-        channel.DataReceived += (s, e) =>
-        {
-          BroadcastData(this, e.Message);
-        };
+        channel.DataReceived += DataReceivedFromChannel;
       }
     }
 
@@ -61,6 +58,7 @@ namespace RobotControl.Communication
     {
       if (channels.Contains(channel))
       {
+        channel.DataReceived -= DataReceivedFromChannel;
         channel.Active = false;
         channel.Dispose();
         channels.Remove(channel);
@@ -125,6 +123,16 @@ namespace RobotControl.Communication
       }
 
       public ConfigurationBase[] Configurations { get; set; }
+    }
+
+    /// <summary>
+    /// Data received from channel.
+    /// </summary>
+    /// <param name="sender">The sender object.</param>
+    /// <param name="e">The <see cref="IDataReceivedEventArgs"/> instance containing the event data.</param>
+    private void DataReceivedFromChannel(object sender, IDataReceivedEventArgs e) 
+    {
+      BroadcastData(this, e.Message);
     }
   }
 }
