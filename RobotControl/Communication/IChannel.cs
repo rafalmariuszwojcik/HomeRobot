@@ -14,24 +14,45 @@ namespace RobotControl.Communication
     string Name { get; set; }
   }
 
+  /// <summary>
+  /// Channel message interface.
+  /// </summary>
   public interface IChannelMessage
   {
+    /// <summary>
+    /// Gets the sender.
+    /// </summary>
     IChannel Sender { get; }
+
+    /// <summary>
+    /// Gets the receivers.
+    /// </summary>
     IEnumerable<IChannel> Receivers { get; }
   }
 
+  /// <summary>
+  /// Channel message interface.
+  /// </summary>
+  /// <typeparam name="D">Type of message data.</typeparam>
   public interface IChannelMessage<D> : IChannelMessage
     where D : class
   {
+    /// <summary>
+    /// Gets the data.
+    /// </summary>
     D Data { get; }
   }
 
+  /// <summary>
+  /// Data received event argument.
+  /// </summary>
   public interface IDataReceivedEventArgs 
   {
+    /// <summary>
+    /// Gets the message.
+    /// </summary>
     IChannelMessage Message { get; }
   }
-
-  
 
   /// <summary>
   /// Data received event argument.
@@ -41,9 +62,9 @@ namespace RobotControl.Communication
     where D : class
   {
     /// <summary>
-    /// Gets the received data.
+    /// Gets the message.
     /// </summary>
-    D Data { get; }
+    new IChannelMessage<D> Message { get; }
   }
 
   public interface IChannel : IDisposable
@@ -114,12 +135,85 @@ namespace RobotControl.Communication
     /// <summary>
     /// Occurs when incoming data received.
     /// </summary>
-    event EventHandler<IDataReceivedEventArgs<D>> DataReceived;
+    //event EventHandler<IDataReceivedEventArgs<D>> DataReceived;
   }
 
+  /// <summary>
+  /// Channel message class.
+  /// </summary>
+  /// <seealso cref="RobotControl.Communication.IChannelMessage" />
+  public class ChannelMessage : IChannelMessage
+  {
+    /// <summary>
+    /// The message receivers.
+    /// </summary>
+    private readonly IEnumerable<IChannel> receivers = new List<IChannel>();
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ChannelMessage"/> class.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    public ChannelMessage(IChannel sender) 
+    {
+      Sender = sender;
+    }
+
+    /// <summary>
+    /// Gets the message sender.
+    /// </summary>
+    public IChannel Sender { get; private set; }
+
+    /// <summary>
+    /// Gets the receivers.
+    /// </summary>
+    public IEnumerable<IChannel> Receivers => receivers;
+  }
+
+  /// <summary>
+  /// Channel message class.
+  /// </summary>
+  /// <typeparam name="D"></typeparam>
+  /// <seealso cref="RobotControl.Communication.IChannelMessage" />
+  public class ChannelMessage<D> : ChannelMessage, IChannelMessage<D>
+    where D : class
+  {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ChannelMessage{D}"/> class.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="data">The data.</param>
+    public ChannelMessage(IChannel sender, D data)
+      : base(sender)
+    {
+      Data = data;
+    }
+
+    /// <summary>
+    /// Gets the data.
+    /// </summary>
+    public D Data { get; private set; }
+  }
+
+  /// <summary>
+  /// Data received event argument class.
+  /// </summary>
+  /// <seealso cref="System.EventArgs" />
+  /// <seealso cref="RobotControl.Communication.IDataReceivedEventArgs" />
   public class DataReceivedEventArgs : EventArgs, IDataReceivedEventArgs
   {
-    public IChannelMessage Message => throw new NotImplementedException();
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataReceivedEventArgs"/> class.
+    /// </summary>
+    /// <param name="message">The message.</param>
+    public DataReceivedEventArgs(IChannelMessage message)
+    {
+      Message = message;
+    }
+
+    /// <summary>
+    /// Gets the message.
+    /// </summary>
+    public IChannelMessage Message { get; private set; }
   }
 
   /// <summary>
@@ -131,11 +225,19 @@ namespace RobotControl.Communication
   public class DataReceivedEventArgs<D> : DataReceivedEventArgs, IDataReceivedEventArgs<D>
     where D : class
   {
-    public DataReceivedEventArgs(D data)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DataReceivedEventArgs{D}"/> class.
+    /// </summary>
+    /// <param name="message">The message.</param>
+    /// <param name="data">The data.</param>
+    public DataReceivedEventArgs(IChannelMessage<D> message)
+      :base(message)
     {
-      Data = data;
     }
 
-    public D Data { get; }
+    /// <summary>
+    /// Gets the message.
+    /// </summary>
+    public new IChannelMessage<D> Message => (IChannelMessage<D>)base.Message;
   }
 }

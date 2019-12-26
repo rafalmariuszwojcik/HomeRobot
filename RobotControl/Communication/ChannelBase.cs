@@ -79,6 +79,7 @@ namespace RobotControl.Communication
       this.configuration = configuration;
     }
 
+    /*
     event EventHandler<IDataReceivedEventArgs<D>> IChannel<D, C>.DataReceived
     {
       add
@@ -91,6 +92,7 @@ namespace RobotControl.Communication
         throw new NotImplementedException();
       }
     }
+    */
 
     event EventHandler<IDataReceivedEventArgs> IChannel.DataReceived
     {
@@ -201,11 +203,7 @@ namespace RobotControl.Communication
     /// <param name="data">The data.</param>
     protected void OnDataReceived(D data)
     {
-      var channel = this as IChannel;
-      //var dataReceivedEvent = channel?.DataReceived.
-      
-      
-      this.dataReceived?.Invoke(this, new DataReceivedEventArgs<D>(data));
+      this.dataReceived?.Invoke(this, new DataReceivedEventArgs<D>(new ChannelMessage<D>(this, data)));
     }
 
     /// <summary>
