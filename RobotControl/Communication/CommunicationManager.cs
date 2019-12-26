@@ -26,12 +26,22 @@ namespace RobotControl.Communication
     /// </summary>
     private readonly IList<IChannel> channels = new List<IChannel>();
 
+    /// <summary>
+    /// Gets available channels.
+    /// </summary>
     public IEnumerable<IChannel> Items => channels;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CommunicationManager"/> class.
+    /// </summary>
     public CommunicationManager()
     {
     }
 
+    /// <summary>
+    /// Tears down the instance.
+    /// </summary>
+    /// <remarks>Close all channels.</remarks>
     protected override void TearDown()
     {
       base.TearDown();

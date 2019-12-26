@@ -63,10 +63,12 @@ namespace RobotControl.Communication
 
     private C configuration;
 
+    private event EventHandler<IDataReceivedEventArgs> dataReceived;
+
     /// <summary>
     /// Occurs when incoming data received.
     /// </summary>
-    public event EventHandler<IDataReceivedEventArgs<D>> DataReceived;
+    //public event EventHandler<IDataReceivedEventArgs<D>> DataReceived;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ChannelBaseEx{T, D, C}"/> class.
@@ -94,12 +96,12 @@ namespace RobotControl.Communication
     {
       add
       {
-        //throw new NotImplementedException();
+        dataReceived += value;
       }
 
       remove
       {
-        //throw new NotImplementedException();
+        dataReceived -= value;
       }
     }
 
@@ -199,7 +201,11 @@ namespace RobotControl.Communication
     /// <param name="data">The data.</param>
     protected void OnDataReceived(D data)
     {
-      DataReceived?.Invoke(this, new DataReceivedEventArgs<D>(data));
+      var channel = this as IChannel;
+      //var dataReceivedEvent = channel?.DataReceived.
+      
+      
+      this.dataReceived?.Invoke(this, new DataReceivedEventArgs<D>(data));
     }
 
     /// <summary>

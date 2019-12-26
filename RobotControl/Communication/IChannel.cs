@@ -37,7 +37,7 @@ namespace RobotControl.Communication
   /// Data received event argument.
   /// </summary>
   /// <typeparam name="T">Type of received data.</typeparam>
-  public interface IDataReceivedEventArgs<D>// : IDataReceivedEventArgs
+  public interface IDataReceivedEventArgs<D> : IDataReceivedEventArgs
     where D : class
   {
     /// <summary>
@@ -117,13 +117,18 @@ namespace RobotControl.Communication
     event EventHandler<IDataReceivedEventArgs<D>> DataReceived;
   }
 
+  public class DataReceivedEventArgs : EventArgs, IDataReceivedEventArgs
+  {
+    public IChannelMessage Message => throw new NotImplementedException();
+  }
+
   /// <summary>
   /// Data received event data.
   /// </summary>
   /// <typeparam name="D"></typeparam>
   /// <seealso cref="System.EventArgs" />
   /// <seealso cref="RobotControl.Communication.IDataReceivedEventArgs{D}" />
-  public class DataReceivedEventArgs<D> : EventArgs, IDataReceivedEventArgs<D>
+  public class DataReceivedEventArgs<D> : DataReceivedEventArgs, IDataReceivedEventArgs<D>
     where D : class
   {
     public DataReceivedEventArgs(D data)
