@@ -1,4 +1,6 @@
-﻿using RobotControl.Communication.Controller;
+﻿using RobotControl.Command;
+using RobotControl.Command.Controller;
+using RobotControl.Communication.Controller;
 using RobotControl.Communication.Fake;
 using RobotControl.Communication.Serial;
 using RobotControl.Core;
@@ -10,8 +12,6 @@ using System.Xml.Serialization;
 
 namespace RobotControl.Communication
 {
-  //public class MessageManager : ManagerBase<MessageManager, IMessageListener, string>
-  //public class CommunicationManager : Singleton<CommunicationManager>, ICommunicationManager
   public class CommunicationManager : ManagerBase<CommunicationManager, IListener<IChannelMessage>, IChannelMessage>, ICommunicationManager
   {
     private readonly IDictionary<Type, Func<ConfigurationBase, IChannel>> channelFromConfiguration = new Dictionary<Type, Func<ConfigurationBase, IChannel>>()
@@ -143,6 +143,12 @@ namespace RobotControl.Communication
     private void DataReceivedFromChannel(object sender, IDataReceivedEventArgs e) 
     {
       BroadcastData(this, e.Message);
+      if (e.Message is IChannelMessage<IControllerCommand> command) 
+      {
+        var data = new List<ICommand>();
+        data.Add(command.Data);
+        CommandManager.Instance.BroadcastData(this, data);
+      }
     }
   }
 }

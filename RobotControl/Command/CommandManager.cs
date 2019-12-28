@@ -15,6 +15,7 @@ namespace RobotControl.Command
       : base()
     {
       Disposables.Add(new MessageListener((s) => MessageReceived(null, s.FirstOrDefault())));
+      //CommunicationManager.Instance.RegisterListener(this);
     }
 
     private void MessageReceived(IChannel channel, string message)
