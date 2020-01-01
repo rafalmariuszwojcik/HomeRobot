@@ -12,7 +12,10 @@ using System.Xml.Serialization;
 
 namespace RobotControl.Communication
 {
-  public class CommunicationManager : ManagerBase<CommunicationManager, IListener<IChannelMessage>, IChannelMessage>, ICommunicationManager
+  /// <summary>
+  /// Global communication manager.
+  /// </summary>
+  public class CommunicationManager : ManagerBase<CommunicationManager, object, IChannelMessage>, ICommunicationManager
   {
     private readonly IDictionary<Type, Func<ConfigurationBase, IChannel>> channelFromConfiguration = new Dictionary<Type, Func<ConfigurationBase, IChannel>>()
     {
@@ -51,12 +54,17 @@ namespace RobotControl.Communication
       }
     }
 
+    /// <summary>
+    /// Adds the specified channel.
+    /// </summary>
+    /// <param name="channel">The channel.</param>
     public void Add(IChannel channel)
     {
       if (!channels.Contains(channel))
       {
         channels.Add(channel);
         channel.DataReceived += DataReceivedFromChannel;
+        RegisterListener(channel);
       }
     }
 
@@ -68,6 +76,7 @@ namespace RobotControl.Communication
     {
       if (channels.Contains(channel))
       {
+        UnregisterListener(channel);
         channel.DataReceived -= DataReceivedFromChannel;
         channel.Active = false;
         channel.Dispose();

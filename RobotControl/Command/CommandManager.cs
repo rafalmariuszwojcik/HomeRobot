@@ -7,15 +7,31 @@ using System.Text;
 
 namespace RobotControl.Command
 {
+  /// <summary>
+  /// Global commands manager.
+  /// </summary>
+  /// <seealso cref="RobotControl.Core.ManagerBase{RobotControl.Command.CommandManager, RobotControl.Command.ICommandListener, RobotControl.Command.ICommand}" />
   public class CommandManager : ManagerBase<CommandManager, ICommandListener, ICommand>
   {
     private readonly StringBuilder incomingData = new StringBuilder();
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CommandManager"/> class.
+    /// </summary>
     public CommandManager()
       : base()
     {
       Disposables.Add(new MessageListener((s) => MessageReceived(null, s.FirstOrDefault())));
-      //CommunicationManager.Instance.RegisterListener(this);
+      CommunicationManager.Instance.RegisterListener(this);
+    }
+
+    /// <summary>
+    /// Tears down.
+    /// </summary>
+    protected override void TearDown()
+    {
+      CommunicationManager.Instance.UnregisterListener(this);
+      base.TearDown();
     }
 
     private void MessageReceived(IChannel channel, string message)
