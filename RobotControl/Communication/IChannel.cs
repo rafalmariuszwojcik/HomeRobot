@@ -87,27 +87,17 @@ namespace RobotControl.Communication
     /// </summary>
     IConfiguration Configuration { get; }
 
+    /// <summary>
+    /// Sends the specified data.
+    /// </summary>
+    /// <param name="data">The data.</param>
+    /// <returns><c>True</c> if data was sent successfully.</returns>
     bool Send(IChannelMessage data);
 
+    /// <summary>
+    /// Occurs when data received from channel.
+    /// </summary>
     event EventHandler<IDataReceivedEventArgs> DataReceived;
-  }
-
-  public interface IChannel2 : IDisposable 
-  {
-    bool Active { get; set; }
-    string Name { get; }
-    IConfiguration Configuration { get; }
-    bool Send(IChannelMessage data);
-    bool Send(IEnumerable<IChannelMessage> data);
-    event EventHandler<IDataReceivedEventArgs> DataReceived;
-  }
-
-  public interface IChannel2<D, C> : IChannel2
-    where D : class
-    where C : IConfiguration
-  {
-    bool Send(IChannelMessage<D> data);
-    bool Send(IEnumerable<IChannelMessage<D>> data);
   }
 
   /// <summary>
@@ -131,11 +121,6 @@ namespace RobotControl.Communication
     /// </summary>
     /// <param name="data">The data.</param>
     bool Send(IEnumerable<D> data);
-
-    /// <summary>
-    /// Occurs when incoming data received.
-    /// </summary>
-    //event EventHandler<IDataReceivedEventArgs<D>> DataReceived;
   }
 
   /// <summary>
