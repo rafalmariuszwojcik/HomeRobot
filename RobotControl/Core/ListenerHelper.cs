@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -10,7 +11,29 @@ namespace RobotControl.Core
     private readonly object listenerInfoLockObject = new object();
     private readonly IDictionary<Type, ListenerInfo> types = new Dictionary<Type, ListenerInfo>();
 
-    private ListenerInfo GetListenerInfo(object listener)
+    public IEnumerable<Action> DataReceivedActions(IListener listener, IEnumerable<object> data) 
+    {
+
+      var result = new List<Action>();
+      var listenerInfo = GetListenerInfo(listener);
+      foreach (var intf in listenerInfo.Interfaces)
+      {
+        var dataToSend = (IList)Activator.CreateInstance(intf.PackageType);
+        foreach (var item in data.Where(x => x.GetType().Equals(intf.DataType) || x.GetType().GetInterfaces().Contains(intf.DataType)))
+        {
+          dataToSend.Add(item);
+        }
+
+        var action = new Action(() => intf.Method.Invoke(listener, new object[] { null, dataToSend }));
+        result.Add(action);
+      }
+
+      return result;
+    }
+
+
+
+    private ListenerInfo GetListenerInfo(IListener listener)
     {
       lock (listenerInfoLockObject)
       {

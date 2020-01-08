@@ -152,9 +152,9 @@ namespace RobotControl.Communication
     /// <returns></returns>
     protected override IEnumerable<Action> SendDataActions(IListener listener, IEnumerable<IChannelMessage> data)
     {
-      return base.SendDataActions(listener, data);
+      var result = ListenerHelper.Instance.DataReceivedActions(listener, data);
+      return result;
     }
-
 
     /// <summary>
     /// Data received from channel.
