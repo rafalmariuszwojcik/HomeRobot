@@ -145,6 +145,18 @@ namespace RobotControl.Communication
     }
 
     /// <summary>
+    /// Sends the data actions.
+    /// </summary>
+    /// <param name="listener">The listener.</param>
+    /// <param name="data">The data.</param>
+    /// <returns></returns>
+    protected override IEnumerable<Action> SendDataActions(IListener listener, IEnumerable<IChannelMessage> data)
+    {
+      return base.SendDataActions(listener, data);
+    }
+
+
+    /// <summary>
     /// Data received from channel.
     /// </summary>
     /// <param name="sender">The sender object.</param>
