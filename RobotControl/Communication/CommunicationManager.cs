@@ -15,7 +15,7 @@ namespace RobotControl.Communication
   /// <summary>
   /// Global communication manager.
   /// </summary>
-  public class CommunicationManager : ManagerBase<CommunicationManager, object, IChannelMessage>, ICommunicationManager
+  public class CommunicationManager : ManagerBase<CommunicationManager, IListener, IChannelMessage>, ICommunicationManager
   {
     private readonly IDictionary<Type, Func<ConfigurationBase, IChannel>> channelFromConfiguration = new Dictionary<Type, Func<ConfigurationBase, IChannel>>()
     {
@@ -64,7 +64,7 @@ namespace RobotControl.Communication
       {
         channels.Add(channel);
         channel.DataReceived += DataReceivedFromChannel;
-        RegisterListener(channel);
+        RegisterListener(channel as IListener);
       }
     }
 
@@ -76,7 +76,7 @@ namespace RobotControl.Communication
     {
       if (channels.Contains(channel))
       {
-        UnregisterListener(channel);
+        UnregisterListener(channel as IListener);
         channel.DataReceived -= DataReceivedFromChannel;
         channel.Active = false;
         channel.Dispose();

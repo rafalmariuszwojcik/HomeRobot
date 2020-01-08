@@ -6,9 +6,14 @@ namespace RobotControl.Core
   /// <summary>
   /// Listener interface.
   /// </summary>
+  public interface IListener { }
+  
+  /// <summary>
+  /// Listener interface.
+  /// </summary>
   /// <remarks>Classes implementing this interface are receivers of broadcasted objects.</remarks>
   /// <typeparam name="T">Type of broadcasted objects.</typeparam>
-  public interface IListener<T>
+  public interface IListener<T> : IListener
     where T : class
   {
     /// <summary>

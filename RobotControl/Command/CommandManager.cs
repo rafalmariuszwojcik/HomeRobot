@@ -11,7 +11,7 @@ namespace RobotControl.Command
   /// Global commands manager.
   /// </summary>
   /// <seealso cref="RobotControl.Core.ManagerBase{RobotControl.Command.CommandManager, RobotControl.Command.ICommandListener, RobotControl.Command.ICommand}" />
-  public class CommandManager : ManagerBase<CommandManager, ICommandListener, ICommand>
+  public class CommandManager : ManagerBase<CommandManager, ICommandListener, ICommand>, IListener
   {
     private readonly StringBuilder incomingData = new StringBuilder();
 
