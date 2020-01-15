@@ -2,6 +2,7 @@
 using RobotControl.Core;
 using RobotControl.Messages;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -11,7 +12,7 @@ namespace RobotControl.Command
   /// Global commands manager.
   /// </summary>
   /// <seealso cref="RobotControl.Core.ManagerBase{RobotControl.Command.CommandManager, RobotControl.Command.ICommandListener, RobotControl.Command.ICommand}" />
-  public class CommandManager : ManagerBase<CommandManager, ICommandListener, ICommand>, IListener
+  public class CommandManager : ManagerBase<CommandManager, ICommandListener, ICommand>, IListener, IListener<ICommand>
   {
     private readonly StringBuilder incomingData = new StringBuilder();
 
@@ -32,6 +33,11 @@ namespace RobotControl.Command
     {
       CommunicationManager.Instance.UnregisterListener(this);
       base.TearDown();
+    }
+
+    void IListener<ICommand>.DataReceived(IChannel channel, IEnumerable<ICommand> data)
+    {
+      BroadcastData(this, data);
     }
 
     private void MessageReceived(IChannel channel, string message)

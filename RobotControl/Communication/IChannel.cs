@@ -28,6 +28,11 @@ namespace RobotControl.Communication
     /// Gets the receivers.
     /// </summary>
     IEnumerable<IChannel> Receivers { get; }
+
+    /// <summary>
+    /// Gets the message data.
+    /// </summary>
+    object Data { get; }
   }
 
   /// <summary>
@@ -40,7 +45,7 @@ namespace RobotControl.Communication
     /// <summary>
     /// Gets the data.
     /// </summary>
-    D Data { get; }
+    new D Data { get; }
   }
 
   /// <summary>
@@ -138,7 +143,7 @@ namespace RobotControl.Communication
     /// Initializes a new instance of the <see cref="ChannelMessage"/> class.
     /// </summary>
     /// <param name="sender">The sender.</param>
-    public ChannelMessage(IChannel sender) 
+    public ChannelMessage(IChannel sender)
     {
       Sender = sender;
     }
@@ -152,6 +157,11 @@ namespace RobotControl.Communication
     /// Gets the receivers.
     /// </summary>
     public IEnumerable<IChannel> Receivers => receivers;
+
+    /// <summary>
+    /// Gets the message data.
+    /// </summary>
+    public object Data { get; protected set; }
   }
 
   /// <summary>
@@ -170,13 +180,13 @@ namespace RobotControl.Communication
     public ChannelMessage(IChannel sender, D data)
       : base(sender)
     {
-      Data = data;
+      base.Data = data;
     }
 
     /// <summary>
     /// Gets the data.
     /// </summary>
-    public D Data { get; private set; }
+    public new D Data => (D)base.Data;
   }
 
   /// <summary>

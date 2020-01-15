@@ -1,6 +1,4 @@
-﻿using RobotControl.Command;
-using RobotControl.Command.Controller;
-using RobotControl.Communication.Controller;
+﻿using RobotControl.Communication.Controller;
 using RobotControl.Communication.Fake;
 using RobotControl.Communication.Serial;
 using RobotControl.Core;
@@ -152,7 +150,7 @@ namespace RobotControl.Communication
     /// <returns></returns>
     protected override IEnumerable<Action> SendDataActions(IListener listener, IEnumerable<IChannelMessage> data)
     {
-      var result = ListenerHelper.Instance.DataReceivedActions(listener, data);
+      var result = ListenerHelper.Instance.DataReceivedActions(listener, data.Select(x => x.Data));
       return result;
     }
 
@@ -164,12 +162,6 @@ namespace RobotControl.Communication
     private void DataReceivedFromChannel(object sender, IDataReceivedEventArgs e) 
     {
       BroadcastData(this, e.Message);
-      if (e.Message is IChannelMessage<IControllerCommand> command) 
-      {
-        var data = new List<ICommand>();
-        data.Add(command.Data);
-        CommandManager.Instance.BroadcastData(this, data);
-      }
     }
   }
 }
