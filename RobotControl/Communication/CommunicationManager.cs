@@ -1,5 +1,6 @@
 ﻿using RobotControl.Communication.Controller;
 using RobotControl.Communication.Fake;
+using RobotControl.Communication.RWcom;
 using RobotControl.Communication.Serial;
 using RobotControl.Core;
 using System;
@@ -98,6 +99,8 @@ namespace RobotControl.Communication
           Add(channelFromConfiguration[cfg.GetType()](cfg));
         }
       }
+
+      Add(new RWcomRobot(null));
     }
 
     public void Save()

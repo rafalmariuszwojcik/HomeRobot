@@ -94,6 +94,7 @@
     <Compile Include="Communication\Controller\GamePad.cs" />
     <Compile Include="Communication\IChannel.cs" />
     <Compile Include="Communication\ICommunicationManager.cs" />
+    <Compile Include="Communication\RWcom\RWcomTranslator.cs" />
     <Compile Include="Communication\RWcom\RWcomRobot.cs" />
     <Compile Include="Communication\Serial\SerialChannel.cs" />
     <Compile Include="Communication\Serial\SerialConfiguration.cs" />
