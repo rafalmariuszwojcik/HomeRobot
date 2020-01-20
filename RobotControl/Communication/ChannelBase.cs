@@ -82,7 +82,7 @@ namespace RobotControl.Communication
     /// <value>
     /// <c>true</c> if active; otherwise, <c>false</c>.
     /// </value>
-    bool IChannel.Active 
+    public bool Active 
     {
       get
       {

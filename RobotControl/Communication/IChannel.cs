@@ -72,7 +72,11 @@ namespace RobotControl.Communication
     new IChannelMessage<D> Message { get; }
   }
 
-  public interface IChannel : IDisposable
+  public interface ICommunication 
+  { 
+  }
+  
+  public interface IChannel : ICommunication, IDisposable
   {
     /// <summary>
     /// Gets or sets a value indicating whether this <see cref="IChannel"/> is active (opened).

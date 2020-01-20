@@ -49,14 +49,15 @@ namespace RobotControl.Communication.RWcom
 
     void IListener<IRobotCommand>.DataReceived(IChannel channel, IEnumerable<IRobotCommand> data)
     {
-      //if (Active) 
-      { 
+      if (Active) 
+      {
+       // this.OnDataReceived((IRobotCommand)null);
       }
     }
 
     void IListener<string>.DataReceived(IChannel channel, IEnumerable<string> data)
     {
-      //if (Active)
+      if (Active)
       {
       }
     }
