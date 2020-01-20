@@ -60,7 +60,7 @@ namespace RobotControl.Communication
     }
     */
 
-    event EventHandler<IDataReceivedEventArgs> IChannel.DataReceived
+    event EventHandler<IDataReceivedEventArgs> ICommunication.DataReceived
     {
       add
       {

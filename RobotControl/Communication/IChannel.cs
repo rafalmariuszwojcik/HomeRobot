@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RobotControl.Core;
+using System;
 using System.Collections.Generic;
 
 namespace RobotControl.Communication
@@ -72,8 +73,12 @@ namespace RobotControl.Communication
     new IChannelMessage<D> Message { get; }
   }
 
-  public interface ICommunication 
-  { 
+  public interface ICommunication : IListener
+  {
+    /// <summary>
+    /// Occurs when data received from channel.
+    /// </summary>
+    event EventHandler<IDataReceivedEventArgs> DataReceived;
   }
   
   public interface IChannel : ICommunication, IDisposable
@@ -102,11 +107,6 @@ namespace RobotControl.Communication
     /// <param name="data">The data.</param>
     /// <returns><c>True</c> if data was sent successfully.</returns>
     bool Send(IChannelMessage data);
-
-    /// <summary>
-    /// Occurs when data received from channel.
-    /// </summary>
-    event EventHandler<IDataReceivedEventArgs> DataReceived;
   }
 
   /// <summary>
