@@ -1,0 +1,17 @@
+1. Left engine.
+
+A6 - LE_ENABLED.
+A8 - LE_FORWARD.
+A9 - LE_BACKWARD.
+
+full speed 29 Hz (pins/second)
+
+2. Right engine.
+
+A5 - LE_ENABLED.
+A4 - LE_FORWARD.
+A7 - LE_BACKWARD.
+
+
+
+
