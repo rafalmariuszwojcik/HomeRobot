@@ -18,15 +18,16 @@ Should be called from main programm.
 */
 struct Encoder Encoder_getStateAndReset(struct Encoder* encoder) {
   struct Encoder result;
-  
-  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
-    result.signaled = encoder->signaled; 
-    result.micros = encoder->micros; 
-    result.count = encoder->count;
-
-    encoder->signaled = false;
-    encoder->count = 0; 
+  result.signaled = false;
+  if (encoder->signaled) {
+    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+      result.signaled = encoder->signaled; 
+      result.micros = encoder->micros; 
+      result.count = encoder->count;
+      encoder->signaled = false;
+      encoder->count = 0; 
+    }
   }
-  
+
   return result;
 };
