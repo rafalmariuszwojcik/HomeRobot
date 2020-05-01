@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <string.h>
 #include <stdbool.h>
 #include "Input.h"
@@ -18,9 +19,9 @@ char* Input_GetData()
   while (_buffer.available_ptr != NULL && _buffer.available_ptr() > 0)
   {
     char data = _buffer.read_ptr != NULL ? _buffer.read_ptr() : 0;
-    if (_Input_IsDataValid(data) && _buffer.dataIndex <= _INPUT_BUFFER_SIZE - 3)
+    if (_Input_IsDataValid(data) && _buffer.dataIndex < INPUT_MAX_BUFFER_INDEX)
     {
-      _buffer.data[++_buffer.dataIndex] = data;
+      _buffer.data[++_buffer.dataIndex] = toupper(data);
       _buffer.data[_buffer.dataIndex + 1] = 0;
     }
     else 
@@ -28,20 +29,18 @@ char* Input_GetData()
       _buffer.dataIndex = -1;
       break;
     }
+
+    if (_buffer.dataIndex >= 0 && _buffer.data[_buffer.dataIndex] == ';')
+    {
+      _buffer.dataIndex = -1;
+      return &(_buffer.data[0]);
+    }
   }
 
-  if (_buffer.dataIndex >= 0 && _buffer.data[_buffer.dataIndex] == ';')
-  {
-    _buffer.dataIndex = -1;
-    return &(_buffer.data[0]);
-  }
-  else 
-  {
-    return NULL;
-  }
+  return NULL;
 }
 
 bool _Input_IsDataValid(char data)
 {
-  return (data == ',') || (data == ';') || (data == 32) || (data >= 48 && data <= 57) || (data >= 65 && data <= 90) || (data >= 97 && data <= 122);
+  return (data == ',') || (data == ';') || (data == '-') || (data >= '0' && data <= '9') || (data >= 'A' && data <= 'Z') || (data >= 'a' && data <= 'z');
 }

@@ -1,9 +1,14 @@
 #include <stdlib.h>
-#include <TimerOne.h>
+#include <string.h>
+//#include <TimerOne.h>
+#include <util/atomic.h>
+
 extern "C"
 {
   #include "Engine.h"
   #include "Robot.h"
+  #include "Encoder.h"
+  #include "Input.h"
 }
 
 const byte CMD_UNKNOWN = 0xFF;
@@ -17,6 +22,9 @@ struct Command
 };
 
 Robot robot;
+Encoder leftEncoder;
+Encoder rightEncoder;
+volatile bool timerSignal;
 
 void cmd_EngineForward(int[], byte, void*);
 void cmd_EngineBackward(int[], byte, void*);
@@ -33,7 +41,7 @@ void cmd_robotAddLeg(int[], byte, void*);
 void cmd_echo(int[], byte, void*);
 byte getCommandIndex(char command[]);
 
-const Command commands[] = 
+Command commands[] = 
 {
   {(char*)"RF", cmd_EngineForward, &(robot.rightEngine)},
   {(char*)"RB", cmd_EngineBackward, &(robot.rightEngine)},
@@ -55,18 +63,30 @@ const Command commands[] =
   {(char*)"ECHO", cmd_echo, NULL}
 };
 
-char inputBufer[64];
-char volatile inputBuferIndex = -1;
 uint32_t startTime;
 
-void serialInput();
+uint8_t available_ptr()
+{
+  return Serial.available();
+}
+
+char read_ptr()
+{
+  int serial = Serial.read();
+  if (serial != -1) 
+  {
+    char data = (char)serial;
+    return data;
+  }
+
+  return 0;
+}
 
 void setup() {
   Serial.begin(115200);
   //Serial.begin(76800);
   //Serial.begin(74880);
   while (!Serial) {}
-  memset(inputBufer, 0, sizeof(inputBufer));
   
   Robot_initialize(&robot);
   
@@ -75,21 +95,25 @@ void setup() {
   attachInterrupt(1, pin_ISR1, RISING);
 
   // attach the service routine here 100 Hz.
-  Timer1.initialize(10000);
-  Timer1.attachInterrupt( timerIsr ); 
+  //Timer1.initialize(10000);
+  //Timer1.attachInterrupt( timerIsr ); 
+
+  Input_Initialize(available_ptr, read_ptr);
 }
 
 void loop() 
 {
+  static char token[] = {',', ';', '\0'};
   int parameters[CMD_MAXPARAMSCOUNT];
-  serialInput();
-  if (inputBuferIndex >= 0 && inputBufer[inputBuferIndex] == ';')
+  char* value;
+  byte index = 0;
+  byte cmd = CMD_UNKNOWN;
+  
+  char* input = Input_GetData();
+  if (input != NULL)
   {
-    char token[] = {',', ';', '\0'};
-    char* value;
-    byte index = 0;
-    byte cmd = CMD_UNKNOWN;
-    value = strtok(inputBufer, token);
+    Serial.println(input);
+    value = strtok(input, token);
     while(value != NULL && index <= CMD_MAXPARAMSCOUNT)
     {
       if (index == 0)
@@ -108,13 +132,40 @@ void loop()
     if (cmd != CMD_UNKNOWN)
     {
       commands[cmd].command_ptr(parameters, index - 1, commands[cmd].object);
+      cmd = CMD_UNKNOWN;
     }
-
-    inputBuferIndex = -1;
   }
+  
+  struct Encoder le = Encoder_getStateAndReset(&leftEncoder);
+  struct Encoder re = Encoder_getStateAndReset(&rightEncoder);
+  bool ts;
+  /*
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+    ts = timerSignal;
+    if (ts) {
+      timerSignal = false;
+    };
+  }
+  */
+
+  if (le.signaled) {
+    Robot_control(&robot, LEFT_ENGINE_PULSE);
+    Serial.println("speedInfo");
+  };
+
+  if (re.signaled) {
+    //Robot_control(&robot, RIGHT_ENGINE_PULSE);
+  };
+
+  if (ts) {
+    //Robot_control(&robot, CONTROL);
+  };
+
+  
  
   char speedInfo[64];
 
+  /*
   if (Robot_getState(&robot, speedInfo))
   {
     Serial.println(speedInfo);
@@ -151,84 +202,67 @@ void loop()
       robot.rightEngine.state);
     Serial.print(speedInfo);
   }
-    
+  */  
+  /*
   if (robot.rightEngine.signaled)
   {
     sprintf(
       speedInfo, 
       "RD,%u;RSPD,%u;RAVGSPD,%u;RPWM,%u;EOL;", 
       robot.rightEngine.fullDistance, 
-      robot.rightEngine.speedCounter.curr_speed, 
+      robot.rightEngine.speedCounter._curr_speed, 
       robot.rightEngine.speedCounter.avg_speed, 
       robot.rightEngine.pwm);
     robot.rightEngine.signaled = 0;
     Serial.println(speedInfo);
 
-    sprintf(speedInfo, "E00,1,%u,%u,%u,%u;", robot.rightEngine.speedCounter.curr_speed, robot.rightEngine.speedCounter.avg_speed, robot.rightEngine.pwm, robot.rightEngine.fullDistance);
-    Serial.println(speedInfo);
+    //sprintf(speedInfo, "E00,1,%u,%u,%u,%u;", robot.rightEngine.speedCounter.curr_speed, robot.rightEngine.speedCounter.avg_speed, robot.rightEngine.pwm, robot.rightEngine.fullDistance);
+    //Serial.println(speedInfo);
   }
+  */
 
+  
+/*
   if (robot.leftEngine.signaled)
   {
     sprintf(
       speedInfo, 
       "LD,%u;LSPD,%u;LAVGSPD,%u;LPWM,%u;EOL;", 
       robot.leftEngine.fullDistance, 
-      robot.leftEngine.speedCounter.curr_speed, 
+      robot.leftEngine.speedCounter._curr_speed, 
       robot.leftEngine.speedCounter.avg_speed, 
       robot.leftEngine.pwm);
     robot.leftEngine.signaled = 0;
     Serial.println(speedInfo);
 
-    sprintf(speedInfo, "E00,0,%u,%u,%u,%u;", robot.leftEngine.speedCounter.curr_speed, robot.leftEngine.speedCounter.avg_speed, robot.leftEngine.pwm, robot.leftEngine.fullDistance);
-    Serial.println(speedInfo);
-  }
+    //sprintf(speedInfo, "E00,0,%u,%u,%u,%u;", robot.leftEngine.speedCounter.curr_speed, robot.leftEngine.speedCounter.avg_speed, robot.leftEngine.pwm, robot.leftEngine.fullDistance);
+    //Serial.println(speedInfo);
+  }*/
 }
 
-void serialInput() {
-  if (Serial.available() > 0) {
-    int serial = Serial.read();
-    if (serial != -1)
-    {
-      char data = (char)serial;
-      if ((inputBuferIndex + 2) > (sizeof(inputBufer) - 1))
-      {
-        inputBuferIndex = -1;
-      }
-      
-      inputBufer[++inputBuferIndex] = toupper(data);
-      inputBufer[inputBuferIndex + 1] = '\0';
-    }
-  }  
+bool isInputValid(int input) {
+  return true;
 }
 
 void pin_ISR() 
 {
-  Robot_control(&robot, RIGHT_ENGINE_PULSE);
+  //Encoder_signal(&rightEncoder);
+  //Robot_control(&robot, RIGHT_ENGINE_PULSE);
 }
 
 void pin_ISR1() 
 {
-  Robot_control(&robot, LEFT_ENGINE_PULSE);
+  Encoder_signal(&leftEncoder);
+  //Robot_control(&robot, LEFT_ENGINE_PULSE);
 }
 
 //volatile uint16_t sss = 0;
 
 void timerIsr()
 {
-  //sss++;
-
-  //if (!(sss % 100))
-  //{
-  //  Robot_control(&robot, LEFT_ENGINE_PULSE);
-  //}
-
-  //if (!(sss % 25))
-  //{
-  //  Robot_control(&robot, RIGHT_ENGINE_PULSE);
-  //}
-    
-  Robot_control(&robot, CONTROL);
+  //if (!lock)
+  //Robot_control(&robot, CONTROL);
+  timerSignal = true;
 }
 
 // command functions
@@ -329,9 +363,11 @@ byte getCommandIndex(char *command){
   {
     if (strcmp(command, commands[i].command) == 0)
     {
+      Serial.println(i);
       return i;
     }
   }
 
+  Serial.println(maxIndex);
   return (maxIndex);
 };
