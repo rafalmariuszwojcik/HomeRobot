@@ -6,13 +6,14 @@ extern "C"
   #include <encoder.h>
 }
 
-const byte ENCODER_PIN = 3;
+const uint8_t ENCODER_PIN = 3;
 
 /*
 Declare Arduino specific functions.
 */
 void ardu_atomic(void (*func)(void* object), void* object);
 uint32_t ardu_get_micros();
+uint32_t ardu_get_millis();
 uint16_t ardu_digitalRead(uint16_t pin);
 void ardu_init_timer(); 
 void ardu_init_timer_isr();
@@ -37,7 +38,7 @@ void setup() {
   /*
   Initialize encoder instance.
   */
-  Encoder_Initialize(&encoder, ardu_get_micros, ardu_digitalRead, ardu_atomic, 1); 
+  Encoder_Initialize(&encoder, ardu_get_micros, ardu_get_millis, ardu_digitalRead, ardu_atomic, ENCODER_PIN); 
 
   /*
   Initialize encoder input pin.
@@ -56,8 +57,17 @@ void loop() {
   // put your main code here, to run repeatedly:
   if (timer_pulse == 1)
   {
-    Serial.println("speedInfo");
-    Serial.println(encoder.pin);
+    struct EncoderState le = Encoder_getStateAndReset(&encoder);
+    if (le.signaled)
+    {
+      //Serial.println("pulse");
+      //printf("Timestamp: %d\n",(int)le.micros);
+      Serial.println((uint32_t)le.period);
+    }
+    
+    //Serial.println("speedInfo");
+    //Serial.println(encoder.pin);
+
     timer_pulse = 0;
   }
 }
@@ -98,6 +108,11 @@ void ardu_atomic(void (*func)(void* object), void* object)
 uint32_t ardu_get_micros()
 {
   return micros();
+}
+
+uint32_t ardu_get_millis()
+{
+  return millis();
 }
 
 uint16_t ardu_digitalRead(uint16_t pin)
