@@ -38,13 +38,15 @@ void setup() {
   /*
   Initialize encoder instance.
   */
-  Encoder_Initialize(&encoder, ardu_get_micros, ardu_get_millis, ardu_digitalRead, ardu_atomic, ENCODER_PIN); 
+  Encoder_Initialize(&encoder, ardu_get_micros, ardu_digitalRead, ardu_atomic, ENCODER_PIN); 
 
   /*
   Initialize encoder input pin.
   */
   pinMode(ENCODER_PIN, INPUT);
   attachInterrupt(digitalPinToInterrupt(ENCODER_PIN), encoder_pin_isr, RISING);
+  
+  
 
   
   
@@ -55,27 +57,17 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+  char message[64];
+  uint8_t signaled = Encoder_isSignaled(&encoder);
   if (timer_pulse == 1)
   {
-    uint8_t signaled = Encoder_isSignaled(&encoder);
-    if (signaled)
-    {
-      Serial.println("signaled...");
-    }
-    
-    
-    struct EncoderState le = Encoder_getStateAndReset(&encoder);
-    if (le.signaled)
-    {
-      //Serial.println("pulse");
-      //printf("Timestamp: %d\n",(int)le.micros);
-      //Serial.println((uint32_t)le.period);
-    }
-    
-    //Serial.println("speedInfo");
-    Serial.println(encoder.pin);
-
     timer_pulse = 0;
+    
+    sprintf(message, "frequency: %lu.%02lu", encoder.frequency / 100, encoder.frequency % 100);
+    Serial.println(message);
+
+    //Serial.println(encoder.frequency);
+    
   }
 }
 
