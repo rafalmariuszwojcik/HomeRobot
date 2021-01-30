@@ -14,7 +14,7 @@ Declare Arduino specific functions.
 void ardu_atomic(void (*func)(void* object), void* object);
 uint32_t ardu_get_micros();
 uint32_t ardu_get_millis();
-uint16_t ardu_digitalRead(uint16_t pin);
+uint8_t ardu_digitalRead(uint8_t pin);
 void ardu_init_timer(); 
 void ardu_init_timer_isr();
 
@@ -48,7 +48,7 @@ void setup() {
 
   
   
-  Encoder_signal(&encoder);
+  //Encoder_signal(&encoder);
   encoder.pin = 8;
   ardu_init_timer();
 }
@@ -57,16 +57,23 @@ void loop() {
   // put your main code here, to run repeatedly:
   if (timer_pulse == 1)
   {
+    uint8_t signaled = Encoder_isSignaled(&encoder);
+    if (signaled)
+    {
+      Serial.println("signaled...");
+    }
+    
+    
     struct EncoderState le = Encoder_getStateAndReset(&encoder);
     if (le.signaled)
     {
       //Serial.println("pulse");
       //printf("Timestamp: %d\n",(int)le.micros);
-      Serial.println((uint32_t)le.period);
+      //Serial.println((uint32_t)le.period);
     }
     
     //Serial.println("speedInfo");
-    //Serial.println(encoder.pin);
+    Serial.println(encoder.pin);
 
     timer_pulse = 0;
   }
@@ -115,7 +122,7 @@ uint32_t ardu_get_millis()
   return millis();
 }
 
-uint16_t ardu_digitalRead(uint16_t pin)
+uint8_t ardu_digitalRead(uint8_t pin)
 {
   return 0;
 }
