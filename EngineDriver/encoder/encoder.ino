@@ -34,7 +34,7 @@ void setup() {
   */
   Serial.begin(9600);
   while (!Serial) {}
-  
+
   /*
   Initialize encoder instance.
   */
@@ -44,14 +44,13 @@ void setup() {
   Initialize encoder input pin.
   */
   pinMode(ENCODER_PIN, INPUT);
-  attachInterrupt(digitalPinToInterrupt(ENCODER_PIN), encoder_pin_isr, RISING);
+  attachInterrupt(digitalPinToInterrupt(ENCODER_PIN), encoder_pin_isr, /*RISING*/CHANGE);
   
   
 
   
   
   //Encoder_signal(&encoder);
-  encoder.pin = 8;
   ardu_init_timer();
 }
 
@@ -59,12 +58,15 @@ void loop() {
   // put your main code here, to run repeatedly:
   char message[64];
   uint8_t signaled = Encoder_isSignaled(&encoder);
-  if (timer_pulse == 1)
+  if (timer_pulse == 1 /*|| signaled*/)
   {
     timer_pulse = 0;
     
-    sprintf(message, "frequency: %lu.%02lu", encoder.frequency / 100, encoder.frequency % 100);
+    sprintf(message, "frequency: %lu.%02lu | duty: %lu.%02lu", encoder.frequency / 100, encoder.frequency % 100, encoder.duty / 100, encoder.duty % 100);
     Serial.println(message);
+    //sprintf(message, "sizeof(bool): %lu", sizeof(message));
+    //Serial.println(message);
+    
 
     //Serial.println(encoder.frequency);
     
@@ -99,7 +101,8 @@ void encoder_pin_isr()
 
 void ardu_atomic(void (*func)(void* object), void* object)
 {
-  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) 
+  {
     func(object);
   }
 }
@@ -116,5 +119,5 @@ uint32_t ardu_get_millis()
 
 uint8_t ardu_digitalRead(uint8_t pin)
 {
-  return 0;
+  return digitalRead(ENCODER_PIN) == HIGH ? 1 : 0;
 }
