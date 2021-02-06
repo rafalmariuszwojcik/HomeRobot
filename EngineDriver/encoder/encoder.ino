@@ -74,8 +74,8 @@ void loop() {
 }
 
 /*
-Initialize timer interrupt to every 1 second.
-Timer will keep reporting encoder data to client application.
+  Initialize timer interrupt to every 1 second.
+  Timer will keep reporting encoder data to client application.
 */
 void ardu_init_timer()
 {
@@ -84,7 +84,7 @@ void ardu_init_timer()
 }
 
 /*
-Timer interrupt. Set global timer_pulse variable to 1 (variable type is byte).
+  Timer interrupt. Set global timer_pulse variable to 1 (variable type is byte).
 */
 void ardu_init_timer_isr()
 {
@@ -92,7 +92,7 @@ void ardu_init_timer_isr()
 }
 
 /*
-Encoder pin interrupt procedure.
+  Encoder pin interrupt procedure.
 */
 void encoder_pin_isr() 
 {
@@ -119,5 +119,5 @@ uint32_t ardu_get_millis()
 
 uint8_t ardu_digitalRead(uint8_t pin)
 {
-  return digitalRead(ENCODER_PIN) == HIGH ? 1 : 0;
+  return digitalRead(pin) == HIGH ? 1 : 0;
 }
