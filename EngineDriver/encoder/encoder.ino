@@ -38,13 +38,15 @@ void setup() {
   /*
   Initialize encoder instance.
   */
-  Encoder_Initialize(&encoder, ardu_get_micros, ardu_digitalRead, ardu_atomic, ENCODER_PIN); 
+  Encoder_Initialize(&encoder, ardu_get_micros, ardu_digitalRead, ardu_atomic, ENCODER_CHANGE, ENCODER_PIN); 
 
   /*
   Initialize encoder input pin.
   */
   pinMode(ENCODER_PIN, INPUT);
-  attachInterrupt(digitalPinToInterrupt(ENCODER_PIN), encoder_pin_isr, /*RISING*/CHANGE);
+  attachInterrupt(digitalPinToInterrupt(ENCODER_PIN), encoder_pin_isr, CHANGE);
+  //attachInterrupt(digitalPinToInterrupt(ENCODER_PIN), encoder_pin_isr, FALLING);
+  //attachInterrupt(digitalPinToInterrupt(ENCODER_PIN), encoder_pin_isr, RISING);
   
   
 
@@ -64,8 +66,12 @@ void loop() {
     
     sprintf(message, "frequency: %lu.%02lu | duty: %lu.%02lu", encoder.frequency / 100, encoder.frequency % 100, encoder.duty / 100, encoder.duty % 100);
     Serial.println(message);
-    //sprintf(message, "sizeof(bool): %lu", sizeof(message));
-    //Serial.println(message);
+    
+    //char myStr[] = "this is a test";
+    //uint64_t qqq;
+    
+    //sprintf(message, "sizeof(uint64_t): %lu", (uint16_t)sizeof(uint64_t));
+    //Serial.println(sizeof(bool));
     
 
     //Serial.println(encoder.frequency);
