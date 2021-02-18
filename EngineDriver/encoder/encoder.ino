@@ -39,6 +39,8 @@ void setup() {
   Initialize encoder instance.
   */
   Encoder_Initialize(&encoder, ardu_get_micros, ardu_digitalRead, ardu_atomic, ENCODER_CHANGE, ENCODER_PIN); 
+  //Encoder_Initialize(&encoder, ardu_get_micros, ardu_digitalRead, ardu_atomic, ENCODER_RISING, ENCODER_PIN); 
+  //Encoder_Initialize(&encoder, ardu_get_micros, ardu_digitalRead, ardu_atomic, ENCODER_FALLING, ENCODER_PIN); 
 
   /*
   Initialize encoder input pin.
@@ -58,13 +60,20 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  char message[64];
+  char message[128];
+  uint32_t st = micros();
   uint8_t signaled = Encoder_isSignaled(&encoder);
+  uint32_t t = micros() - st;
+  //uint32_t t = 0;
+  
+  
   if (timer_pulse == 1 /*|| signaled*/)
   {
     timer_pulse = 0;
+
     
-    sprintf(message, "frequency: %lu.%02lu | duty: %lu.%02lu", encoder.frequency / 100, encoder.frequency % 100, encoder.duty / 100, encoder.duty % 100);
+    
+    sprintf(message, "frequency: %lu.%02lu | duty: %lu.%02lu | count: %lu | period: %lu | exec time: %lu", encoder.frequency / 100, encoder.frequency % 100, encoder.duty / 100, encoder.duty % 100, encoder.count, encoder.period, t);
     Serial.println(message);
     
     //char myStr[] = "this is a test";
