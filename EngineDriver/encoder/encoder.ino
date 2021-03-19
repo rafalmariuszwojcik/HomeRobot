@@ -49,11 +49,14 @@ Commands commands;
 
 void cmd_echo(int16_t[], uint8_t, void*);
 void cmd_test(int16_t[], uint8_t, void*);
+void cmd_engine(int16_t[], uint8_t, void*);
 
 struct Command command_list[] = 
 {
-  {(char*)"ECHO", cmd_echo, NULL},
-  {(char*)"TEST", cmd_test, NULL},
+  { (char*)"ECHO", cmd_echo, NULL },
+  { (char*)"TEST", cmd_test, NULL },
+  { (char*)"ENG", cmd_engine, NULL },
+  
 };
 
 /*
@@ -250,4 +253,9 @@ bool test_func(void (*output_ptr)(char* text))
 void cmd_test(int16_t[], uint8_t, void*)
 {
   test_all_run(ardu_output);
+}
+
+void cmd_engine(int16_t params[], uint8_t count, void* object)
+{
+  ardu_output((char*)"ENGINE");
 }
