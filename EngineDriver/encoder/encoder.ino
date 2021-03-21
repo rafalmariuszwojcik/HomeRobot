@@ -7,8 +7,8 @@ extern "C"
   #include <input.h>
   #include <command.h>
   #include <fp.h>
+  #include <pid.h>
   #include <test_all.h>
-  
 }
 
 const uint8_t ENCODER_PIN = 3;
@@ -59,6 +59,8 @@ struct Command command_list[] =
   
 };
 
+PIDController pid;
+
 /*
 struct Test test_list[] = 
 {
@@ -85,6 +87,8 @@ void setup() {
   //Encoder_Initialize(&encoder, ardu_get_micros, ardu_digitalRead, ardu_atomic, ENCODER_RISING, ENCODER_PIN); 
   //Encoder_Initialize(&encoder, ardu_get_micros, ardu_digitalRead, ardu_atomic, ENCODER_FALLING, ENCODER_PIN);
 
+  PIDController_initialize(&pid, 10.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+  
   /*
   Initialize input buffer.
   */
