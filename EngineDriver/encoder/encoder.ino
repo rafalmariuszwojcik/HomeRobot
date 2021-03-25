@@ -9,6 +9,8 @@ extern "C"
   #include <fp.h>
   #include <pid.h>
   #include <test_all.h>
+  #include <engine_control.h>
+  
 }
 
 const uint8_t ENCODER_PIN = 3;
@@ -60,6 +62,10 @@ struct Command command_list[] =
 };
 
 PIDController pid;
+
+/**/
+struct Encoder encoders[2];
+struct EngineControl controllers[2];
 
 /*
 struct Test test_list[] = 
