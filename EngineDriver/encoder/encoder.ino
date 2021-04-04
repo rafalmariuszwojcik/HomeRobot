@@ -9,8 +9,8 @@ extern "C"
   #include <fp.h>
   #include <pid.h>
   #include <test_all.h>
+  #include <engine.h>
   #include <engine_control.h>
-  
 }
 
 const uint8_t ENCODER_PIN = 3;
@@ -22,6 +22,10 @@ void ardu_atomic(void (*func)(void* object), void* object);
 uint32_t ardu_get_micros();
 uint32_t ardu_get_millis();
 uint8_t ardu_digitalRead(uint8_t pin);
+void ardu_digitalWrite(uint8_t pin, uint8_t level);
+void ardu_analogWrite(uint8_t pin, uint8_t value);
+void ardu_pinMode(uint8_t pin, uint8_t mode);
+
 void ardu_init_timer(); 
 void ardu_init_timer_isr();
 uint8_t available_ptr();
@@ -52,18 +56,29 @@ Commands commands;
 void cmd_echo(int16_t[], uint8_t, void*);
 void cmd_test(int16_t[], uint8_t, void*);
 void cmd_engine(int16_t[], uint8_t, void*);
+void cmd_start(int16_t[], uint8_t, void*);
+void cmd_stop(int16_t[], uint8_t, void*);
 
 struct Command command_list[] = 
 {
   { (char*)"ECHO", cmd_echo, NULL },
   { (char*)"TEST", cmd_test, NULL },
   { (char*)"ENG", cmd_engine, NULL },
+  { (char*)"START", cmd_start, NULL },
+  { (char*)"STOP", cmd_stop, NULL },
   
 };
 
 PIDController pid;
 
-/**/
+/*
+Engines: 0 - left engine, 1 - right engine.
+*/
+//struct Engine engines[2];
+struct Engine e1;
+struct Engine e2;
+
+
 struct Encoder encoders[2];
 struct EngineControl controllers[2];
 
@@ -86,6 +101,22 @@ void setup() {
 
   test_all_run(ardu_output);
 
+  /*
+  Initialize engine instances.
+
+  ROBOT_LE_ENABLED = 6;
+  ROBOT_LE_FORWARD = 8;
+  ROBOT_LE_BACKWARD = 9; 
+  
+  ROBOT_RE_ENABLED = 5;
+  ROBOT_RE_FORWARD = 4;
+  RE_BACKWARD = 7; 
+  */
+  Engine_Initialize(&e1, ardu_digitalWrite, ardu_analogWrite, ardu_pinMode, 6, 8, 9);
+  Engine_Initialize(&e2, ardu_digitalWrite, ardu_analogWrite, ardu_pinMode, 5, 4, 7);
+  
+  
+  
   /*
   Initialize encoder instance.
   */
@@ -227,6 +258,22 @@ uint8_t ardu_digitalRead(uint8_t pin)
   return digitalRead(pin) == HIGH ? 1 : 0;
 }
 
+void ardu_digitalWrite(uint8_t pin, uint8_t level)
+{
+  digitalWrite(pin, level ? HIGH : LOW);
+}
+
+void ardu_analogWrite(uint8_t pin, uint8_t value)
+{
+  analogWrite(pin, value);
+}
+
+void ardu_pinMode(uint8_t pin, uint8_t mode)
+{
+  Serial.println("PIN MODE");
+  pinMode(pin, mode ? INPUT : OUTPUT);
+}
+
 uint8_t available_ptr()
 {
   return Serial.available();
@@ -268,4 +315,17 @@ void cmd_test(int16_t[], uint8_t, void*)
 void cmd_engine(int16_t params[], uint8_t count, void* object)
 {
   ardu_output((char*)"ENGINE");
+}
+
+void cmd_start(int16_t[], uint8_t, void*)
+{
+  Serial.println("START.");
+  Engine_forward(&e1, 160);
+  Engine_forward(&e2, 160);  
+}
+
+void cmd_stop(int16_t[], uint8_t, void*)
+{
+  Engine_stop(&e1);
+  Engine_stop(&e2);
 }
