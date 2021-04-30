@@ -168,12 +168,17 @@ void loop() {
 
   Commands_execute(&commands, Input_getData(&input_buffer));
   
-  if (timer_pulse == 1 /*|| signaled*/)
+  if (/*timer_pulse == 1 ||*/ signaled)
   {
     timer_pulse = 0;
 
+    uint32_t x = fp_ToInt_24_8(encoder.frequency);
+    
+    
+
     
     //if (last_period != encoder.period || last_duty != encoder.duty)
+    if (x > 32) 
     {
       sprintf(message, "frequency: %lu.%02lu | duty: %lu.%02lu | count: %lu | period: %lu | exec time: %lu", 
               fp_ToInt_24_8(encoder.frequency), fp_FracAsDecimal_24_8(encoder.frequency), 
@@ -201,11 +206,11 @@ void loop() {
     
   }
 
-  char* input = Input_getData(&input_buffer);
-  if (input != NULL)
-  {
-    Serial.println(input);
-  }
+  //char* input = Input_getData(&input_buffer);
+  //if (input != NULL)
+  //{
+  //  Serial.println(input);
+  //}
 
 }
 
@@ -215,7 +220,7 @@ void loop() {
 */
 void ardu_init_timer()
 {
-  Timer1.initialize(100000); // every 0.5 second.
+  Timer1.initialize(1000000); // every 0.5 second.
   Timer1.attachInterrupt(ardu_init_timer_isr); 
 }
 
@@ -319,13 +324,14 @@ void cmd_engine(int16_t params[], uint8_t count, void* object)
 
 void cmd_start(int16_t[], uint8_t, void*)
 {
-  Serial.println("START.");
-  Engine_forward(&e1, 160);
-  Engine_forward(&e2, 160);  
+  Serial.println("START...");
+  Engine_forward(&e1, 150); // left engine
+  Engine_forward(&e2, 160); // right engine 
 }
 
 void cmd_stop(int16_t[], uint8_t, void*)
 {
+  Serial.println("STOP...");
   Engine_stop(&e1);
   Engine_stop(&e2);
 }
